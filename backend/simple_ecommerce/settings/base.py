@@ -23,6 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-$(d!2wo+cb+0ur0+9rcrp&ma7q!-+63)dy^ouu)b$6$j$4j4@x'
 
 
+# Auth User model
+AUTH_USER_MODEL = "user.User"
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
