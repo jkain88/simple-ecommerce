@@ -2,8 +2,12 @@ from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from .models import User
+from .models import (
+    Address, 
+    User
+)
 from .serializers import (
+    AddressSerializer,
     UserSerializer,
     UserRegisterSerializer
 )
@@ -23,7 +27,7 @@ class UserRegisterView(generics.CreateAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class UserProfile(generics.RetrieveUpdateAPIView):
+class UserProfileView(generics.RetrieveUpdateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     model = User
@@ -32,4 +36,20 @@ class UserProfile(generics.RetrieveUpdateAPIView):
     def get_object(self):
         return self.request.user
 
-# TODO: ADDRESS CREATE
+
+class AddressView(generics.CreateAPIView):
+    serializer_class = AddressSerializer
+    model = Address
+    permission_classes = [IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+
+        Address.objects.update_or_create(
+            address_type=data['address_type'],
+            user=data['user'],
+            defaults={**data}
+        )
+        return Response(serializer.data, status=status.HTTP_200_OK)

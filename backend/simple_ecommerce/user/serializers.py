@@ -1,11 +1,36 @@
 from rest_framework import serializers
 
-from .models import User
+from .models import Address, User
+
+
+class AddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Address
+        fields = [
+            'id',
+            'address_type',
+            'city_area',
+            'city',
+            'province',
+            'street',
+            'postal_code',
+            'user'
+        ]
+        extra_kwargs = {
+            'user': {
+                'write_only': True
+            }
+        }
+
 
 class UserSerializer(serializers.ModelSerializer):
+    addresses = AddressSerializer(many=True, read_only=True)
+
     class Meta:
         model = User
         fields = [
+            'id',
+            'addresses',
             'age',
             'email',
             'first_name',
@@ -13,6 +38,7 @@ class UserSerializer(serializers.ModelSerializer):
             'last_name',
             'sex'
         ]
+
 
 
 class UserRegisterSerializer(UserSerializer):
