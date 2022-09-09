@@ -1,4 +1,2 @@
-# pycache
-backend/__pycache__/
-backend/simple_ecommerce/__pycache__/
-backend/simple_ecommerce/**/__pycache__/
+*.pyc
+*.vscode
