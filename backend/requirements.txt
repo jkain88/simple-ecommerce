@@ -1,13 +1,17 @@
 asgiref==3.5.2
+Babel==2.10.3
 backports.zoneinfo==0.2.1
 Django==4.1
 django-filter==22.1
 django-model-utils==4.2.0
+django-prices==2.3.0
 djangorestframework==3.13.1
 djangorestframework-simplejwt==5.2.0
+enmerkar==0.7.1
 gunicorn==20.1.0
 importlib-metadata==4.12.0
 Markdown==3.4.1
+prices==1.1.0
 psycopg2==2.9.3
 PyJWT==2.4.0
 pytz==2022.2.1
