@@ -124,3 +124,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
 }
+
+# Prices currency
+DEFAULT_CURRENCY = 'PHP'
+DEFAULT_CURRENCY_CODE_LENGTH = 3
