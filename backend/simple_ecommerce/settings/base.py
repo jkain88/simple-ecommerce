@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'simple_ecommerce.product',
     'simple_ecommerce.user',
 
+    'django_prices',
     'rest_framework',
     'rest_framework_simplejwt',
     'whitenoise.runserver_nostatic'
