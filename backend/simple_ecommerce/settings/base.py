@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'simple_ecommerce.product',
     'simple_ecommerce.user',
 
-    'django_prices',
+    'djmoney',
     'rest_framework',
     'rest_framework_simplejwt',
     'whitenoise.runserver_nostatic'
@@ -120,11 +120,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # Rest framework config
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
-}
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'rest_framework_simplejwt.authentication.JWTAuthentication',
+#     )
+# }
 
 # Prices currency
 DEFAULT_CURRENCY = 'PHP'

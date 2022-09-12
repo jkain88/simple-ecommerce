@@ -4,7 +4,7 @@ backports.zoneinfo==0.2.1
 Django==4.1
 django-filter==22.1
 django-model-utils==4.2.0
-django-prices==2.3.0
+django-money==3.0.0
 djangorestframework==3.13.1
 djangorestframework-simplejwt==5.2.0
 enmerkar==0.7.1
@@ -13,8 +13,10 @@ importlib-metadata==4.12.0
 Markdown==3.4.1
 prices==1.1.0
 psycopg2==2.9.3
+py-moneyed==2.0
 PyJWT==2.4.0
 pytz==2022.2.1
 sqlparse==0.4.2
+typing_extensions==4.3.0
 whitenoise==6.2.0
 zipp==3.8.1
