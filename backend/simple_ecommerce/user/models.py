@@ -28,14 +28,14 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
-    age = models.PositiveIntegerField()
+    age = models.PositiveIntegerField(null=True)
     email = models.EmailField(unique=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-    first_name = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=100, blank=True)
     middle_name = models.CharField(max_length=100, blank=True)
-    last_name = models.CharField(max_length=100)
-    sex = models.CharField(choices=Sex.CHOICES, max_length=10)
+    last_name = models.CharField(max_length=100, blank=True)
+    sex = models.CharField(choices=Sex.CHOICES, max_length=10, blank=True)
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
