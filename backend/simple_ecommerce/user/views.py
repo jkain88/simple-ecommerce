@@ -13,7 +13,7 @@ from .serializers import (
 )
 
 
-class UserRegisterView(generics.CreateAPIView):
+class UserRegister(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserRegisterSerializer
     model = User
@@ -27,7 +27,7 @@ class UserRegisterView(generics.CreateAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class UserProfileView(generics.RetrieveUpdateAPIView):
+class UserProfile(generics.RetrieveUpdateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     model = User
@@ -37,7 +37,7 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
         return self.request.user
 
 
-class AddressView(generics.CreateAPIView):
+class AddressCreate(generics.CreateAPIView):
     serializer_class = AddressSerializer
     model = Address
     permission_classes = [IsAuthenticated]
