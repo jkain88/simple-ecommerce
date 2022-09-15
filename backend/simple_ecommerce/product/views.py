@@ -1,8 +1,8 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAdminUser
 
-from .models import Category, Product
-from .serializers import CategorySerializer, ProductSerializer
+from .models import Category, Product, ProductVariant
+from .serializers import CategorySerializer, ProductSerializer, ProductVariantSerializer
 
 
 class CategoryCreate(generics.CreateAPIView):
@@ -50,3 +50,9 @@ class ProductRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
         else:
             self.permission_classes = []
         return super(ProductRetrieveUpdateDestroy, self).get_permissions()
+
+
+class ProductVariantCreate(generics.CreateAPIView):
+    queryset = ProductVariant.objects.all()
+    serializer_class = ProductVariantSerializer
+    permission_classes = [IsAdminUser]

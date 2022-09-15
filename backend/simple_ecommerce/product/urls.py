@@ -10,4 +10,5 @@ urlpatterns = [
     path('category/create/', views.CategoryCreate.as_view(), name='category_create'),
     path('create/', views.ProductCreate.as_view(), name='product_create'),
     path('<int:pk>', views.ProductRetrieveUpdateDestroy.as_view(), name='product_retrieve_update_destroy'),
+    path('variant/create/', views.ProductVariantCreate.as_view(), name='product_variant_create')
 ]
