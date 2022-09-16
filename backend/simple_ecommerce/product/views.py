@@ -1,4 +1,5 @@
 from rest_framework import generics
+from rest_framework import mixins
 from rest_framework.permissions import IsAdminUser
 
 from .models import Category, Product, ProductVariant
@@ -15,7 +16,7 @@ class CategoryList(generics.ListAPIView):
     serializer_class = CategorySerializer
 
 
-class CategoryRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+class CategoryDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
@@ -25,7 +26,7 @@ class CategoryRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
             self.permission_classes = [IsAdminUser]
         else:
             self.permission_classes = []
-        return super(CategoryRetrieveUpdateDestroy, self).get_permissions()
+        return super(CategoryDetail, self).get_permissions()
 
 
 class ProductCreate(generics.CreateAPIView):
@@ -39,7 +40,7 @@ class ProductList(generics.ListAPIView):
     serializer_class = ProductSerializer
 
 
-class ProductRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
@@ -49,10 +50,16 @@ class ProductRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
             self.permission_classes = [IsAdminUser]
         else:
             self.permission_classes = []
-        return super(ProductRetrieveUpdateDestroy, self).get_permissions()
+        return super(ProductDetail, self).get_permissions()
 
 
 class ProductVariantCreate(generics.CreateAPIView):
+    queryset = ProductVariant.objects.all()
+    serializer_class = ProductVariantSerializer
+    permission_classes = [IsAdminUser]
+
+
+class ProductVariantDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = ProductVariant.objects.all()
     serializer_class = ProductVariantSerializer
     permission_classes = [IsAdminUser]
