@@ -30,3 +30,10 @@ class ProductVariant(TimeStampedModel):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='variants')
     price = MoneyField(max_digits=9, decimal_places=2, null=True, default_currency=settings.DEFAULT_CURRENCY)
     sku = models.CharField(max_length=255, blank=True)
+
+
+class ProductImage(models.Model):
+    image = models.ImageField()
+    product = models.ForeignKey(Product, null=True, on_delete=models.CASCADE, related_name='images')
+    variant = models.ForeignKey(ProductVariant, null=True, on_delete=models.SET_NULL, related_name='images')
+    alt = models.CharField(max_length=50, blank=True)
