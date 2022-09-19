@@ -1,9 +1,9 @@
 from rest_framework import generics
-from rest_framework import mixins
+from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser
 
-from .models import Category, Product, ProductVariant
-from .serializers import CategorySerializer, ProductSerializer, ProductVariantSerializer
+from .models import Category, Product, ProductImage, ProductVariant
+from .serializers import CategorySerializer, ProductImageSerializer, ProductSerializer, ProductVariantSerializer
 
 
 class CategoryCreate(generics.CreateAPIView):
@@ -62,4 +62,10 @@ class ProductVariantCreate(generics.CreateAPIView):
 class ProductVariantDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = ProductVariant.objects.all()
     serializer_class = ProductVariantSerializer
+    permission_classes = [IsAdminUser]
+
+
+class ProductImageViewSet(viewsets.ModelViewSet):
+    queryset = ProductImage.objects.all()
+    serializer_class = ProductImageSerializer
     permission_classes = [IsAdminUser]

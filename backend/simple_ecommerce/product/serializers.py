@@ -25,15 +25,20 @@ class ProductImageSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'image',
-            'alt'
+            'alt',
+            'product',
+            'variant'
         ]
 
 
 class ProductVariantSerializer(serializers.ModelSerializer):
+    images = ProductImageSerializer(many=True)
+
     class Meta:
         model = ProductVariant
         fields = [
             'id',
+            'images',
             'name',
             'product',
             'price',
@@ -45,6 +50,7 @@ class ProductSerializer(serializers.ModelSerializer):
     category_name = serializers.CharField(source='category.name', allow_null=True)
     price = MoneyField(max_digits=9, decimal_places=2)
     variants = ProductVariantSerializer(many=True)
+    images = ProductImageSerializer(many=True)
 
     class Meta:
         model = Product
@@ -53,8 +59,9 @@ class ProductSerializer(serializers.ModelSerializer):
             'name',
             'category',
             'category_name',
+            'images',
             'price',
             'price_currency',
             'sku',
-            'variants'
+            'variants',
         ]
