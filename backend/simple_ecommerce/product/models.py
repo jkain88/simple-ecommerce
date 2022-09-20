@@ -20,6 +20,8 @@ class Product(PublishableModel, TimeStampedModel):
     category = models.ForeignKey(Category, on_delete=models.PROTECT, null=True, related_name='products')
     price = MoneyField(max_digits=9, decimal_places=2, null=True, default_currency=settings.DEFAULT_CURRENCY)
     sku = models.CharField(max_length=255, blank=True)
+    quantity = models.PositiveIntegerField(default=1)
+    quantity_allocated = models.PositiveIntegerField(default=0)
 
     def __str__(self) -> str:
         return self.name
@@ -30,6 +32,9 @@ class ProductVariant(TimeStampedModel):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='variants')
     price = MoneyField(max_digits=9, decimal_places=2, null=True, default_currency=settings.DEFAULT_CURRENCY)
     sku = models.CharField(max_length=255, blank=True)
+    quantity = models.PositiveIntegerField(default=1)
+    quantity_allocated = models.PositiveIntegerField(default=0)
+
 
 
 class ProductImage(models.Model):

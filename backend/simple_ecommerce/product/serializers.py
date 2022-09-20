@@ -42,6 +42,8 @@ class ProductVariantSerializer(serializers.ModelSerializer):
             'name',
             'product',
             'price',
+            'quantity',
+            'quantity_allocated',
             'sku'
         ]
 
@@ -63,5 +65,7 @@ class ProductSerializer(serializers.ModelSerializer):
             'price',
             'price_currency',
             'sku',
+            'quantity',
+            'quantity_allocated',
             'variants',
         ]
