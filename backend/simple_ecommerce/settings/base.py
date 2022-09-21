@@ -34,14 +34,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    
+    # Django apps
     'simple_ecommerce.api',
     'simple_ecommerce.checkout',
     'simple_ecommerce.core',
     'simple_ecommerce.product',
     'simple_ecommerce.user',
 
+    # External dependencies
     'djmoney',
+    'drf_yasg',
     'rest_framework',
     'rest_framework_simplejwt',
     'whitenoise.runserver_nostatic'
