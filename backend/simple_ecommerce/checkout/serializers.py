@@ -6,7 +6,6 @@ from .models import (
 )
 from simple_ecommerce.user.serializers import (
     AddressSerializer, 
-    UserSerializer
 )
 from simple_ecommerce.product.serializers import (
     ProductSerializer,
@@ -14,18 +13,19 @@ from simple_ecommerce.product.serializers import (
 )
 
 class CheckoutSerializer(serializers.ModelSerializer):
-    billing_address = AddressSerializer()
-    shipping_address = AddressSerializer()
-    user = UserSerializer()
+    billing_address_detail = AddressSerializer(read_only=True, source='billing_address')
+    shipping_address_detail = AddressSerializer(read_only=True, source='shipping_address')
 
     class Meta:
         model = Checkout
         fields = [
             'id',
             'billing_address',
+            'billing_address_detail',
             'shipping_address',
+            'shipping_address_detail',
             'status',
-            'total_amount'
+            'total_amount',
             'user'
         ]
 
