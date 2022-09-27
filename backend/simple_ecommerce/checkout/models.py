@@ -2,9 +2,11 @@ from statistics import mode
 from django.conf import settings
 from django.db import models
 from djmoney.models.fields import MoneyField
+from djmoney.money import Money
 from model_utils.models import TimeStampedModel
 
 from .choices import OrderStatus
+from .utils import get_line_amount
 from simple_ecommerce.product.models import (
     Product,
     ProductVariant
@@ -32,3 +34,6 @@ class CheckoutLine(TimeStampedModel):
     product_variant = models.ForeignKey(ProductVariant, null=True, on_delete=models.SET_NULL, related_name='lines')
     quantity = models.PositiveIntegerField(default=1)
     
+    def save(self, *args, **kwargs):
+        self.amount = get_line_amount(self)
+        return super().save(*args, **kwargs)
