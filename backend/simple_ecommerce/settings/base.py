@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'simple_ecommerce.api',
     'simple_ecommerce.checkout',
     'simple_ecommerce.core',
+    'simple_ecommerce.order',
     'simple_ecommerce.product',
     'simple_ecommerce.user',
 
