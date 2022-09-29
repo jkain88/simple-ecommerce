@@ -1,28 +1,23 @@
 from rest_framework import serializers
 
+from simple_ecommerce.product.serializers import ProductSerializer, ProductVariantSerializer
+
 from .models import (
-    Checkout,
-    CheckoutLine
+    Order, 
+    OrderLine
 )
-from simple_ecommerce.user.serializers import (
-    AddressSerializer, 
-)
-from simple_ecommerce.product.serializers import (
-    ProductSerializer,
-    ProductVariantSerializer
-)
+from simple_ecommerce.user.serializers import AddressSerializer
 
 
-class CheckoutLineSerializer(serializers.ModelSerializer):
+class OrderLineSerializer(serializers.ModelSerializer):
     product_detail = ProductSerializer(read_only=True, source='product')
     product_variant_detail = ProductVariantSerializer(read_only=True, source='product_variant')
 
     class Meta:
-        model = CheckoutLine
+        model = OrderLine
         fields = [
             'id',
             'amount',
-            'checkout',
             'product',
             'product_detail',
             'product_variant',
@@ -32,13 +27,14 @@ class CheckoutLineSerializer(serializers.ModelSerializer):
         read_only_fields = ['amount']
 
 
-class CheckoutSerializer(serializers.ModelSerializer):
+
+class OrderSerializer(serializers.ModelSerializer):
     billing_address_detail = AddressSerializer(read_only=True, source='billing_address')
     shipping_address_detail = AddressSerializer(read_only=True, source='shipping_address')
-    lines = CheckoutLineSerializer(many=True, read_only=True)
+    lines = OrderLineSerializer(many=True, read_only=True)
 
     class Meta:
-        model = Checkout
+        model = Order
         fields = [
             'id',
             'billing_address',
@@ -46,10 +42,7 @@ class CheckoutSerializer(serializers.ModelSerializer):
             'lines',
             'shipping_address',
             'shipping_address_detail',
+            'status',
             'total_amount',
             'user'
         ]
-
-
-class CheckoutCompleteSerializer(serializers.Serializer):
-    checkout = serializers.IntegerField()
