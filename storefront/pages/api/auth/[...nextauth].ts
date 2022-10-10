@@ -1,7 +1,17 @@
+import jwt_decode from 'jwt-decode';
 import { NextAuthOptions } from 'next-auth';
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { Api, CustomTokenObtainPair } from '../Api';
+import { Api, CustomTokenObtainPair, User } from '../Api';
+
+interface TokenResponse {
+    token_type: string;
+    exp: number;
+    iat: number;
+    jti: string;
+    user_id: number;
+    user: User;
+}
 
 const authOptions: NextAuthOptions = {
     session: {
@@ -19,12 +29,31 @@ const authOptions: NextAuthOptions = {
                     email,
                     password,
                 });
-                console.log(response);
+
+                if (response.ok) {
+                    const decoded = jwt_decode<TokenResponse>(
+                        response.data.access!
+                    );
+                    return decoded.user;
+                }
                 return null;
-                return { email: 'yes', password: 'yes' };
             },
         }),
     ],
+    callbacks: {
+        jwt: ({ token, user }) => {
+            if (user) {
+                token.id = user.id;
+            }
+            return token;
+        },
+        session: ({ session, token }) => {
+            if (token) {
+                session.id = token.id;
+            }
+            return session;
+        },
+    },
     pages: {
         signIn: '/login',
     },
