@@ -253,6 +253,12 @@ export interface Category {
 }
 
 export interface CustomTokenObtainPair {
+  /** Access */
+  access?: string;
+
+  /** Refresh */
+  refresh?: string;
+
   /** Email */
   email: string;
 
