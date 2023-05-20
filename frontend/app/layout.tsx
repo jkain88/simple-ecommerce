@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import './globals.css'
 import { Inter } from 'next/font/google'
 
@@ -15,7 +16,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={`${inter.className} bg-black text-white` }>
+        <nav className='flex p-8 fixed'>
+          <Image src='/logo.svg' width={160} height={90} alt='logo' />
+          Header
+        </nav>
+        {children}
+      </body>
     </html>
   )
 }
