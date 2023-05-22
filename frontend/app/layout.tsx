@@ -1,6 +1,8 @@
 import Image from 'next/image'
 import './globals.css'
 import { Inter } from 'next/font/google'
+import { useRouter } from 'next/navigation'
+import Navbar from '@/components/Navbar'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,22 +18,8 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en">
-            <body className={`${inter.className} bg-black text-white`}>
-                <nav className="fixed flex w-full items-center justify-between p-16">
-                    <Image
-                        src="/logo.svg"
-                        width={200}
-                        height={150}
-                        alt="logo"
-                    />
-                    <div className="flex gap-14 text-2xl">
-                        <a href="#">Home</a>
-                        <a href="#">Products</a>
-                        <a href="#">About</a>
-                        <a href="#">Contact</a>
-                        <a href="#">$0.00</a>
-                    </div>
-                </nav>
+            <body className={`${inter.className} bg-white `}>
+                <Navbar />
                 {children}
             </body>
         </html>
