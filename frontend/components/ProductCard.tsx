@@ -18,12 +18,16 @@ const ProductCard: React.FC<Props> = ({
 }: Props) => {
     return (
         <div className="" key={id}>
-            <div className="h-96 w-96 bg-gray-500">
-                <Image src={image} width={100} height={100} alt="product" />
+            <div className="relative h-96 bg-gray-100">
+                <div className="absolute inset-0 flex items-center justify-center">
+                    <Image src={image} width={200} height={200} alt="product" />
+                </div>
             </div>
-            <p>{title}</p>
-            <p>{category}</p>
-            <p>${price}</p>
+            <div className="flex flex-col gap-2">
+                <p className="text-base">{title}</p>
+                <p className="text-sm text-gray-400">{category}</p>
+                <p className="font-bold">${price}</p>
+            </div>
         </div>
     )
 }

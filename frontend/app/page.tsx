@@ -18,15 +18,24 @@ export default async function Home() {
     console.log(product)
 
     return (
-        <main className="p-20">
-            <div className="flex justify-between p-1">
-                <p className="">New Plants</p>
-                <button className="bg-green-600 px-6 py-3 text-sm font-bold text-white">
-                    Shop Now
-                </button>
-            </div>
-            <div className="grid grid-cols-3">
-                {products.map((product) => (
+        <main>
+            <section className="mt-14 px-80">
+                <div className="flex justify-between py-8">
+                    <p className="font-serif text-4xl">New Plants</p>
+                    <button className="bg-green-700 px-6 py-3 text-sm font-bold text-white">
+                        Shop Now
+                    </button>
+                </div>
+                <div className="grid grid-cols-3 gap-10">
+                    {products.map((product) => (
+                        <ProductCard
+                            id={product.id}
+                            price={product.price}
+                            category={product.category}
+                            image={product.image}
+                            title={product.title}
+                        />
+                    ))}
                     <ProductCard
                         id={product.id}
                         price={product.price}
@@ -34,15 +43,8 @@ export default async function Home() {
                         image={product.image}
                         title={product.title}
                     />
-                ))}
-                <ProductCard
-                    id={product.id}
-                    price={product.price}
-                    category={product.category}
-                    image={product.image}
-                    title={product.title}
-                />
-            </div>
+                </div>
+            </section>
         </main>
     )
 }
