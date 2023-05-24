@@ -18,9 +18,15 @@ const ProductCard: React.FC<Props> = ({
 }: Props) => {
     return (
         <div className="" key={id}>
-            <div className="relative h-96 bg-gray-100">
+            <div className="relative h-60 bg-gray-100 md:h-96">
                 <div className="absolute inset-0 flex items-center justify-center">
-                    <Image src={image} width={200} height={200} alt="product" />
+                    <Image
+                        src={image}
+                        style={{ objectFit: 'cover' }}
+                        width={200}
+                        height={200}
+                        alt="product"
+                    />
                 </div>
             </div>
             <div className="flex flex-col gap-2">

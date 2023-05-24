@@ -19,14 +19,14 @@ export default async function Home() {
 
     return (
         <main>
-            <section className="mt-14 px-80">
+            <section className="mt-14 px-6 md:px-80">
                 <div className="flex justify-between py-8">
                     <p className="font-serif text-4xl">New Plants</p>
                     <button className="bg-green-700 px-6 py-3 text-sm font-bold text-white">
                         Shop Now
                     </button>
                 </div>
-                <div className="grid grid-cols-3 gap-10">
+                <div className="grid grid-cols-2 gap-10 md:grid-cols-3">
                     {products.map((product) => (
                         <ProductCard
                             id={product.id}
