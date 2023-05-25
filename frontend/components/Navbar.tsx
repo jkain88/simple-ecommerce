@@ -11,8 +11,8 @@ const Navbar: React.FC = () => {
     console.log(pathname)
 
     return (
-        <div className="flex min-h-screen w-full flex-col bg-[url('../public/hero.jpg')] bg-no-repeat bg-center bg-cover text-white">
-            <nav className="flex w-full items-center justify-between bg-transparent py-8 px-10">
+        <div className="flex min-h-screen w-full flex-col bg-[url('../public/hero.jpg')] bg-cover bg-center bg-no-repeat text-white">
+            <nav className="flex w-full items-center justify-between bg-transparent px-10 py-8">
                 <Image src="/logo.svg" width={200} height={150} alt="logo" />
                 <div className="flex gap-14 text-lg">
                     <Link href="/" className="hidden lg:block">
@@ -30,16 +30,16 @@ const Navbar: React.FC = () => {
                     <Link href="#">$0.00</Link>
                 </div>
             </nav>
-            <div className="flex flex-col items-center justify-center flex-grow text-center p-10 md:p-2">
-                <p className="font-serif text-md md:text-3xl tracking-wide">
+            <div className="flex flex-grow flex-col items-center justify-center p-10 text-center md:p-2">
+                <p className="text-md font-serif tracking-wide md:text-3xl">
                     WELCOME TO THE GREENSTORE
                 </p>
-                <h1 className="mt-5 md:mt-12 font-serif text-4xl md:text-6xl tracking-wider">
+                <h1 className="mt-5 font-serif text-4xl tracking-wider md:mt-12 md:text-6xl">
                     Let’s Bring the Spring to
                     <span className="block text-center">Your Home</span>
                 </h1>
 
-                <button className="p mt-12 border-solid bg-white px-8 md:px-14 py-3 md:py-5 text-md md:text-xl font-semibold text-black">
+                <button className="p text-md mt-12 border-solid bg-white px-8 py-3 font-semibold text-black md:px-14 md:py-5 md:text-xl">
                     Shop Now
                 </button>
             </div>
