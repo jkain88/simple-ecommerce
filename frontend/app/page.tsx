@@ -135,6 +135,10 @@ export default async function Home() {
                     ))}
                 </div>
             </section>
+
+            <footer className="mt-20 h-96 w-full bg-lime-800">
+                <p className="text-9xl">FOOTER</p>
+            </footer>
         </main>
     )
 }
