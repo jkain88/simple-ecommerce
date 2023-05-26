@@ -2,6 +2,7 @@ import ProductCard from '@/components/ProductCard'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { faQuoteLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Image from 'next/image'
 
 const getProducts = async () => {
     const response = await fetch('https://fakestoreapi.com/products?limit=5')
@@ -23,6 +24,21 @@ const getUserTestimonials = async () => {
     return response.json()
 }
 
+interface Product {
+    id: number
+    price: number
+    category: string
+    image: string
+    title: string
+}
+
+interface User {
+    id: number
+    image: string
+    firstName: string
+    lastName: string
+}
+
 export default async function Home() {
     const products = await getProducts()
     const { users: userTestimonials } = await getUserTestimonials()
@@ -42,27 +58,21 @@ export default async function Home() {
                     </div>
                 </div>
                 <div className="grid grid-cols-2 gap-10 md:grid-cols-3">
-                    {products.map((product) => (
+                    {products.map((product: Product) => (
                         <ProductCard
                             id={product.id}
+                            key={product.id}
                             price={product.price}
                             category={product.category}
                             image={product.image}
                             title={product.title}
                         />
                     ))}
-                    <ProductCard
-                        id={product.id}
-                        price={product.price}
-                        category={product.category}
-                        image={product.image}
-                        title={product.title}
-                    />
                 </div>
             </section>
 
             <article className="mt-14 flex flex-col items-center gap-6 md:flex-row md:gap-24">
-                <img
+                <Image
                     src="/our_story.jpg"
                     width="0"
                     height="0"
@@ -111,8 +121,11 @@ export default async function Home() {
                 <div className="mt-4 divide-x-4 divide-black" />
 
                 <div className="mt-10 grid grid-cols-1 justify-center gap-12 px-10 font-semibold md:grid-cols-3 md:gap-28 md:px-80">
-                    {userTestimonials.map((user) => (
-                        <div className="flex flex-col items-center gap-2 md:gap-4">
+                    {userTestimonials.map((user: User) => (
+                        <div
+                            className="flex flex-col items-center gap-2 md:gap-4"
+                            key={user.id}
+                        >
                             <FontAwesomeIcon
                                 icon={faQuoteLeft}
                                 className="mx-auto w-7 text-primary"
@@ -135,10 +148,6 @@ export default async function Home() {
                     ))}
                 </div>
             </section>
-
-            <footer className="mt-20 h-96 w-full bg-lime-800">
-                <p className="text-9xl">FOOTER</p>
-            </footer>
         </main>
     )
 }
