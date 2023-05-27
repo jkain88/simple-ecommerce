@@ -120,7 +120,7 @@ export default async function Home() {
                 </p>
                 <div className="mt-4 divide-x-4 divide-black" />
 
-                <div className="mt-10 grid grid-cols-1 justify-center gap-12 px-10 font-semibold md:grid-cols-3 md:gap-28 md:px-80">
+                <div className="mt-10 grid grid-cols-1 justify-center gap-12 px-10 font-semibold md:grid-cols-3 md:gap-28 lg:px-80">
                     {userTestimonials.map((user: User) => (
                         <div
                             className="flex flex-col items-center gap-2 md:gap-4"
