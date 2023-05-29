@@ -46,7 +46,7 @@ export default async function Home() {
 
     return (
         <main className="">
-            <section className="mt-8 px-6 md:mt-14 md:px-80">
+            <section className="mt-8 px-10 md:mt-14 xl:px-72">
                 <div className="flex flex-col items-center gap-4 py-8 md:flex-row md:justify-between md:gap-0">
                     <p className="font-serif text-3xl md:text-4xl">
                         New Plants

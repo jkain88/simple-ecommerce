@@ -18,14 +18,15 @@ const ProductCard: React.FC<Props> = ({
 }: Props) => {
     return (
         <div className="" key={id}>
-            <div className="relative h-60 bg-gray-100 md:h-96">
-                <div className="absolute inset-0 flex items-center justify-center">
+            <div className="relative flex h-60 items-center justify-center bg-gray-100 md:h-96">
+                <div className="absolute flex h-3/4 w-3/4 ">
                     <Image
                         src={image}
-                        style={{ objectFit: 'cover' }}
-                        width={200}
-                        height={200}
+                        width="0"
+                        height="0"
+                        sizes="100vw"
                         alt="product"
+                        className="h-full w-full"
                     />
                 </div>
             </div>
