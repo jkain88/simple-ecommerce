@@ -71,17 +71,17 @@ export default async function Home() {
                 </div>
             </section>
 
-            <article className="mt-14 flex flex-col items-center gap-6 md:flex-row md:gap-24">
+            <article className="mt-14 flex flex-col items-center gap-10 lg:flex-row lg:gap-24">
                 <Image
                     src="/our_story.jpg"
                     width="0"
                     height="0"
                     sizes="100vw"
                     alt="plants"
-                    className="h-[500px] w-[950px]"
+                    className="h-[500px] w-full lg:w-[950px]"
                 />
 
-                <div className="flex flex-col gap-5 px-6 md:w-1/4 md:px-0">
+                <div className="flex w-full flex-col gap-5 px-6 lg:w-1/4 lg:px-0">
                     <p className="font-serif text-lg uppercase tracking-widest md:text-2xl">
                         Our story
                     </p>
