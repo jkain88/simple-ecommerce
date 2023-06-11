@@ -70,25 +70,24 @@ export default async function Home() {
                     ))}
                 </div>
             </section>
-
-            <article className="mt-14 flex flex-col items-center gap-10 lg:flex-row lg:gap-24">
+            <article className="relative mt-14 flex flex-col items-center gap-2 lg:flex-row">
                 <Image
                     src="/our_story.jpg"
                     width="0"
                     height="0"
                     sizes="100vw"
                     alt="plants"
-                    className="h-[500px] w-full lg:w-[950px]"
+                    className="h-[600px] w-full object-cover xl:h-[500px] xl:w-[950px]"
                 />
 
-                <div className="flex w-full flex-col gap-5 px-6 lg:w-1/4 lg:px-0">
-                    <p className="font-serif text-lg uppercase tracking-widest md:text-2xl">
+                <div className="absolute bottom-0 flex h-1/2 w-3/4 flex-col gap-2 bg-white py-16 pl-10 xl:w-3/4">
+                    <p className="font-serif text-lg uppercase tracking-widest md:text-xl">
                         Our story
                     </p>
                     <p className="font-serif text-3xl md:text-4xl">
                         For People Who Love Plants
                     </p>
-                    <div className="flex flex-col gap-4 text-sm">
+                    <div className="flex flex-col gap-4 text-sm leading-loose">
                         <p>
                             Lorem ipsum dolor sit amet consectetur adipisicing
                             elit. Aliquid facilis, natus in quam tempora maxime
@@ -106,7 +105,7 @@ export default async function Home() {
                     </div>
 
                     <div>
-                        <button className="bg-primary px-6 py-3 text-sm font-bold text-white">
+                        <button className="bg-primary px-6 text-sm font-bold text-white">
                             Read More
                         </button>
                     </div>
