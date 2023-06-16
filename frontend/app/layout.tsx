@@ -1,9 +1,11 @@
+'use client'
 import Image from 'next/image'
 import './globals.css'
 import { Inter } from 'next/font/google'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import { useEffect, useRef } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,10 +19,21 @@ export default function RootLayout({
 }: {
     children: React.ReactNode
 }) {
+    const navbarRef = useRef<HTMLDivElement | null>(null)
+    const pathname = usePathname()
+
+    useEffect(() => {
+        if (navbarRef.current && pathname == '/') {
+            navbarRef.current?.scrollIntoView({ behavior: 'auto' })
+        }
+    }, [pathname])
+    
     return (
         <html lang="en">
             <body className={`${inter.className} bg-white `}>
-                <Navbar />
+                <div ref={navbarRef}>
+                    <Navbar />
+                </div>
                 {children}
                 <Footer />
             </body>
