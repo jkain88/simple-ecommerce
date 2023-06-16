@@ -9,8 +9,8 @@ import React from 'react'
 
 const Footer: React.FC = () => {
     return (
-        <footer className="mt-20 h-full w-full bg-lime-950  text-white">
-            <div className="grid grid-rows-1 items-center justify-center gap-14 px-24 py-10 lg:grid-cols-5 lg:gap-0 lg:py-24">
+        <footer className="mt-24 h-full w-full bg-lime-950  text-white">
+            <div className="grid grid-rows-1 items-center justify-center gap-14 px-24 py-10 lg:grid-cols-5 lg:gap-0 lg:py-8">
                 <div className="flex flex-col items-center">
                     <Image
                         src="/logo.svg"
@@ -30,13 +30,13 @@ const Footer: React.FC = () => {
                         />
                     </div>
                 </div>
-                <div className="hidden flex-col items-center gap-2 text-lg lg:visible lg:flex">
+                <div className="hidden flex-col items-center gap-2 text-lg lg:visible lg:flex lg:text-base">
                     <p>Home</p>
                     <p>Shop</p>
                     <p>About</p>
                     <p>Contact</p>
                 </div>
-                <div className="flex flex-col items-center gap-2 text-lg">
+                <div className="flex flex-col items-center gap-2 text-sm">
                     <p className="text-xl font-bold">Contact Us</p>
                     <p>hello@gmail.com</p>
                     <p>+639-999999999</p>
@@ -57,7 +57,9 @@ const Footer: React.FC = () => {
                 </div>
             </div>
             <hr className="h-px w-full border-0 bg-stone-600 dark:bg-gray-700"></hr>
-            <p className="px-20 py-10 text-center">© 2023 Simple E-commerce</p>
+            <p className="px-10 py-5 text-center text-xs">
+                © 2023 Simple E-commerce
+            </p>
         </footer>
     )
 }

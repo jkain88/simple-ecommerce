@@ -2,7 +2,6 @@ import ProductCard from '@/components/ProductCard'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { faQuoteLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Image from 'next/image'
 
 const getProducts = async () => {
     const response = await fetch('https://fakestoreapi.com/products?limit=5')
@@ -70,51 +69,9 @@ export default async function Home() {
                     ))}
                 </div>
             </section>
-            <article className="relative mt-14 flex flex-col items-center gap-2 lg:flex-row">
-                <Image
-                    src="/our_story.jpg"
-                    width="0"
-                    height="0"
-                    sizes="100vw"
-                    alt="plants"
-                    className="h-[600px] w-full object-cover xl:h-[500px] xl:w-[950px]"
-                />
 
-                <div className="absolute bottom-0 flex h-1/2 w-3/4 flex-col gap-2 bg-white py-16 pl-10 xl:w-3/4">
-                    <p className="font-serif text-lg uppercase tracking-widest md:text-xl">
-                        Our story
-                    </p>
-                    <p className="font-serif text-3xl md:text-4xl">
-                        For People Who Love Plants
-                    </p>
-                    <div className="flex flex-col gap-4 text-sm leading-loose">
-                        <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Aliquid facilis, natus in quam tempora maxime
-                            at, dolore ut possimus nihil velit corporis
-                            reprehenderit quo veniam fugit atque! Praesentium,
-                            expedita optio?
-                        </p>
-                        <p>
-                            Lorem ipsum, dolor sit amet consectetur adipisicing
-                            elit. Harum animi dolorum quas dolores alias,
-                            voluptatem nostrum itaque repellendus hic ad
-                            cupiditate ipsam veritatis consequuntur reiciendis
-                            ea velit voluptatum earum labore?
-                        </p>
-                    </div>
-
-                    <div>
-                        <button className="bg-primary px-6 text-sm font-bold text-white">
-                            Read More
-                        </button>
-                    </div>
-                </div>
-            </article>
-
-            <section className="mt-20 text-center">
+            <section className="mt-20 bg-gray-100 py-10 text-center">
                 <p className="font-serif text-3xl leading-5 underline decoration-primary decoration-1 underline-offset-4">
-                    {' '}
                     What Our Customers Say
                 </p>
                 <div className="mt-4 divide-x-4 divide-black" />
@@ -122,7 +79,7 @@ export default async function Home() {
                 <div className="md:px-50 mt-10 grid grid-cols-1 justify-center gap-12 px-10 font-semibold md:grid-cols-3 md:gap-28 2xl:px-[25%]">
                     {userTestimonials.map((user: User) => (
                         <div
-                            className="flex flex-col items-center gap-2 md:gap-4"
+                            className="flex flex-col items-center gap-2 rounded-lg bg-white p-6 shadow-lg md:gap-4"
                             key={user.id}
                         >
                             <FontAwesomeIcon
