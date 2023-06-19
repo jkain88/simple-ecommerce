@@ -36,14 +36,19 @@ const Navbar: React.FC = () => {
 
     if (pathname === '/') {
         return (
-            <div ref={navbarRef} className="flex min-h-screen w-full flex-col bg-[url('../public/hero.jpg')] bg-cover bg-center bg-no-repeat text-white">
+            <div
+                ref={navbarRef}
+                className="flex min-h-screen w-full flex-col bg-[url('../public/hero.jpg')] bg-cover bg-center bg-no-repeat text-white"
+            >
                 <nav className="flex w-full items-center justify-between bg-transparent px-10 py-8">
-                    <Image
-                        src="/logo.svg"
-                        width={200}
-                        height={150}
-                        alt="logo"
-                    />
+                    <Link href="/">
+                        <Image
+                            src="/logo.svg"
+                            width={200}
+                            height={150}
+                            alt="logo"
+                        />
+                    </Link>
                     <div className="flex gap-14 text-lg">
                         {menuOptions.map((option) => (
                             <Link
@@ -74,7 +79,14 @@ const Navbar: React.FC = () => {
     }
     return (
         <div className="flex items-center justify-between px-10 py-6">
-            <Image src="/black-logo.svg" alt="logo" width={120} height={100} />
+            <Link href="/">
+                <Image
+                    src="/black-logo.svg"
+                    alt="logo"
+                    width={120}
+                    height={100}
+                />
+            </Link>
 
             <div className="flex gap-14 text-sm">
                 {menuOptions.map((option) => (
