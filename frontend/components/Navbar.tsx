@@ -3,12 +3,18 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 
 const Navbar: React.FC = () => {
     const pathname = usePathname()
+    const navbarRef = useRef<HTMLDivElement | null>(null)
 
-    console.log(pathname)
+    useEffect(() => {
+        if (navbarRef.current && pathname == '/') {
+            navbarRef.current?.scrollIntoView({ behavior: 'auto' })
+        }
+    }, [pathname])
+
     const menuOptions = [
         {
             label: 'Home',
@@ -30,7 +36,7 @@ const Navbar: React.FC = () => {
 
     if (pathname === '/') {
         return (
-            <div className="flex min-h-screen w-full flex-col bg-[url('../public/hero.jpg')] bg-cover bg-center bg-no-repeat text-white">
+            <div ref={navbarRef} className="flex min-h-screen w-full flex-col bg-[url('../public/hero.jpg')] bg-cover bg-center bg-no-repeat text-white">
                 <nav className="flex w-full items-center justify-between bg-transparent px-10 py-8">
                     <Image
                         src="/logo.svg"
