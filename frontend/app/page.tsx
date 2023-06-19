@@ -23,7 +23,7 @@ const getUserTestimonials = async () => {
     return response.json()
 }
 
-interface Product {
+export interface Product {
     id: number
     price: number
     category: string
