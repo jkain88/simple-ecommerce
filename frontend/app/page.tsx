@@ -2,6 +2,7 @@ import ProductCard from '@/components/ProductCard'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { faQuoteLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Link from 'next/link'
 
 const getProducts = async () => {
     const response = await fetch('https://fakestoreapi.com/products?limit=5')
@@ -58,14 +59,16 @@ export default async function Home() {
                 </div>
                 <div className="grid grid-cols-2 gap-10 md:grid-cols-3">
                     {products.map((product: Product) => (
-                        <ProductCard
-                            id={product.id}
-                            key={product.id}
-                            price={product.price}
-                            category={product.category}
-                            image={product.image}
-                            title={product.title}
-                        />
+                        <Link href={`/products/${product.id}`}>
+                            <ProductCard
+                                id={product.id}
+                                key={product.id}
+                                price={product.price}
+                                category={product.category}
+                                image={product.image}
+                                title={product.title}
+                            />
+                        </Link>
                     ))}
                 </div>
             </section>
