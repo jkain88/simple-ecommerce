@@ -24,7 +24,7 @@ export default async function Products() {
                 <p>Showing 1-9 of 25 results</p>
                 <p>Default sorting</p>
             </div>
-            <div className="grid grid-cols-2 gap-10 md:grid-cols-3">
+            <div className="grid auto-rows-auto gap-10 md:grid-cols-2 lg:grid-cols-3">
                 {products.map((product: Product) => (
                     <Link href={`/products/${product.id}`}>
                         <ProductCard
