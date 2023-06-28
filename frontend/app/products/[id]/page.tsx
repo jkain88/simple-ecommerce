@@ -16,7 +16,7 @@ const getProduct = async (id: number) => {
 }
 
 const getProducts = async () => {
-    const response = await fetch('https://fakestoreapi.com/products?limit=2')
+    const response = await fetch('https://fakestoreapi.com/products?limit=4')
 
     if (!response.ok) {
         throw new Error('Failed to fetch data')
@@ -31,7 +31,7 @@ interface Props {
 
 const RelatedProducts: React.FC<Props> = ({ products }) => {
     return (
-        <div className="mt-10 flex gap-8">
+        <div className="mt-10 grid auto-rows-auto sm:grid-cols-2 lg:grid-cols-4">
             {products.map((product) => (
                 <Link href={`/products/${product.id}`}>
                     <div className="flex flex-col items-center gap-4">
@@ -74,7 +74,7 @@ export default async function ProductPage({
     return (
         <ProductPageContainer>
             <div>
-                <div className="grid grid-cols-2">
+                <div className="grid auto-rows-auto lg:grid-cols-2">
                     <div className="flex h-full w-full justify-center">
                         <Image
                             src={product.image}
@@ -83,7 +83,7 @@ export default async function ProductPage({
                             height={300}
                         />
                     </div>
-                    <div className="flex flex-col gap-5">
+                    <div className="mt-8 flex flex-col gap-5 lg:justify-center">
                         <div>
                             <p className="font-serif text-3xl">
                                 {product.title}
@@ -94,14 +94,14 @@ export default async function ProductPage({
                             ${product.price}
                         </p>
                         <p className="tracking-wide">{product.description}</p>
-                        <div className="mt-10 flex gap-4">
+                        <div className="mt-4 flex gap-4">
                             <input
                                 type="number"
                                 className="w-12 border-[1px] border-solid border-neutral-200 py-1 pl-3"
                                 min="1"
                                 value={1}
                             />
-                            <Button className="rounded-none bg-primary px-16">
+                            <Button className="rounded-none bg-primary px-4 sm:px-16">
                                 Add To Cart
                             </Button>
                         </div>
