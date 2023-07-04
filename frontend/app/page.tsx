@@ -1,7 +1,9 @@
 import ProductCard from '@/components/ProductCard'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
+import { menuOptions } from '@/constants/menu'
 import { faQuoteLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Image from 'next/image'
 import Link from 'next/link'
 
 const getProducts = async () => {
@@ -39,6 +41,44 @@ interface User {
     lastName: string
 }
 
+function Hero() {
+    return (
+        <div className="flex min-h-screen w-full flex-col bg-[url('../public/hero.jpg')] bg-cover bg-center bg-no-repeat text-white">
+            <nav className="flex w-full items-center justify-between bg-transparent px-10 py-8">
+                <Link href="/">
+                    <Image
+                        src="/logo.svg"
+                        width={200}
+                        height={150}
+                        alt="logo"
+                    />
+                </Link>
+                <div className="flex gap-14 text-lg">
+                    {menuOptions.map((option) => (
+                        <Link href={option.link} className="hidden lg:block">
+                            {option.label}
+                        </Link>
+                    ))}
+                    <Link href="#">$0.00</Link>
+                </div>
+            </nav>
+            <div className="flex flex-grow flex-col items-center justify-center p-10 text-center md:p-2">
+                <p className="text-md font-serif tracking-wide md:text-3xl">
+                    WELCOME TO THE GREENSTORE
+                </p>
+                <h1 className="mt-5 font-serif text-4xl tracking-wider md:mt-12 md:text-6xl">
+                    Let’s Bring the Spring to
+                    <span className="block text-center">Your Home</span>
+                </h1>
+
+                <button className="p text-md mt-12 border-solid bg-white px-8 py-3 font-semibold text-black md:px-14 md:py-5 md:text-xl">
+                    Shop Now
+                </button>
+            </div>
+        </div>
+    )
+}
+
 export default async function Home() {
     const products = await getProducts()
     const { users: userTestimonials } = await getUserTestimonials()
@@ -46,6 +86,7 @@ export default async function Home() {
 
     return (
         <main className="">
+            <Hero />
             <section className="mt-8 px-10 md:mt-14 xl:px-72">
                 <div className="flex flex-col items-center gap-4 py-8 md:flex-row md:justify-between md:gap-0">
                     <p className="font-serif text-3xl md:text-4xl">
