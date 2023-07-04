@@ -15,4 +15,8 @@ export const menuOptions = [
         label: 'Contact',
         link: '#',
     },
+    {
+        label: 'Sign In',
+        link: '/signin',
+    },
 ]
