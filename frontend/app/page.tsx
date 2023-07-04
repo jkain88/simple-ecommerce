@@ -1,3 +1,4 @@
+import Footer from '@/components/Footer'
 import ProductCard from '@/components/ProductCard'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { menuOptions } from '@/constants/menu'
@@ -148,6 +149,7 @@ export default async function Home() {
                     ))}
                 </div>
             </section>
+            <Footer />
         </main>
     )
 }
