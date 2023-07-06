@@ -22,7 +22,6 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
                     </Link>
                     <Image
                         src="/auth-img.jpg"
-                        // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         alt="auth flower image"
                         className="absolute object-cover"
                         fill
