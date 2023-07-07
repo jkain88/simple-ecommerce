@@ -4,16 +4,18 @@ import {
     Card,
     CardContent,
     CardDescription,
+    CardFooter,
     CardHeader,
     CardTitle,
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import Link from 'next/link'
 import React from 'react'
 
 export default function SignInPage() {
     return (
-        <div className=" mx-auto my-auto max-w-2xl xl:w-1/2">
+        <div className="z-20 max-w-2xl sm:flex-auto xl:w-1/2">
             <Card>
                 <CardHeader>
                     <CardTitle>Sign in</CardTitle>
@@ -54,6 +56,21 @@ export default function SignInPage() {
                     </div>
                     <Button className="mt-4 w-full">Sign in</Button>
                 </CardContent>
+                <CardFooter>
+                    <div className="flex w-full items-center justify-between gap-2 ">
+                        <div className="">
+                            <span className="mr-1 hidden text-sm lg:inline-block">
+                                Don't have an account?{' '}
+                            </span>
+                            <span className="text-sm font-semibold">
+                                Sign up
+                            </span>
+                        </div>
+                        <Link href="/" className="text-sm font-semibold">
+                            Reset password
+                        </Link>
+                    </div>
+                </CardFooter>
             </Card>
         </div>
     )

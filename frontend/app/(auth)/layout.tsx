@@ -9,7 +9,7 @@ interface AuthLayoutProps {
 export default function AuthLayout({ children }: AuthLayoutProps) {
     return (
         <div className="h-screen">
-            <div className="grid h-full grid-cols-2">
+            <div className="grid h-full grid-cols-1 md:grid-cols-2">
                 <AspectRatio ratio={16 / 9}>
                     <Link href="/">
                         <Image
@@ -26,7 +26,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
                         className="absolute object-cover"
                         fill
                     />
-                    <div className="absolute bottom-6 left-8 font-semibold text-lime-800 ">
+                    <div className="bottom-6 left-8 hidden font-semibold text-lime-800 md:absolute md:block ">
                         Photo by{' '}
                         <a
                             className="underline decoration-2"
@@ -40,7 +40,9 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
                         </a>
                     </div>
                 </AspectRatio>
-                {children}
+                <div className="absolute inset-0 col-span-1 flex w-full items-center justify-center px-10 md:static ">
+                    {children}
+                </div>
             </div>
         </div>
     )
