@@ -58,14 +58,14 @@ export default function SignInPage() {
                 </CardContent>
                 <CardFooter>
                     <div className="flex w-full items-center justify-between gap-2 ">
-                        <div className="">
+                        <Link href="/signup">
                             <span className="mr-1 hidden text-sm lg:inline-block">
                                 Don't have an account?{' '}
                             </span>
                             <span className="text-sm font-semibold">
                                 Sign up
                             </span>
-                        </div>
+                        </Link>
                         <Link href="/" className="text-sm font-semibold">
                             Reset password
                         </Link>
