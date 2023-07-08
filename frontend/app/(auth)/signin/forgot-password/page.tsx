@@ -45,7 +45,7 @@ export default function ForgotPassword() {
                             className="mt-2"
                         />
                     </div>
-                    <Button className="mt-4 w-full">Continue</Button>
+                    <Button className="mt-4 w-full">Submit</Button>
                 </CardContent>
             </Card>
         </div>
