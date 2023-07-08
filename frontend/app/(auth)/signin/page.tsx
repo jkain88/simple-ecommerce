@@ -66,8 +66,11 @@ export default function SignInPage() {
                                 Sign up
                             </span>
                         </Link>
-                        <Link href="/" className="text-sm font-semibold">
-                            Reset password
+                        <Link
+                            href="/signin/forgot-password"
+                            className="text-sm font-semibold"
+                        >
+                            Forgot password
                         </Link>
                     </div>
                 </CardFooter>
