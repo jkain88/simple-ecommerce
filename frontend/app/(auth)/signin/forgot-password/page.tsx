@@ -19,6 +19,13 @@ export default function ForgotPassword() {
             <Card>
                 <CardHeader>
                     <CardTitle className="flex gap-4">
+                        {' '}
+                        <Link href="/signin">
+                            <FontAwesomeIcon
+                                className="w-5"
+                                icon={faArrowLeft}
+                            />
+                        </Link>
                         Forgot Password
                     </CardTitle>
                     <CardDescription>
