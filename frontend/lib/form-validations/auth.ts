@@ -17,3 +17,9 @@ export const authSchema = z.object({
 export const verifyEmailSchema = z.object({
   verificationCode: z.string().min(6).max(6),
 })
+
+export const forgotPasswordSchema = z.object({
+  email: z.string().email({
+    message: 'Please enter a valid email address',
+  }),
+})
