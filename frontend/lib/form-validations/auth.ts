@@ -13,3 +13,7 @@ export const authSchema = z.object({
         'Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character',
     }),
 })
+
+export const verifyEmailSchema = z.object({
+  verificationCode: z.string().min(6).max(6),
+})
