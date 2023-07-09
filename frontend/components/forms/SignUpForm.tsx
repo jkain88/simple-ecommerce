@@ -16,10 +16,12 @@ import { authSchema } from '@/lib/form-validations/auth'
 import { useForm } from 'react-hook-form'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
+import { useRouter } from 'next/navigation'
 
 type Inputs = z.infer<typeof authSchema>
 
-const SignInForm: React.FC = () => {
+const SignUpForm: React.FC = () => {
+  const router = useRouter()
   const form = useForm<Inputs>({
     resolver: zodResolver(authSchema),
     defaultValues: {
@@ -31,6 +33,7 @@ const SignInForm: React.FC = () => {
   const onSubmit = () => {
     // API CALL
     console.log('SUBMIT')
+    router.push('/signup/verify-email')
   }
 
   return (
@@ -63,11 +66,11 @@ const SignInForm: React.FC = () => {
           )}
         />
         <Button type="submit" className="w-full">
-          Sign in
+          Continue
         </Button>
       </form>
     </Form>
   )
 }
 
-export default SignInForm
+export default SignUpForm
