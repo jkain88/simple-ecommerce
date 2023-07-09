@@ -23,3 +23,25 @@ export const forgotPasswordSchema = z.object({
     message: 'Please enter a valid email address',
   }),
 })
+
+export const resetPasswordSchema = z.object({
+  currentPassword: z.string({
+    required_error: 'This field is required',
+  }),
+  newPassword: z
+    .string()
+    .min(8)
+    .max(100)
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/, {
+      message:
+        'Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character',
+    }),
+  confirmNewPassword: z
+    .string()
+    .min(8)
+    .max(100)
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/, {
+      message:
+        'Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character',
+    }),
+})
