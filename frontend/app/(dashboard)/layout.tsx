@@ -1,5 +1,6 @@
 import Footer from '@/components/Footer'
 import Navbar from '@/components/Navbar'
+import { Separator } from '@/components/ui/separator'
 import { sidebarOptions } from '@/constants/menu'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Link from 'next/link'
@@ -16,6 +17,14 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         <section className="container ">
           <div className="grid grid-cols-4 pt-10">
             <div className="flex flex-col gap-4 ">
+              <p className="text-lg font-semibold">User Name</p>
+              <div className="flex gap-2">
+                <FontAwesomeIcon icon="pencil" className="w-4 text-gray-600" />
+                <Link href="/account/profile">
+                  <p className="text-sm text-gray-600">Edit Profile</p>
+                </Link>
+              </div>
+              <Separator className="w-56 bg-neutral-300" />
               {sidebarOptions.map((option) => (
                 <div key={option.label}>
                   <div className="flex gap-2 font-semibold">
