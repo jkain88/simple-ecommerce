@@ -25,7 +25,7 @@ export const menuOptions = [
 
 export const sidebarOptions: SideBarItem[] = [
   {
-    label: 'My Account',
+    label: 'Account',
     link: '/account',
     icon: 'user',
     subMenus: [
@@ -46,6 +46,6 @@ export const sidebarOptions: SideBarItem[] = [
   {
     label: 'Purchases',
     link: '/account/orders',
-    icon: 'dollar-sign'
+    icon: 'dollar-sign',
   },
 ]
