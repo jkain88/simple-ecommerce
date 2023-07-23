@@ -27,7 +27,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               <Separator className="w-56 bg-neutral-300" />
               {sidebarOptions.map((option) => (
                 <div key={option.label}>
-                  <div className="flex gap-2 font-semibold">
+                  <div className="flex gap-2 text-lg font-bold">
                     <FontAwesomeIcon icon={option.icon} className="w-4" />
                     <div>{option.label}</div>
                   </div>
@@ -42,7 +42,9 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 </div>
               ))}
             </div>
-            {children}
+            <div className="col-span-3 rounded-lg bg-white px-14 py-10 shadow-xl">
+              {children}
+            </div>
           </div>
         </section>
       </div>

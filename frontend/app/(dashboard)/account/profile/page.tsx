@@ -1,7 +1,8 @@
 export default function Profile() {
   return (
-    <div className="col-span-3">
-      <p>Profile</p>
+    <div>
+      <p className="text-3xl font-bold">My Profile</p>
+      <div className="divide-black divide-y-8k" />
     </div>
   )
 }
