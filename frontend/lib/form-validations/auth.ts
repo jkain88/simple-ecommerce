@@ -18,9 +18,13 @@ export const signInSchema = z.object({
   email: z.string().email({
     message: 'Please enter a valid email address',
   }),
-  password: z.string({
-    required_error: 'This field is required',
-  }),
+  password: z
+    .string({
+      required_error: 'This field is required',
+    })
+    .min(8, {
+      message: 'This field is required'
+    }),
 })
 
 export const verifyEmailSchema = z.object({
