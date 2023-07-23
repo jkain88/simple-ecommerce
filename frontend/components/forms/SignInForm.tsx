@@ -12,19 +12,19 @@ import {
   FormLabel,
   FormMessage,
 } from '../ui/form'
-import { authSchema } from '@/lib/form-validations/auth'
+import { signInSchema } from '@/lib/form-validations/auth'
 import { useForm } from 'react-hook-form'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 
-type Inputs = z.infer<typeof authSchema>
+type Inputs = z.infer<typeof signInSchema>
 
 const SignInForm: React.FC = () => {
   const form = useForm<Inputs>({
-    resolver: zodResolver(authSchema),
+    resolver: zodResolver(signInSchema),
     defaultValues: {
       email: '',
-      password: '',
+      // password: '',
     },
   })
 
@@ -32,6 +32,8 @@ const SignInForm: React.FC = () => {
     // API CALL
     console.log('SUBMIT')
   }
+
+  console.log('FORM', form.getValues())
 
   return (
     <Form {...form}>

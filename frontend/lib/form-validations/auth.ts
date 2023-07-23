@@ -1,6 +1,6 @@
 import * as z from 'zod'
 
-export const authSchema = z.object({
+export const signUpSchema = z.object({
   email: z.string().email({
     message: 'Please enter a valid email address',
   }),
@@ -12,6 +12,15 @@ export const authSchema = z.object({
       message:
         'Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character',
     }),
+})
+
+export const signInSchema = z.object({
+  email: z.string().email({
+    message: 'Please enter a valid email address',
+  }),
+  password: z.string({
+    required_error: 'This field is required',
+  }),
 })
 
 export const verifyEmailSchema = z.object({

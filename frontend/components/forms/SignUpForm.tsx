@@ -12,18 +12,18 @@ import {
   FormLabel,
   FormMessage,
 } from '../ui/form'
-import { authSchema } from '@/lib/form-validations/auth'
+import { signUpSchema } from '@/lib/form-validations/auth'
 import { useForm } from 'react-hook-form'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import { useRouter } from 'next/navigation'
 
-type Inputs = z.infer<typeof authSchema>
+type Inputs = z.infer<typeof signUpSchema>
 
 const SignUpForm: React.FC = () => {
   const router = useRouter()
   const form = useForm<Inputs>({
-    resolver: zodResolver(authSchema),
+    resolver: zodResolver(signUpSchema),
     defaultValues: {
       email: '',
       password: '',
