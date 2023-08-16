@@ -39,7 +39,7 @@ export const sidebarOptions: SideBarItem[] = [
       },
       {
         label: 'Change Password',
-        link: '#',
+        link: '/account/change-password',
       },
     ],
   },
