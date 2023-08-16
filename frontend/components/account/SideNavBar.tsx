@@ -10,7 +10,7 @@ import { buttonVariants } from '../ui/button'
 
 const SideNavBar: React.FC = () => {
   const path = usePathname()
-  console.log('path', path)
+
   return (
     <div className="mr-10 flex flex-col gap-4">
       <p className="text-lg font-semibold">User Name</p>
@@ -24,24 +24,27 @@ const SideNavBar: React.FC = () => {
       {sidebarOptions.map((option) => (
         <div key={option.label}>
           <div className="flex gap-2 text-lg font-bold">
-            <FontAwesomeIcon icon={option.icon} className="w-4" />
             <div>{option.label}</div>
           </div>
           <div className="flex flex-col text-sm text-gray-600">
             {option.subMenus &&
-              option.subMenus.map((subMenu, index) => (
-                <Link
-                  key={index}
-                  href={subMenu.link}
-                  className={cn(
-                    buttonVariants({ variant: 'ghost' }),
-                    path === subMenu.link && 'bg-red-500',
-                    'justify-start font-semibold hover:bg-transparent hover:underline'
-                  )}
-                >
-                  {subMenu.label}
-                </Link>
-              ))}
+              option.subMenus.map((subMenu, index) => {
+                return (
+                  <Link
+                    key={index}
+                    href={subMenu.link}
+                    className={cn(
+                      buttonVariants({ variant: 'ghost' }),
+                      'justify-start font-semibold',
+                      path === subMenu.link
+                        ? 'bg-neutral-300'
+                        : 'hover:bg-transparent hover:underline'
+                    )}
+                  >
+                    {subMenu.label}
+                  </Link>
+                )
+              })}
           </div>
         </div>
       ))}
