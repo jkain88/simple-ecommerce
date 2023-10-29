@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useRef } from 'react'
 import { menuOptions } from '@/constants/menu'
+import { categories } from '@/constants/testData'
 
 const Navbar: React.FC = () => {
   const pathname = usePathname()
@@ -16,8 +17,7 @@ const Navbar: React.FC = () => {
     }
   }, [pathname])
 
-  if (pathname === '/') {
-  }
+  console.log('RETURN')
   return (
     <div className="flex items-center justify-between px-10 py-6">
       <Link href="/">
@@ -25,15 +25,14 @@ const Navbar: React.FC = () => {
       </Link>
 
       <div className="flex gap-14 text-sm">
-        {menuOptions.map((option) => (
-          <Link
-            href={option.link}
-            key={option.label}
-            className="hidden lg:block"
-          >
-            {option.label}
+        {categories.map((category) => (
+          <Link href="#" key={category} className="font-semibold uppercase">
+            {category}
           </Link>
         ))}
+      </div>
+
+      <div>
         <Link href="#">$0.00</Link>
       </div>
     </div>
