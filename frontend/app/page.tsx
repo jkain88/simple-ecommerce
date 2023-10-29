@@ -1,11 +1,20 @@
 import Footer from '@/components/Footer'
 import ProductCard from '@/components/ProductCard'
+import SortDropdown from '@/components/SortDropdown'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { menuOptions } from '@/constants/menu'
 import { faQuoteLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from '@nextui-org/react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useMemo, useState } from 'react'
 
 const getProducts = async () => {
   const response = await fetch('https://fakestoreapi.com/products?limit=5')
@@ -49,16 +58,12 @@ export default async function Home() {
 
   return (
     <div>
-      <section className="mt-8 px-10 md:mt-14 xl:px-72">
+      <section className="mt-8 px-10 md:mt-5 lg:px-14">
         <div className="flex flex-col items-center gap-4 py-8 md:flex-row md:justify-between md:gap-0">
-          <p className="font-serif text-3xl md:text-4xl">New Plants</p>
-          <div>
-            <button className="bg-primary px-6 py-3 text-sm font-bold text-white">
-              Shop Now
-            </button>
-          </div>
+          <p className="text-xs">Showing: 1 - 40 of 1000</p>
+          <SortDropdown />
         </div>
-        <div className="grid grid-cols-2 gap-10 md:grid-cols-3">
+        <div className="grid grid-cols-2 gap-10 md:grid-cols-4">
           {products.map((product: Product) => (
             <Link href={`/products/${product.id}`} key={product.id}>
               <ProductCard
