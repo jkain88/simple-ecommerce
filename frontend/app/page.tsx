@@ -17,7 +17,7 @@ import Link from 'next/link'
 import { useMemo, useState } from 'react'
 
 const getProducts = async () => {
-  const response = await fetch('https://fakestoreapi.com/products?limit=5')
+  const response = await fetch('https://fakestoreapi.com/products?limit=4')
 
   if (!response.ok) {
     throw new Error('Failed to fetch data')
@@ -58,12 +58,10 @@ export default async function Home() {
 
   return (
     <div>
-      <section className="mt-8 px-10 md:mt-5 lg:px-14">
-        <div className="flex flex-col items-center gap-4 py-8 md:flex-row md:justify-between md:gap-0">
-          <p className="text-xs">Showing: 1 - 40 of 1000</p>
-          <SortDropdown />
-        </div>
-        <div className="grid grid-cols-2 gap-10 md:grid-cols-4">
+      <section className="mt-8 bg-gray-100 px-10 py-14 md:mt-10 lg:px-64">
+        <h1 className="text-center text-3xl">Featured Products</h1>
+        <p className="mt-2 text-center text-sm">Handpicked Just for You!</p>
+        <div className="mt-3 grid grid-cols-2 md:grid-cols-4">
           {products.map((product: Product) => (
             <Link href={`/products/${product.id}`} key={product.id}>
               <ProductCard
