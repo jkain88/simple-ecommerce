@@ -19,7 +19,7 @@ const Navbar: React.FC = () => {
 
   console.log('RETURN')
   return (
-    <div className="flex items-center justify-between px-10 py-6">
+    <div className="flex items-center justify-between px-64 py-6">
       <Link href="/">
         <Image src="/black-logo.svg" alt="logo" width={120} height={100} />
       </Link>
