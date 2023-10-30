@@ -1,4 +1,7 @@
-import Image from 'next/image'
+'use client'
+
+import { Card, CardBody, Image } from '@nextui-org/react'
+import NextImage from 'next/image'
 import React from 'react'
 
 type Props = {
@@ -17,24 +20,20 @@ const ProductCard: React.FC<Props> = ({
   image,
 }: Props) => {
   return (
-    <div className="" key={id}>
-      <div className="relative flex h-60 items-center justify-center md:h-96">
-        <div className="absolute flex h-1/2 w-1/2 ">
-          <Image
-            src={image}
-            width="0"
-            height="0"
-            sizes="100vw"
-            alt="product"
-            className="h-full w-full"
-          />
+    <Card className="flex h-full w-60 flex-col" isPressable>
+      <CardBody className="grow-1 relative items-center justify-center overflow-hidden py-8">
+        <Image
+          alt="product"
+          isZoomed
+          className="h-52 justify-center rounded-xl object-cover"
+          src={image}
+        />
+        <div className="mt-5 text-center">
+          <p className="text-sm">{title}</p>
+          <p className="font-bold">${price}</p>
         </div>
-      </div>
-      <div className="flex flex-col gap-2 text-center">
-        <p className="text-sm">{title}</p>
-        <p className="text-sm font-bold">${price}</p>
-      </div>
-    </div>
+      </CardBody>
+    </Card>
   )
 }
 
