@@ -17,7 +17,6 @@ const Navbar: React.FC = () => {
     }
   }, [pathname])
 
-  console.log('RETURN')
   return (
     <div className="flex items-center justify-between px-64 py-6">
       <Link href="/">
