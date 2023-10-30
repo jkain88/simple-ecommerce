@@ -4,41 +4,43 @@ import ProductCard from '@/components/ProductCard'
 import Paginator from '@/components/Paginator'
 import Link from 'next/link'
 import ProductPageContainer from '@/components/ProductPageContainer'
+import SortDropdown from '@/components/SortDropdown'
 
 const getProducts = async () => {
-    const response = await fetch('https://fakestoreapi.com/products?limit=5')
+  const response = await fetch('https://fakestoreapi.com/products?limit=5')
 
-    if (!response.ok) {
-        throw new Error('Failed to fetch data')
-    }
+  if (!response.ok) {
+    throw new Error('Failed to fetch data')
+  }
 
-    return response.json()
+  return response.json()
 }
 
 export default async function Products() {
-    const products = await getProducts()
-    return (
-        <ProductPageContainer>
-            <p className="text-slate-500">Home / Shop</p>
-            <div className="flex justify-between">
-                <p>Showing 1-9 of 25 results</p>
-                <p>Default sorting</p>
-            </div>
-            <div className="grid auto-rows-auto gap-10 md:grid-cols-2 lg:grid-cols-3">
-                {products.map((product: Product) => (
-                    <Link href={`/products/${product.id}`}>
-                        <ProductCard
-                            id={product.id}
-                            key={product.id}
-                            price={product.price}
-                            category={product.category}
-                            image={product.image}
-                            title={product.title}
-                        />
-                    </Link>
-                ))}
-            </div>
-            <Paginator />
-        </ProductPageContainer>
-    )
+  const products = await getProducts()
+  return (
+    <div className="">
+      <section className="lg:px- mt-8 px-10 md:mt-5 lg:px-64">
+        <div className="flex flex-col items-center gap-4 py-8 md:flex-row md:justify-between md:gap-0">
+          <p className="text-xs">Showing: 1 - 40 of 1000</p>
+          <SortDropdown />
+        </div>
+        <div className="grid grid-cols-2 gap-10 md:grid-cols-4">
+          {products.map((product: Product) => (
+            <Link href={`/products/${product.id}`} key={product.id}>
+              <ProductCard
+                id={product.id}
+                key={product.id}
+                price={product.price}
+                category={product.category}
+                image={product.image}
+                title={product.title}
+              />
+            </Link>
+          ))}
+        </div>
+        <Paginator />
+      </section>
+    </div>
+  )
 }
