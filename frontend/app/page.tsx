@@ -1,17 +1,13 @@
 import Footer from '@/components/Footer'
 import ProductCard from '@/components/ProductCard'
 import SortDropdown from '@/components/SortDropdown'
+import FeaturedProducts from '@/components/home/FeaturedProducts'
+import NewArrivals from '@/components/home/NewArrivals'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { menuOptions } from '@/constants/menu'
 import { faQuoteLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  Button,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-} from '@nextui-org/react'
+import { Button } from '@nextui-org/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
@@ -57,27 +53,11 @@ export default async function Home() {
   const product = products[0]
 
   return (
-    <div>
-      <section className="mt-8 flex flex-col items-center bg-gray-100 px-10 py-14 md:mt-10">
-        <h1 className="text-center text-3xl">Featured Products</h1>
-        <p className="mt-2 text-center text-sm">Handpicked Just for You!</p>
-        <div className="mt-5 grid max-w-max grid-cols-2 gap-10 px-10 md:grid-cols-4">
-          {products.map((product: Product) => (
-            <Link href={`/products/${product.id}`} key={product.id}>
-              <ProductCard
-                id={product.id}
-                key={product.id}
-                price={product.price}
-                category={product.category}
-                image={product.image}
-                title={product.title}
-              />
-            </Link>
-          ))}
-        </div>
-      </section>
+    <div className="bg-gray-100">
+      <FeaturedProducts products={products} />
+      <NewArrivals products={products} />
 
-      <section className="mt-20 bg-gray-100 py-10 text-center">
+      {/* <section className="bg-gray-100 py-10 text-center">
         <p className="font-serif text-3xl leading-5 underline decoration-primary decoration-1 underline-offset-4">
           What Our Customers Say
         </p>
@@ -106,7 +86,7 @@ export default async function Home() {
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
       <Footer />
     </div>
   )
