@@ -9,7 +9,7 @@ type Props = {
 
 const FeaturedProducts: React.FC<Props> = ({ products }: Props) => {
   return (
-    <section className="mt-8 flex flex-col items-center  px-10 py-14 md:mt-10">
+    <section className="flex flex-col items-center  px-10 py-14">
       <h1 className="text-center text-3xl">Featured Products</h1>
       <p className="mt-2 text-center text-sm">Handpicked Just for You!</p>
       <div className="mt-5 grid max-w-max grid-cols-2 gap-10 px-10 md:grid-cols-4">
