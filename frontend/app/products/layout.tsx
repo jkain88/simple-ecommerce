@@ -9,7 +9,6 @@ export default async function ProductsLayout({ children }: LayoutProps) {
   return (
     <div>
       {children}
-      <Footer />
     </div>
   )
 }

@@ -20,8 +20,6 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           </div>
         </section>
       </div>
-
-      <Footer />
     </div>
   )
 }
