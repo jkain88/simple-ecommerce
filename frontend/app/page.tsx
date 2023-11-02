@@ -36,6 +36,7 @@ export interface Product {
   id: number
   price: number
   category: string
+  description: string
   image: string
   title: string
 }
