@@ -31,7 +31,7 @@ const NewArrivals: React.FC<Props> = ({ products }: Props) => {
           </Link>
         ))}
       </div>
-      <Button className="mt-5 bg-black text-white">View More</Button>
+      <Button className="my-5 bg-black px-8 text-white">View More</Button>
     </section>
   )
 }
