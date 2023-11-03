@@ -42,7 +42,6 @@ export default async function CategoriesPage({
         ))}
       </div>
       <Paginator />
-      <p>Categories</p>
     </section>
   )
 }
