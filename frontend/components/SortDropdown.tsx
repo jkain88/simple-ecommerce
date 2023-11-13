@@ -6,10 +6,15 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  Select,
-  SelectItem,
 } from '@nextui-org/react'
 import React, { useMemo, useState } from 'react'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from './ui/select'
 
 const sortingOptions = [
   {
@@ -41,13 +46,18 @@ const sortingOptions = [
 
 const SortDropdown: React.FC = () => {
   return (
-    <div className="w-full max-w-xs">
-      <Select label="Default sorting" className="max-w-xs">
-        {sortingOptions.map((option) => (
-          <SelectItem key={option.id} value={option.value}>
-            {option.label}
-          </SelectItem>
-        ))}
+    <div>
+      <Select>
+        <SelectTrigger className="w-44">
+          <SelectValue placeholder="Sorting options" />
+        </SelectTrigger>
+        <SelectContent>
+          {sortingOptions.map((option) => (
+            <SelectItem key={option.id} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
       </Select>
     </div>
   )

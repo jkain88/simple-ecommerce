@@ -25,8 +25,12 @@ const Navbar: React.FC = () => {
 
       <div className="flex gap-14 text-sm">
         {categories.map((category) => (
-          <Link href="#" key={category} className="font-semibold uppercase">
-            {category}
+          <Link
+            href={`/categories/${category.slug}`}
+            key={category.id}
+            className="font-semibold uppercase"
+          >
+            {category.name}
           </Link>
         ))}
       </div>
