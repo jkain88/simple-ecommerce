@@ -31,8 +31,16 @@ const Navbar: React.FC = () => {
         ))}
       </div>
 
-      <div>
+      <div className="flex gap-4 font-semibold">
         <Link href="#">$0.00</Link>
+        <div className="flex divide-x-2 divide-black">
+          <Link href="#" className="pr-2">
+            Sign In
+          </Link>
+          <Link href="#" className="pl-2">
+            Sign Up
+          </Link>
+        </div>
       </div>
     </div>
   )
