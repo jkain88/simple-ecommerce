@@ -31,13 +31,13 @@ const Navbar: React.FC = () => {
         ))}
       </div>
 
-      <div className="flex gap-4 font-semibold">
+      <div className="flex gap-14 font-bold">
         <Link href="#">$0.00</Link>
-        <div className="flex divide-x-2 divide-black">
-          <Link href="#" className="pr-2">
+        <div className="flex divide-x-1 divide-black ">
+          <Link href="/signin" className="pr-2 hover:text-gray-400">
             Sign In
           </Link>
-          <Link href="#" className="pl-2">
+          <Link href="/signup" className="pl-2 hover:text-gray-400">
             Sign Up
           </Link>
         </div>

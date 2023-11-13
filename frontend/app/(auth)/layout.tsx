@@ -11,15 +11,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
     <div className="h-screen">
       <div className="grid h-full grid-cols-1 md:grid-cols-2">
         <AspectRatio ratio={16 / 9}>
-          <Link href="/">
-            <Image
-              src="/black-logo.svg"
-              alt="logo"
-              width={200}
-              height={100}
-              className="absolute left-8 top-6 z-20"
-            />
-          </Link>
+          <Link href="/"></Link>
           <Image
             src="/auth-img.jpg"
             alt="auth flower image"
