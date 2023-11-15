@@ -18,12 +18,12 @@ const Navbar: React.FC = () => {
   }, [pathname])
 
   return (
-    <div className="flex items-center justify-between px-40 py-6">
+    <div className="flex items-center justify-between px-20 py-6 2xl:px-40">
       <Link href="/">
         <Image src="/black-logo.svg" alt="logo" width={120} height={100} />
       </Link>
 
-      <div className="flex gap-14 text-sm">
+      <div className="flex gap-8 text-sm">
         {categories.map((category) => (
           <Link
             href={`/categories/${category.slug}`}
