@@ -36,13 +36,16 @@ const ProfileForm: React.FC = () => {
     },
   })
 
-  const onSubmit = () => {
+  const onSubmit = (data: Inputs) => {
     // API CALL
-    console.log('SUBMIT')
+    console.log('SUBMIT', data)
   }
   return (
     <Form {...form}>
-      <form className="pt-5" onSubmit={form.handleSubmit(onSubmit)}>
+      <form
+        className="pt-5"
+        onSubmit={form.handleSubmit((data) => onSubmit(data))}
+      >
         <div className="flex flex-col gap-5">
           <FormField
             control={form.control}
@@ -105,19 +108,19 @@ const ProfileForm: React.FC = () => {
                   >
                     <FormItem className="flex items-center space-x-3 space-y-0">
                       <FormControl>
-                        <RadioGroupItem value="all" />
+                        <RadioGroupItem value="male" />
                       </FormControl>
                       <FormLabel className="font-normal">Male</FormLabel>
                     </FormItem>
                     <FormItem className="flex items-center space-x-3 space-y-0">
                       <FormControl>
-                        <RadioGroupItem value="mentions" />
+                        <RadioGroupItem value="female" />
                       </FormControl>
                       <FormLabel className="font-normal">Female</FormLabel>
                     </FormItem>
                     <FormItem className="flex items-center space-x-3 space-y-0">
                       <FormControl>
-                        <RadioGroupItem value="none" />
+                        <RadioGroupItem value="others" />
                       </FormControl>
                       <FormLabel className="font-normal">Others</FormLabel>
                     </FormItem>
