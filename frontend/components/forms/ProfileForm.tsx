@@ -20,6 +20,7 @@ import { format } from 'date-fns'
 import { CalendarIcon } from 'lucide-react'
 import { Calendar } from '../ui/calendar'
 import { cn } from '@/lib/utils'
+import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
 
 type Inputs = z.infer<typeof profileSchema>
 
@@ -30,7 +31,7 @@ const ProfileForm: React.FC = () => {
       fullName: '',
       birthday: undefined,
       contactNumber: '',
-      gender: '',
+      gender: 'male',
       email: '',
     },
   })
@@ -42,14 +43,15 @@ const ProfileForm: React.FC = () => {
   return (
     <Form {...form}>
       <form className="pt-5" onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="grid grid-cols-2 gap-5">
+        <div className="flex flex-col gap-5">
           <FormField
             control={form.control}
             name="email"
             render={({ field }) => (
               <FormItem>
+                <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="Email" {...field} />
+                  <Input placeholder="Email" className="max-w-lg" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -60,8 +62,13 @@ const ProfileForm: React.FC = () => {
             name="fullName"
             render={({ field }) => (
               <FormItem>
+                <FormLabel>Full Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Full Name" {...field} />
+                  <Input
+                    placeholder="Full Name"
+                    className="max-w-lg"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -72,8 +79,13 @@ const ProfileForm: React.FC = () => {
             name="contactNumber"
             render={({ field }) => (
               <FormItem>
+                <FormLabel>Contact Number</FormLabel>
                 <FormControl>
-                  <Input placeholder="Contact Number" {...field} />
+                  <Input
+                    placeholder="Contact Number"
+                    className="max-w-lg"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -83,9 +95,33 @@ const ProfileForm: React.FC = () => {
             control={form.control}
             name="gender"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="space-y-3">
+                <FormLabel className="text-base">Gender</FormLabel>
                 <FormControl>
-                  <Input placeholder="Gender" {...field} />
+                  <RadioGroup
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    className="flex"
+                  >
+                    <FormItem className="flex items-center space-x-3 space-y-0">
+                      <FormControl>
+                        <RadioGroupItem value="all" />
+                      </FormControl>
+                      <FormLabel className="font-normal">Male</FormLabel>
+                    </FormItem>
+                    <FormItem className="flex items-center space-x-3 space-y-0">
+                      <FormControl>
+                        <RadioGroupItem value="mentions" />
+                      </FormControl>
+                      <FormLabel className="font-normal">Female</FormLabel>
+                    </FormItem>
+                    <FormItem className="flex items-center space-x-3 space-y-0">
+                      <FormControl>
+                        <RadioGroupItem value="none" />
+                      </FormControl>
+                      <FormLabel className="font-normal">Others</FormLabel>
+                    </FormItem>
+                  </RadioGroup>
                 </FormControl>
                 <FormMessage />
               </FormItem>
