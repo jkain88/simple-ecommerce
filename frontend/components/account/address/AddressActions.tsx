@@ -6,9 +6,15 @@ import React from 'react'
 const AddressActions: React.FC = () => {
   return (
     <div className="mt-2 flex flex-col gap-1">
-      <Button size="sm">Edit</Button>
-      <Button size="sm">Delete</Button>
-      <Button size="sm">Set as Default</Button>
+      <Button size="sm" className="font-semibold">
+        Edit
+      </Button>
+      <Button size="sm" className="font-semibold">
+        Delete
+      </Button>
+      <Button size="sm" className="font-semibold">
+        Set as Default
+      </Button>
     </div>
   )
 }
