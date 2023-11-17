@@ -34,20 +34,20 @@ export const categories = [
 export const addresses = [
   {
     id: 1,
-    name: "Martin Josh Torricer",
-    contactNumber: "+63999999999",
-    address: "1234 Street, Barangay, City, Province, 1234",
+    name: 'Martin Josh Torricer',
+    contactNumber: '+63999999999',
+    address: '1234 Street, Barangay, City, Province, 1234',
     isDefault: true,
-    addressType: "Shipping",
-    deliveryLabel: "Home",
+    addressType: 'Shipping',
+    deliveryLabel: 'Home',
   },
   {
     id: 2,
-    name: "Martin Josh Torricer",
-    contactNumber: "+63999999999",
-    address: "1234 Street, Barangay, City, Province, 1234",
+    name: 'Martin Josh Torricer',
+    contactNumber: '+63999999999',
+    address: '1234 Street, Barangay, City, Province, 1234',
     isDefault: false,
-    addressType: "Billing",
-    deliveryLabel: "Work",
-  }
+    addressType: 'Billing',
+    deliveryLabel: 'Office',
+  },
 ]
