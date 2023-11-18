@@ -1,8 +1,10 @@
+import ChangePasswordForm from '@/components/forms/ChangePasswordForm'
+
 export default function ChangePassword() {
   return (
-    <div>
-      <p className="text-3xl font-bold">Change Password</p>
-      <div className="divide-y-8 divide-black" />
+    <div className="divide-y-1">
+      <p className="pb-3 text-3xl font-bold">Change Password</p>
+      <ChangePasswordForm />
     </div>
   )
 }
