@@ -3,8 +3,6 @@
 import { addressSchema } from '@/lib/form-validations/account'
 import { z } from 'zod'
 
-type Inputs = z.infer<typeof addressSchema>
-
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import {
@@ -19,21 +17,29 @@ import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import { cn } from '@/lib/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Address } from '@/types'
 
-const AddressDetailForm: React.FC = () => {
+type Input = z.infer<typeof addressSchema>
+
+type Props = {
+  address?: Address
+}
+
+const AddressDetailForm: React.FC<Props> = ({ address }) => {
   const [deliveryLabel, setDeliveryLabel] = useState<'Home' | 'Office' | ''>(
     'Home'
   )
-  const form = useForm<Inputs>({
+
+  const form = useForm<Address>({
     resolver: zodResolver(addressSchema),
     defaultValues: {
-      fullName: '',
-      contactNumber: '',
-      street: '',
-      barangay: '',
-      city: '',
-      province: '',
-      deliveryLabel: '',
+      fullName: address?.fullName || '',
+      contactNumber: address?.contactNumber || '',
+      street: address?.street || '',
+      barangay: address?.barangay || '',
+      city: address?.city || '',
+      province: address?.province || '',
+      deliveryLabel: address?.deliveryLabel || '',
     },
     mode: 'onSubmit',
   })

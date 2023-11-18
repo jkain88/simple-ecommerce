@@ -11,20 +11,20 @@ const AddressActions: React.FC = () => {
       <Link href="/account/addresses/1" className="flex">
         <Button
           size="sm"
-          className="w-full bg-gray-200 px-10 text-xs font-semibold text-black hover:bg-gray-500"
+          className="w-full bg-gray-200 px-10 text-sm font-semibold text-black hover:bg-gray-500"
         >
           Edit
         </Button>
       </Link>
       <Button
         size="sm"
-        className="w-full bg-gray-200 px-10 text-xs font-semibold text-black hover:bg-gray-500"
+        className="w-full bg-gray-200 px-10 text-sm font-semibold text-black hover:bg-gray-500"
       >
         Delete
       </Button>
       <Button
         size="sm"
-        className="bg-gray-200 px-10 text-xs font-semibold text-black hover:bg-gray-500"
+        className="bg-gray-200 px-10 text-sm font-semibold text-black hover:bg-gray-500"
       >
         Set as Default
       </Button>

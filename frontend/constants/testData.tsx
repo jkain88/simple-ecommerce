@@ -1,3 +1,5 @@
+import { Address } from '@/types'
+
 export const categories = [
   {
     id: 1,
@@ -31,23 +33,27 @@ export const categories = [
   },
 ]
 
-export const addresses = [
+export const addresses: Address[] = [
   {
     id: 1,
-    name: 'Martin Josh Torricer',
+    fullName: 'Martin Josh Torricer',
     contactNumber: '+63999999999',
-    address: '1234 Street, Barangay, City, Province, 1234',
+    street:'1234 Street',
+    barangay: 'Barangay',
+    city: 'City',
+    province: 'Province',
     isDefault: true,
-    addressType: 'Shipping',
     deliveryLabel: 'Home',
   },
   {
     id: 2,
-    name: 'Martin Josh Torricer',
+    fullName: 'Martin Josh Torricer',
     contactNumber: '+63999999999',
-    address: '1234 Street, Barangay, City, Province, 1234',
+    street:'1234 Street',
+    barangay: 'Barangay',
+    city: 'City',
+    province: 'Province',
     isDefault: false,
-    addressType: 'Billing',
     deliveryLabel: 'Office',
   },
 ]

@@ -10,13 +10,16 @@ export default function Addresses() {
         <p className="text-2xl font-semibold">Address</p>
         <div className="flex flex-col gap-7 divide-y-2">
           {addresses.map((address) => (
-            <div className="flex justify-between">
+            <div className="flex justify-between" key={address.id}>
               <div key={address.id} className="flex flex-col gap-2 pt-7">
                 <div className="flex gap-2 divide-x-2 divide-black">
-                  <p className="text-lg font-bold">{address.name}</p>
+                  <p className="text-lg font-bold">{address.fullName}</p>
                   <p className="pl-2 text-gray-400">{address.contactNumber}</p>
                 </div>
-                <p>{address.address}</p>
+                <p>
+                  {address.street}, {address.barangay}, {address.city},{' '}
+                  {address.province}
+                </p>
                 {address.isDefault && (
                   <div className="flex-shrink-0">
                     <div className="inline-block border-2 border-black p-1 ">
