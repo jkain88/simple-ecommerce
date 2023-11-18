@@ -28,7 +28,7 @@ export default function Addresses() {
                   </div>
                 )}
               </div>
-              <AddressActions />
+              <AddressActions id={address.id} />
             </div>
           ))}
         </div>
