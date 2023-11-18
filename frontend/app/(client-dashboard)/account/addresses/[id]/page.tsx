@@ -1,6 +1,5 @@
 import AddressDetailForm from '@/components/forms/AddressDetailForm'
 import { addresses } from '@/constants/testData'
-import { Address } from '@/types'
 
 export default function AddressDetail({ params }: { params: { id: string } }) {
   const address = addresses.find((address) => address.id == parseInt(params.id))
