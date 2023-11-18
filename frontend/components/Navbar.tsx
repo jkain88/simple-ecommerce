@@ -19,31 +19,31 @@ const Navbar: React.FC = () => {
 
   return (
     <div className="flex items-center justify-between px-20 py-6 2xl:px-40">
-      <Link href="/">
+      <a href="/">
         <Image src="/black-logo.svg" alt="logo" width={120} height={100} />
-      </Link>
+      </a>
 
       <div className="flex gap-8 text-sm">
         {categories.map((category) => (
-          <Link
+          <a
             href={`/categories/${category.slug}`}
             key={category.id}
             className="font-semibold uppercase"
           >
             {category.name}
-          </Link>
+          </a>
         ))}
       </div>
 
       <div className="flex gap-14 font-bold">
         <Link href="#">$0.00</Link>
         <div className="flex divide-x-1 divide-black ">
-          <Link href="/signin" className="pr-2 hover:text-gray-400">
+          <a href="/signin" className="pr-2 hover:text-gray-400">
             Sign In
-          </Link>
-          <Link href="/signup" className="pl-2 hover:text-gray-400">
+          </a>
+          <a href="/signup" className="pl-2 hover:text-gray-400">
             Sign Up
-          </Link>
+          </a>
         </div>
       </div>
     </div>
