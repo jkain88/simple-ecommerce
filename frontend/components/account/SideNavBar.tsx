@@ -24,7 +24,9 @@ const SideNavBar: React.FC = () => {
       {sidebarOptions.map((option) => (
         <div key={option.label}>
           <div className="flex gap-2 text-lg font-bold">
-            <div>{option.label}</div>
+            <Link href={option.link} className="hover:underline">
+              {option.label}
+            </Link>
           </div>
           <div className="flex flex-col text-sm text-gray-600">
             {option.subMenus &&
