@@ -76,6 +76,7 @@ export const orders = [
     },
     lines: [
       {
+        id: 1,
         amount: 1000,
         quantity: 2,
         product_variant: {
@@ -118,6 +119,7 @@ export const orders = [
     },
     lines: [
       {
+        id: 2,
         amount: 3000,
         quantity: 5,
         product_variant: {
@@ -148,6 +150,7 @@ export const orders = [
     },
     lines: [
       {
+        id: 3,
         amount: 3000,
         quantity: 5,
         product_variant: {
@@ -178,6 +181,7 @@ export const orders = [
     },
     lines: [
       {
+        id: 4,
         amount: 3000,
         quantity: 5,
         product_variant: {
@@ -208,6 +212,7 @@ export const orders = [
     },
     lines: [
       {
+        id: 5,
         amount: 1500,
         quantity: 2,
         product_variant: {
