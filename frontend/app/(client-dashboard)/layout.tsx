@@ -11,9 +11,9 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         <section className="container">
           <div className="flex py-14">
             <SideNavBar />
-            <div className="col-span-3 grow rounded-lg bg-white px-14 py-10 shadow-xl">
-              {children}
-            </div>
+            {/* <div className="col-span-3 grow rounded-lg bg-white px-14 py-10 shadow-xl"> */}
+            {children}
+            {/* </div> */}
           </div>
         </section>
       </div>
