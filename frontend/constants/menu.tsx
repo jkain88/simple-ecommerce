@@ -45,7 +45,7 @@ export const sidebarOptions: SideBarItem[] = [
   },
   {
     label: 'Orders',
-    link: '/account/orders',
+    link: '/orders',
     icon: 'dollar-sign',
   },
 ]
