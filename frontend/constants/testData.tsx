@@ -57,3 +57,168 @@ export const addresses: Address[] = [
     deliveryLabel: 'Office',
   },
 ]
+
+export const orders = [
+  {
+    id: 1,
+    reference: 'ABCD',
+    status: 'pending',
+    shipping_address: {
+      id: 1,
+      fullName: 'Martin Josh Torricer',
+      contactNumber: '+63999999999',
+      street: '1234 Street',
+      barangay: 'Barangay',
+      city: 'City',
+      province: 'Province',
+      isDefault: true,
+      deliveryLabel: 'Home',
+    },
+    lines: [
+      {
+        amount: 1000,
+        quantity: 2,
+        product_variant: {
+          id: 1,
+          name: 'Product 1',
+          price: 1000,
+          image: {
+            url: 'https://via.placeholder.com/150',
+          },
+        },
+      },
+      {
+        amount: 3000,
+        quantity: 5,
+        product_variant: {
+          id: 2,
+          name: 'Product 1',
+          price: 1000,
+          image: {
+            url: 'https://via.placeholder.com/150',
+          },
+        },
+      },
+    ],
+  },
+  {
+    id: 2,
+    reference: 'ABCD',
+    status: 'in transit',
+    shipping_address: {
+      id: 1,
+      fullName: 'Martin Josh Torricer',
+      contactNumber: '+63999999999',
+      street: '1234 Street',
+      barangay: 'Barangay',
+      city: 'City',
+      province: 'Province',
+      isDefault: true,
+      deliveryLabel: 'Home',
+    },
+    lines: [
+      {
+        amount: 3000,
+        quantity: 5,
+        product_variant: {
+          id: 2,
+          name: 'Product 1',
+          price: 1000,
+          image: {
+            url: 'https://via.placeholder.com/150',
+          },
+        },
+      },
+    ],
+  },
+  {
+    id: 3,
+    reference: 'ABCD',
+    status: 'in transit',
+    shipping_address: {
+      id: 1,
+      fullName: 'Martin Josh Torricer',
+      contactNumber: '+63999999999',
+      street: '1234 Street',
+      barangay: 'Barangay',
+      city: 'City',
+      province: 'Province',
+      isDefault: true,
+      deliveryLabel: 'Home',
+    },
+    lines: [
+      {
+        amount: 3000,
+        quantity: 5,
+        product_variant: {
+          id: 2,
+          name: 'Product 1',
+          price: 1000,
+          image: {
+            url: 'https://via.placeholder.com/150',
+          },
+        },
+      },
+    ],
+  },
+  {
+    id: 4,
+    reference: 'ABCD',
+    status: 'delivered',
+    shipping_address: {
+      id: 1,
+      fullName: 'Martin Josh Torricer',
+      contactNumber: '+63999999999',
+      street: '1234 Street',
+      barangay: 'Barangay',
+      city: 'City',
+      province: 'Province',
+      isDefault: true,
+      deliveryLabel: 'Home',
+    },
+    lines: [
+      {
+        amount: 3000,
+        quantity: 5,
+        product_variant: {
+          id: 2,
+          name: 'Product 1',
+          price: 1000,
+          image: {
+            url: 'https://via.placeholder.com/150',
+          },
+        },
+      },
+    ],
+  },
+  {
+    id: 5,
+    reference: 'ABCD',
+    status: 'delivered',
+    shipping_address: {
+      id: 1,
+      fullName: 'Martin Josh Torricer',
+      contactNumber: '+63999999999',
+      street: '1234 Street',
+      barangay: 'Barangay',
+      city: 'City',
+      province: 'Province',
+      isDefault: true,
+      deliveryLabel: 'Home',
+    },
+    lines: [
+      {
+        amount: 1500,
+        quantity: 2,
+        product_variant: {
+          id: 2,
+          name: 'Product 1',
+          price: 1000,
+          image: {
+            url: 'https://via.placeholder.com/150',
+          },
+        },
+      },
+    ],
+  },
+]
