@@ -2,6 +2,8 @@
 
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { orders } from '@/constants/testData'
+import { Image } from '@nextui-org/react'
+import Link from 'next/link'
 import React, { useState } from 'react'
 
 const OrdersData: React.FC = () => {
@@ -53,10 +55,28 @@ const OrdersData: React.FC = () => {
                 {order.status}
               </div>
             </div>
-            <div className="pt-2">
-              <div>
+            <div className=" pt-2">
+              <div className="divide-y-1">
                 {order.lines.map((line) => (
-                  <div key={line.id}>{line.product_variant.name}</div>
+                  <Link key={line.id} href={`/orders/${order.id}`}>
+                    <div className="flex gap-5 px-6 py-4">
+                      <Image
+                        alt="product"
+                        isZoomed
+                        className="h-20 justify-center rounded-xl object-cover"
+                        src={line.product_variant.image.url}
+                      />
+                      <div className="flex w-full justify-between">
+                        <div>
+                          <p className="text-xl">{line.product_variant.name}</p>
+                          <p>Qty: {line.quantity}</p>
+                        </div>
+                        <div>
+                          <p>₱{line.product_variant.price}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
                 ))}
               </div>
             </div>
