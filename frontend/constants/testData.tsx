@@ -63,6 +63,9 @@ export const orders = [
     id: 1,
     reference: 'ABCD',
     status: 'pending',
+    shipping_fee: 150,
+    sub_total: 4000,
+    total: 4150,
     shipping_address: {
       id: 1,
       fullName: 'Martin Josh Torricer',
@@ -106,6 +109,9 @@ export const orders = [
     id: 2,
     reference: 'ABCD',
     status: 'in transit',
+    shipping_fee: 200,
+    sub_total: 3000,
+    total: 3200,
     shipping_address: {
       id: 1,
       fullName: 'Martin Josh Torricer',
@@ -137,6 +143,9 @@ export const orders = [
     id: 3,
     reference: 'ABCD',
     status: 'in transit',
+    shipping_fee: 150,
+    sub_total: 3000,
+    total: 3150,
     shipping_address: {
       id: 1,
       fullName: 'Martin Josh Torricer',
@@ -168,6 +177,9 @@ export const orders = [
     id: 4,
     reference: 'ABCD',
     status: 'delivered',
+    shipping_fee: 180,
+    sub_total: 1000,
+    total: 1080,
     shipping_address: {
       id: 1,
       fullName: 'Martin Josh Torricer',
@@ -199,6 +211,9 @@ export const orders = [
     id: 5,
     reference: 'ABCD',
     status: 'delivered',
+    shipping_fee: 150,
+    sub_total: 1500,
+    total: 1650,
     shipping_address: {
       id: 1,
       fullName: 'Martin Josh Torricer',
