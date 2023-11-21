@@ -21,3 +21,29 @@ export interface Address {
   deliveryLabel: string
   isDefault: boolean
 }
+
+export interface ProductVariant {
+  id: number
+  name: string
+  price: number
+  image: {
+    url: string
+  }
+}
+export interface OrderLine {
+  id: number
+  amount: number
+  quantity: number
+  product_variant: ProductVariant
+}
+
+export interface Order {
+  id: number
+  reference: string
+  status: string
+  shipping_fee: number
+  sub_total: number
+  total: number
+  shipping_address: Address
+  lines: OrderLine[]
+}

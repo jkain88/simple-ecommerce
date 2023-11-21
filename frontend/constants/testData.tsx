@@ -1,4 +1,4 @@
-import { Address } from '@/types'
+import { Address, Order } from '@/types'
 
 export const categories = [
   {
@@ -58,7 +58,7 @@ export const addresses: Address[] = [
   },
 ]
 
-export const orders = [
+export const orders: Order[] = [
   {
     id: 1,
     reference: 'ABCD',
@@ -92,6 +92,7 @@ export const orders = [
         },
       },
       {
+        id: 2,
         amount: 3000,
         quantity: 5,
         product_variant: {
