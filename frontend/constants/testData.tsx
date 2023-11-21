@@ -84,7 +84,7 @@ export const orders = [
           name: 'Product 1',
           price: 1000,
           image: {
-            url: 'https://via.placeholder.com/150',
+            url: 'https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg',
           },
         },
       },
@@ -96,7 +96,7 @@ export const orders = [
           name: 'Product 1',
           price: 1000,
           image: {
-            url: 'https://via.placeholder.com/150',
+            url: 'https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg',
           },
         },
       },
@@ -127,7 +127,7 @@ export const orders = [
           name: 'Product 1',
           price: 1000,
           image: {
-            url: 'https://via.placeholder.com/150',
+            url: 'https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg',
           },
         },
       },
@@ -158,7 +158,7 @@ export const orders = [
           name: 'Product 1',
           price: 1000,
           image: {
-            url: 'https://via.placeholder.com/150',
+            url: 'https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg',
           },
         },
       },
@@ -189,7 +189,7 @@ export const orders = [
           name: 'Product 1',
           price: 1000,
           image: {
-            url: 'https://via.placeholder.com/150',
+            url: 'https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg',
           },
         },
       },
@@ -220,7 +220,7 @@ export const orders = [
           name: 'Product 1',
           price: 1000,
           image: {
-            url: 'https://via.placeholder.com/150',
+            url: 'https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg',
           },
         },
       },
