@@ -6,7 +6,7 @@ import { Image } from '@nextui-org/react'
 import Link from 'next/link'
 import React, { useState } from 'react'
 
-const OrdersData: React.FC = () => {
+const OrdersList: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState<
     'pending' | 'in transit' | 'delivered'
   >('pending')
@@ -48,7 +48,7 @@ const OrdersData: React.FC = () => {
         {filteredOrdersByStatus.map((order) => (
           <div key={order.id} className="mt-4 divide-y-1 bg-white p-4">
             <div className="flex justify-between pb-3">
-              <div className="text-base font-semibold">
+              <div className="text-xl font-semibold">
                 Reference: {order.reference}
               </div>
               <div className="rounded-lg bg-black px-3 py-1 capitalize text-white">
@@ -87,4 +87,4 @@ const OrdersData: React.FC = () => {
   )
 }
 
-export default OrdersData
+export default OrdersList
