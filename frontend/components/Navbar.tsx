@@ -4,8 +4,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useRef } from 'react'
-import { menuOptions } from '@/constants/menu'
 import { categories } from '@/constants/testData'
+import { ShoppingCart } from 'lucide-react'
+import { Badge } from '@nextui-org/react'
 
 const Navbar: React.FC = () => {
   const pathname = usePathname()
@@ -35,8 +36,13 @@ const Navbar: React.FC = () => {
         ))}
       </div>
 
-      <div className="flex gap-14 font-bold">
-        <Link href="#">$0.00</Link>
+      <div className="flex items-center gap-14 font-bold">
+        <Link href="#">
+          <Badge content="2">
+            <ShoppingCart size={30} />
+          </Badge>
+        </Link>
+
         <div className="flex divide-x-1 divide-black ">
           <a href="/signin" className="pr-2 hover:text-gray-400">
             Sign In
