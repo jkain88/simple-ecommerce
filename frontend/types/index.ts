@@ -29,6 +29,15 @@ export interface ProductVariant {
   image: {
     url: string
   }
+  product: {
+    name: string
+  }
+}
+export interface CheckoutLine {
+  id: number
+  amount: number
+  quantity: number
+  product_variant: ProductVariant
 }
 export interface OrderLine {
   id: number

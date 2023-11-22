@@ -1,4 +1,4 @@
-import { Address, Order } from '@/types'
+import { Address, CheckoutLine, Order } from '@/types'
 
 export const categories = [
   {
@@ -30,6 +30,41 @@ export const categories = [
     id: 6,
     name: 'Accessories',
     slug: 'accessories',
+  },
+]
+
+export const checkoutLines: CheckoutLine[] = [
+  {
+    id: 1,
+    amount: 1000,
+    quantity: 2,
+    product_variant: {
+      id: 1,
+      name: '9.5',
+      product: {
+        name: 'Sneakers',
+      },
+      price: 1000,
+      image: {
+        url: 'https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg',
+      },
+    },
+  },
+  {
+    id: 2,
+    amount: 3000,
+    quantity: 5,
+    product_variant: {
+      id: 2,
+      name: '1KG',
+      product: {
+        name: 'Mixed Nuts',
+      },
+      price: 1000,
+      image: {
+        url: 'https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg',
+      },
+    },
   },
 ]
 
@@ -84,7 +119,10 @@ export const orders: Order[] = [
         quantity: 2,
         product_variant: {
           id: 1,
-          name: 'Product 1',
+          name: '9.5',
+          product: {
+            name: 'Sneakers',
+          },
           price: 1000,
           image: {
             url: 'https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg',
@@ -97,7 +135,10 @@ export const orders: Order[] = [
         quantity: 5,
         product_variant: {
           id: 2,
-          name: 'Product 1',
+          name: '9.5',
+          product: {
+            name: 'Sneakers',
+          },
           price: 1000,
           image: {
             url: 'https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg',
@@ -131,7 +172,10 @@ export const orders: Order[] = [
         quantity: 5,
         product_variant: {
           id: 2,
-          name: 'Product 1',
+          name: '9.5',
+          product: {
+            name: 'Sneakers',
+          },
           price: 1000,
           image: {
             url: 'https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg',
@@ -165,7 +209,10 @@ export const orders: Order[] = [
         quantity: 5,
         product_variant: {
           id: 2,
-          name: 'Product 1',
+          name: '9.5',
+          product: {
+            name: 'Sneakers',
+          },
           price: 1000,
           image: {
             url: 'https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg',
@@ -199,7 +246,10 @@ export const orders: Order[] = [
         quantity: 5,
         product_variant: {
           id: 2,
-          name: 'Product 1',
+          name: '9.5',
+          product: {
+            name: 'Sneakers',
+          },
           price: 1000,
           image: {
             url: 'https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg',
@@ -233,7 +283,10 @@ export const orders: Order[] = [
         quantity: 2,
         product_variant: {
           id: 2,
-          name: 'Product 1',
+          name: '9.5',
+          product: {
+            name: 'Sneakers',
+          },
           price: 1000,
           image: {
             url: 'https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg',
