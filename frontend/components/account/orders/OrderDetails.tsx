@@ -71,8 +71,22 @@ const OrderDetails: React.FC<Props> = ({ order }) => {
           </div>
         </div>
 
-        <div className="bg-white">
-          <p>Order Summary</p>
+        <div className="divide-y-2 bg-white p-4">
+          <p className="pb-2 text-xl font-bold">Order Summary</p>
+          <div className="py-4 ">
+            <div className="flex justify-between">
+              <p>Subtotal:</p>
+              <p>₱{order.sub_total}</p>
+            </div>
+            <div className="flex justify-between">
+              <p>Shipping Fee:</p>
+              <p>₱{order.shipping_fee}</p>
+            </div>
+          </div>
+          <div className="flex justify-between pt-4">
+            <p className="text-lg font-semibold">Total:</p>
+            <p className="text-lg font-semibold">₱{order.total}</p>
+          </div>
         </div>
       </div>
     </div>
