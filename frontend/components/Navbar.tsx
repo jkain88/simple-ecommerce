@@ -37,7 +37,7 @@ const Navbar: React.FC = () => {
       </div>
 
       <div className="flex items-center gap-14 font-bold">
-        <Link href="#">
+        <Link href="/cart">
           <Badge content="2">
             <ShoppingCart size={30} />
           </Badge>
