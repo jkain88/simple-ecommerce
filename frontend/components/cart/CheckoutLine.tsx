@@ -5,12 +5,24 @@ import { Minus, Plus, Trash2 } from 'lucide-react'
 import { checkoutLines } from '@/constants/testData'
 import Image from 'next/image'
 import { useState } from 'react'
+import {
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  useDisclosure,
+} from '@nextui-org/react'
+import { Button } from '../ui/button'
 
 const CheckoutLine: React.FC = () => {
   const [quantities, setQuantities] = useState(
     Object.fromEntries(checkoutLines.map((line) => [line.id, line.quantity]))
   )
-  console.log(quantities)
+  const [selectLineToDelete, setSelectedLineToDelete] = useState<number | null>(
+    null
+  )
+  const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
   const handleMinus = (id: number) => {
     setQuantities((prev) => ({
@@ -31,15 +43,16 @@ const CheckoutLine: React.FC = () => {
       <div className="flex justify-between bg-white px-4 py-2">
         <div className=" flex items-center justify-center gap-2">
           <Checkbox id="select-all" />
-
           <label htmlFor="select-all" className="text-sm">
             {' '}
             Select All
           </label>
         </div>
-        <div className="flex items-center gap-1">
-          <Trash2 />
-          <p className="text-sm">Delete</p>
+        <div>
+          <button className="flex items-center gap-1" onClick={onOpenChange}>
+            <Trash2 />
+            <p className="text-sm">Delete</p>
+          </button>
         </div>
       </div>
       {checkoutLines.map((line) => (
@@ -69,8 +82,13 @@ const CheckoutLine: React.FC = () => {
               <p className="text-lg font-semibold">
                 ₱{line.product_variant.price}
               </p>
-              <button>
-                <Trash2 />
+              <button
+                onClick={() => {
+                  setSelectedLineToDelete(line.id)
+                  onOpen()
+                }}
+              >
+                <Trash2 className="w-5" />
               </button>
             </div>
             <div className="flex items-center">
@@ -94,6 +112,29 @@ const CheckoutLine: React.FC = () => {
           </div>
         </div>
       ))}
+
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                Remove Item From Cart
+              </ModalHeader>
+              <ModalBody>
+                <p>Are you sure you want to remove these item(s)?</p>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" onClick={onClose}>
+                  Close
+                </Button>
+                <Button color="primary" onClick={onClose}>
+                  Remove
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </div>
   )
 }
