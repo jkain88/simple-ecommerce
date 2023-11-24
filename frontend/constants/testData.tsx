@@ -66,6 +66,22 @@ export const checkoutLines: CheckoutLine[] = [
       },
     },
   },
+  {
+    id: 3,
+    amount: 70,
+    quantity: 1,
+    product_variant: {
+      id: 2,
+      name: '',
+      product: {
+        name: 'Safeguard',
+      },
+      price: 1000,
+      image: {
+        url: 'https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg',
+      },
+    },
+  },
 ]
 
 export const addresses: Address[] = [
