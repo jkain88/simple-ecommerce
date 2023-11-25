@@ -1,5 +1,6 @@
 import CheckoutLine from '@/components/cart/CheckoutLine'
 import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 
 export default function Cart() {
   return (
@@ -24,7 +25,9 @@ export default function Cart() {
               <p>₱0.00</p>
             </div>
           </div>
-          <Button className="mt-4 w-full">Proceed to checkout</Button>
+          <Link href="/checkout">
+            <Button className="mt-4 w-full">Proceed to checkout</Button>
+          </Link>
         </div>
       </div>
     </div>
