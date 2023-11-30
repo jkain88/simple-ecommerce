@@ -1,12 +1,13 @@
 import CheckoutLine from '@/components/checkout/CheckoutLine'
+import CheckoutPaymentMethods from '@/components/checkout/CheckoutPaymentMethods'
 import { addresses } from '@/constants/testData'
 
 export default function Checkout() {
   const address = addresses.find((address) => address.isDefault)
 
   return (
-    <div className="flex justify-center bg-gray-100">
-      <div className="w-full max-w-3xl py-10">
+    <div className="flex justify-center gap-4 bg-gray-100 py-10">
+      <div className="w-full max-w-3xl ">
         <div className=" bg-white">
           <div>
             <div className="flex justify-between bg-gray-50 px-4 py-2  font-bold">
@@ -32,6 +33,10 @@ export default function Checkout() {
           </div>
         </div>
         <CheckoutLine />
+        <CheckoutPaymentMethods />
+      </div>
+      <div className="max-h-96 bg-white px-4">
+        <p>Checkout SUmmary</p>
       </div>
     </div>
   )
