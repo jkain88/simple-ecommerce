@@ -15,7 +15,7 @@ import {
 } from '@nextui-org/react'
 import { Button } from '../ui/button'
 
-const CheckoutLine: React.FC = () => {
+const CartLine: React.FC = () => {
   const [quantities, setQuantities] = useState(
     Object.fromEntries(checkoutLines.map((line) => [line.id, line.quantity]))
   )
@@ -139,4 +139,4 @@ const CheckoutLine: React.FC = () => {
   )
 }
 
-export default CheckoutLine
+export default CartLine

@@ -34,6 +34,9 @@ export default function Checkout() {
           <div className="bg-gray-50 px-4 py-2">
             <p>Items</p>
           </div>
+          <div className="px-4 py-2">
+            <p>Yes</p>
+          </div>
         </div>
       </div>
     </div>

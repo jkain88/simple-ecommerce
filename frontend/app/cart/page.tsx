@@ -1,4 +1,4 @@
-import CheckoutLine from '@/components/cart/CheckoutLine'
+import CartLine from '@/components/cart/CartLine'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 
@@ -6,7 +6,7 @@ export default function Cart() {
   return (
     <div className=" bg-gray-100">
       <div className="flex w-full justify-center gap-10 py-10">
-        <CheckoutLine />
+        <CartLine />
         <div className="max-h-72  w-72 shrink-0 bg-white px-4 py-8">
           <p className="text-lg font-semibold">Checkout Summary</p>
           <div className="mt-4 flex flex-col gap-4 divide-y-2">
