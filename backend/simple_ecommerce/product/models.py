@@ -39,7 +39,7 @@ class ProductVariant(TimeStampedModel):
 
 
 class ProductImage(models.Model):
-    image = models.ImageField()
+    image = models.ImageField(upload_to="media/products/")
     product = models.ForeignKey(Product, null=True, on_delete=models.CASCADE, related_name='images')
     variant = models.ForeignKey(ProductVariant, null=True, on_delete=models.SET_NULL, related_name='images')
     alt = models.CharField(max_length=50, blank=True)
