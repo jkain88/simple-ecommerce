@@ -1,5 +1,6 @@
 import CheckoutLine from '@/components/checkout/CheckoutLine'
 import CheckoutPaymentMethods from '@/components/checkout/CheckoutPaymentMethods'
+import CheckoutSummary from '@/components/checkout/CheckoutSummary'
 import { addresses } from '@/constants/testData'
 
 export default function Checkout() {
@@ -35,9 +36,7 @@ export default function Checkout() {
         <CheckoutLine />
         <CheckoutPaymentMethods />
       </div>
-      <div className="max-h-96 bg-white px-4">
-        <p>Checkout SUmmary</p>
-      </div>
+      <CheckoutSummary buttonLabel="Place Order" redirectLink="/orders" />
     </div>
   )
 }
