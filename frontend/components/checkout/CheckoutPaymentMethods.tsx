@@ -34,7 +34,11 @@ const CheckoutPaymentMethods: React.FC = () => {
           </div>
         </RadioGroup>
 
-        <Input />
+        {paymentMethod === 'card' && (
+          <div className="mt-4 max-w-lg">
+            <Input />
+          </div>
+        )}
       </div>
     </div>
   )
