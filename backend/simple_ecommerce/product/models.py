@@ -22,6 +22,7 @@ class Product(PublishableModel, TimeStampedModel):
     sku = models.CharField(max_length=255, blank=True)
     quantity = models.PositiveIntegerField(default=1)
     quantity_allocated = models.PositiveIntegerField(default=0)
+    has_variants = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return self.name
