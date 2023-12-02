@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
 import { Input } from '../ui/input'
+import { Label } from '../ui/label'
 
 type PaymentMethods = 'gcash' | 'card'
 
@@ -36,7 +37,18 @@ const CheckoutPaymentMethods: React.FC = () => {
 
         {paymentMethod === 'card' && (
           <div className="mt-4 max-w-lg">
-            <Input />
+            <Label htmlFor="cardNumber">Card Number</Label>
+            <Input id="cardNumber" />
+            <div className="flex gap-2">
+              <div className="grow">
+                <Label htmlFor="cardExpiry">Expiry</Label>
+                <Input id="cardExpiry" />
+              </div>
+              <div className="grow">
+                <Label htmlFor="cardCVV">CVV</Label>
+                <Input id="cardCVV" />
+              </div>
+            </div>
           </div>
         )}
       </div>
