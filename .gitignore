@@ -2,3 +2,4 @@
 *.vscode
 
 backend/simple_ecommerce/media/*
+backend/simple_ecommerce/static/*
