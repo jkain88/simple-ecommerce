@@ -57,37 +57,6 @@ export default async function Home() {
     <div className="bg-gray-100">
       <FeaturedProducts products={products} />
       <NewArrivals products={products} />
-
-      {/* <section className="bg-gray-100 py-10 text-center">
-        <p className="font-serif text-3xl leading-5 underline decoration-primary decoration-1 underline-offset-4">
-          What Our Customers Say
-        </p>
-        <div className="mt-4 divide-x-4 divide-black" />
-
-        <div className="md:px-50 mt-10 grid grid-cols-1 justify-center gap-12 px-10 font-semibold md:grid-cols-3 md:gap-28 2xl:px-[25%]">
-          {userTestimonials.map((user: User) => (
-            <div
-              className="flex flex-col items-center gap-2 rounded-lg bg-white p-6 shadow-lg md:gap-4"
-              key={user.id}
-            >
-              <FontAwesomeIcon
-                icon={faQuoteLeft}
-                className="mx-auto w-7 text-primary"
-              />
-              <p>
-                Sed odio donec curabitur auctor amet tincidunt non odio enim
-                felis tincidunt amet morbi egestas hendrerit.
-              </p>
-              <Avatar>
-                <AvatarImage className="w-80" src={user.image} />
-              </Avatar>
-              <p className="text-sm">
-                {user.firstName} {user.lastName}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section> */}
     </div>
   )
 }
