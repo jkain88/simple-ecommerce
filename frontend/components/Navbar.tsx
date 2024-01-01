@@ -4,13 +4,25 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useRef } from 'react'
-import { categories } from '@/constants/testData'
 import { ShoppingCart } from 'lucide-react'
 import { Badge } from '@nextui-org/react'
+import { useQuery } from '@tanstack/react-query'
+import { Category } from '@/types'
 
 const Navbar: React.FC = () => {
   const pathname = usePathname()
   const navbarRef = useRef<HTMLDivElement | null>(null)
+
+  const { data: categories, isLoading } = useQuery({
+    queryKey: ['categories'],
+    queryFn: async () => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/products/categories`
+      )
+      const data = await response.json()
+      return data['results']
+    },
+  })
 
   useEffect(() => {
     if (navbarRef.current && pathname == '/') {
@@ -25,15 +37,16 @@ const Navbar: React.FC = () => {
       </a>
 
       <div className="flex gap-8 text-sm">
-        {categories.map((category) => (
-          <a
-            href={`/categories/${category.slug}`}
-            key={category.id}
-            className="font-semibold uppercase"
-          >
-            {category.name}
-          </a>
-        ))}
+        {!isLoading &&
+          categories.map((category: Category) => (
+            <a
+              href={`/categories/${category.name}`}
+              key={category.id}
+              className="font-semibold uppercase"
+            >
+              {category.name}
+            </a>
+          ))}
       </div>
 
       <div className="flex items-center gap-14 font-bold">

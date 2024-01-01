@@ -56,3 +56,9 @@ export interface Order {
   shipping_address: Address
   lines: OrderLine[]
 }
+
+export interface Category {
+  id: number
+  name: string
+  description: string
+}
