@@ -6,6 +6,7 @@ WORKDIR /app
 # Cache dependencies
 COPY requirements.txt /app/
 
+RUN python -m pip install --upgrade pip
 RUN pip install -r requirements.txt 
 
 # Add current directory code to working directory
