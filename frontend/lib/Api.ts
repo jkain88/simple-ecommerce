@@ -746,6 +746,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: {
         /** A page number within the paginated result set. */
         page?: number
+        /** Number of results to return per page. */
+        page_size?: number
       },
       params: RequestParams = {}
     ) =>
@@ -851,6 +853,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         is_featured?: string
         /** A page number within the paginated result set. */
         page?: number
+        /** Number of results to return per page. */
+        page_size?: number
       },
       params: RequestParams = {}
     ) =>
@@ -885,6 +889,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: {
         /** A page number within the paginated result set. */
         page?: number
+        /** Number of results to return per page. */
+        page_size?: number
       },
       params: RequestParams = {}
     ) =>
@@ -1307,6 +1313,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: {
         /** A page number within the paginated result set. */
         page?: number
+        /** Number of results to return per page. */
+        page_size?: number
       },
       params: RequestParams = {}
     ) =>
