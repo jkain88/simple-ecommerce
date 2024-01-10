@@ -848,6 +848,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     productsList: (
       query?: {
+        is_featured?: string
         /** A page number within the paginated result set. */
         page?: number
       },
