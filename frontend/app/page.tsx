@@ -56,7 +56,7 @@ export default async function Home() {
   return (
     <div className="bg-gray-100">
       <FeaturedProducts />
-      <NewArrivals products={products} />
+      <NewArrivals />
     </div>
   )
 }
