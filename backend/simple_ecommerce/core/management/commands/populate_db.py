@@ -1,5 +1,6 @@
 from decimal import Decimal
 import os
+import random
 import requests
 
 from django.core.files import File
@@ -24,7 +25,7 @@ def create_zalora_products(category_name):
         "Sports": {"id": "258", "segment": "women"},
         "Electronics": {"id": "11031", "segment": "home"},
     }
-    API_URL = f"https://api.zalora.com.ph/v1/dynproducts/datajet/list?abtest=djAbTest_True%7Cuuid%3A82838788-cd7c-49bb-8ead-c316db09e955&categoryId={zalora_category[category_name]['id']}&fullFacetCategory=true&image_format=webp&image_quality=70&limit=10&offset=0&segment={zalora_category[category_name]['segment']}&shop=m"
+    API_URL = f"https://api.zalora.com.ph/v1/dynproducts/datajet/list?abtest=djAbTest_True%7Cuuid%3A82838788-cd7c-49bb-8ead-c316db09e955&categoryId={zalora_category[category_name]['id']}&fullFacetCategory=true&image_format=webp&image_quality=70&limit=5&offset=0&segment={zalora_category[category_name]['segment']}&shop=m"
     headers = {
         "Accept": "application/json",
     }
@@ -35,10 +36,14 @@ def create_zalora_products(category_name):
     for product in products:
         price = Decimal(product["Price"].replace("Php ", "").replace(",", ""))
         name = " ".join(product["Name"].split(" ")[:5])
+        is_featured = random.choice([True, False])
         db_product, _ = Product.objects.get_or_create(
-            name=name, price=price, sku=product["ConfigSku"], quantity=1000
+            name=name,
+            price=price,
+            sku=product["ConfigSku"],
+            quantity=1000,
+            is_featured=is_featured,
         )
-        print("PRODUCT", db_product)
 
         for index, image_url in enumerate(product["ImageList"]):
             image_data = requests.get(image_url).content
