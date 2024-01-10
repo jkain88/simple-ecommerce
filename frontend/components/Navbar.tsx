@@ -7,7 +7,7 @@ import React, { useEffect, useRef } from 'react'
 import { ShoppingCart } from 'lucide-react'
 import { Badge } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
-import { Category } from '@/types'
+import { Api, Category } from '@/lib/Api'
 
 const Navbar: React.FC = () => {
   const pathname = usePathname()
@@ -16,11 +16,8 @@ const Navbar: React.FC = () => {
   const { data: categories, isLoading } = useQuery({
     queryKey: ['categories'],
     queryFn: async () => {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/products/categories`
-      )
-      const data = await response.json()
-      return data['results']
+      const api = new Api()
+      return api.products.productsCategoriesList()
     },
   })
 
@@ -38,7 +35,7 @@ const Navbar: React.FC = () => {
 
       <div className="flex gap-8 text-sm">
         {!isLoading &&
-          categories.map((category: Category) => (
+          categories!.data.results.map((category: Category) => (
             <a
               href={`/categories/${category.name}`}
               key={category.id}
