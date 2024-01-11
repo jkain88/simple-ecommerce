@@ -34,7 +34,7 @@ class ProductVariantSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    category_name = serializers.CharField(source="category.name", allow_null=True)
+    category = CategorySerializer(read_only=True)
     price = MoneyField(max_digits=9, decimal_places=2)
     variants = ProductVariantSerializer(many=True)
     images = ProductImageSerializer(many=True)
@@ -45,7 +45,6 @@ class ProductSerializer(serializers.ModelSerializer):
             "id",
             "name",
             "category",
-            "category_name",
             "images",
             "is_featured",
             "price",
