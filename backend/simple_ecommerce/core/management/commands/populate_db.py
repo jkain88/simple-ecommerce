@@ -38,7 +38,7 @@ def create_zalora_products(category_name):
         price = Decimal(product["Price"].replace("Php ", "").replace(",", ""))
         name = " ".join(product["Name"].split(" ")[:5])
         is_featured = random.choice([True, False])
-        if not Product.objects.filter(name=name).exists():
+        if not Product.objects.filter(name=name).exists() and product["ImageList"]:
             db_product = Product.objects.create(
                 name=name,
                 price=price,
