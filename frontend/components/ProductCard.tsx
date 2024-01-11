@@ -11,8 +11,8 @@ type Props = {
 
 const ProductCard: React.FC<Props> = ({ name, price, image }: Props) => {
   return (
-    <Card className="flex h-full w-60 flex-col" isPressable>
-      <CardBody className="grow-1 relative items-center justify-center overflow-hidden py-8">
+    <Card className="flex h-full w-56 flex-col" isPressable>
+      <CardBody className="grow-1 relative items-center justify-center overflow-hidden px-0 ">
         <Image
           alt="product"
           isZoomed
