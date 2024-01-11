@@ -7,7 +7,7 @@ from .models import Category, Product, ProductImage, ProductVariant
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ["id", "name", "description"]
+        fields = ["id", "name", "description", "slug"]
 
 
 class ProductImageSerializer(serializers.ModelSerializer):
@@ -50,6 +50,7 @@ class ProductSerializer(serializers.ModelSerializer):
             "is_featured",
             "price",
             "price_currency",
+            "slug",
             "sku",
             "quantity",
             "quantity_allocated",
