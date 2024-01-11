@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.utils.text import slugify
 from djmoney.models.fields import MoneyField
 from model_utils.models import TimeStampedModel
 
@@ -9,12 +10,18 @@ from simple_ecommerce.core.models import PublishableModel
 class Category(PublishableModel, TimeStampedModel):
     name = models.CharField(max_length=50)
     description = models.TextField(blank=True)
+    slug = models.SlugField(max_length=255, unique=True, null=True)
     parent = models.ForeignKey(
         "self", on_delete=models.CASCADE, null=True, related_name="children"
     )
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
 
 class Product(PublishableModel, TimeStampedModel):
@@ -33,9 +40,15 @@ class Product(PublishableModel, TimeStampedModel):
     quantity_allocated = models.PositiveIntegerField(default=0)
     has_variants = models.BooleanField(default=False)
     is_featured = models.BooleanField(default=False)
+    slug = models.SlugField(max_length=255, unique=True, null=True)
 
     def __str__(self) -> str:
         return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
 
 class ProductVariant(TimeStampedModel):
