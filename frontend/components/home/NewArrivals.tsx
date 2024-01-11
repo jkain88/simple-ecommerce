@@ -34,7 +34,7 @@ const NewArrivals: React.FC = () => {
   })
   console.log('HAS NEXT PAGE', hasNextPage)
   return (
-    <section className="mb-8 flex flex-col items-center px-10">
+    <section className="mb-8 flex flex-col items-center px-10 pb-20">
       <h1 className="text-center text-3xl">New Arrivals</h1>
       <p className="mt-2 text-center text-sm">
         Grabe these new items before they&apos;re gone!
@@ -54,12 +54,14 @@ const NewArrivals: React.FC = () => {
             ))
           )}
       </div>
-      <Button
-        className="mb-20 mt-10 bg-black px-8 text-white"
-        onClick={() => fetchNextPage()}
-      >
-        View More
-      </Button>
+      {hasNextPage && (
+        <Button
+          className="mt-10 bg-black px-8 text-white"
+          onClick={() => fetchNextPage()}
+        >
+          View More
+        </Button>
+      )}
     </section>
   )
 }
