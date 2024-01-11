@@ -132,6 +132,14 @@ export interface Product {
    */
   price_currency?: string
   /**
+   * Slug
+   * @format slug
+   * @minLength 1
+   * @maxLength 255
+   * @pattern ^[-a-zA-Z0-9_]+$
+   */
+  slug?: string | null
+  /**
    * Sku
    * @maxLength 255
    */
@@ -253,6 +261,14 @@ export interface Category {
   name: string
   /** Description */
   description?: string
+  /**
+   * Slug
+   * @format slug
+   * @minLength 1
+   * @maxLength 255
+   * @pattern ^[-a-zA-Z0-9_]+$
+   */
+  slug?: string | null
 }
 
 export interface CustomTokenObtainPair {
@@ -851,6 +867,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     productsList: (
       query?: {
         is_featured?: string
+        category__slug?: string
         /** A page number within the paginated result set. */
         page?: number
         /** Number of results to return per page. */
