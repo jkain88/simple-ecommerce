@@ -37,7 +37,7 @@ const Navbar: React.FC = () => {
         {!isLoading &&
           categories!.data.results.map((category: Category) => (
             <a
-              href={`/categories/${category.name}`}
+              href={`/categories/${category.slug}`}
               key={category.id}
               className="font-semibold uppercase"
             >
