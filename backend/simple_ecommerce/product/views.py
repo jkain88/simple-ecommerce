@@ -51,6 +51,7 @@ class ProductList(generics.ListAPIView):
 class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    lookup_field = "slug"
 
     def get_permissions(self):
         method = self.request.method
