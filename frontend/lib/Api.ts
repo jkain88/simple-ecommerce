@@ -47,6 +47,27 @@ export interface Address {
   user: number
 }
 
+export interface Category {
+  /** ID */
+  id?: number
+  /**
+   * Name
+   * @minLength 1
+   * @maxLength 50
+   */
+  name: string
+  /** Description */
+  description?: string
+  /**
+   * Slug
+   * @format slug
+   * @minLength 1
+   * @maxLength 255
+   * @pattern ^[-a-zA-Z0-9_]+$
+   */
+  slug?: string | null
+}
+
 export interface ProductImage {
   /** ID */
   id?: number
@@ -111,13 +132,7 @@ export interface Product {
    * @maxLength 150
    */
   name: string
-  /** Category */
-  category?: number | null
-  /**
-   * Category name
-   * @minLength 1
-   */
-  category_name?: string | null
+  category?: Category
   images: ProductImage[]
   /** Is featured */
   is_featured?: boolean
@@ -248,27 +263,6 @@ export interface Order {
   total_amount?: string | null
   /** User */
   user?: number | null
-}
-
-export interface Category {
-  /** ID */
-  id?: number
-  /**
-   * Name
-   * @minLength 1
-   * @maxLength 50
-   */
-  name: string
-  /** Description */
-  description?: string
-  /**
-   * Slug
-   * @format slug
-   * @minLength 1
-   * @maxLength 255
-   * @pattern ^[-a-zA-Z0-9_]+$
-   */
-  slug?: string | null
 }
 
 export interface CustomTokenObtainPair {
@@ -1039,6 +1033,75 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags products
+     * @name ProductsDetailRead
+     * @request GET:/products/detail/{slug}
+     * @secure
+     */
+    productsDetailRead: (slug: string, params: RequestParams = {}) =>
+      this.request<Product, any>({
+        path: `/products/detail/${slug}`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags products
+     * @name ProductsDetailUpdate
+     * @request PUT:/products/detail/{slug}
+     * @secure
+     */
+    productsDetailUpdate: (slug: string, data: Product, params: RequestParams = {}) =>
+      this.request<Product, any>({
+        path: `/products/detail/${slug}`,
+        method: 'PUT',
+        body: data,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags products
+     * @name ProductsDetailPartialUpdate
+     * @request PATCH:/products/detail/{slug}
+     * @secure
+     */
+    productsDetailPartialUpdate: (slug: string, data: Product, params: RequestParams = {}) =>
+      this.request<Product, any>({
+        path: `/products/detail/${slug}`,
+        method: 'PATCH',
+        body: data,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags products
+     * @name ProductsDetailDelete
+     * @request DELETE:/products/detail/{slug}
+     * @secure
+     */
+    productsDetailDelete: (slug: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/products/detail/${slug}`,
+        method: 'DELETE',
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags products
      * @name ProductsImageCreateCreate
      * @request POST:/products/image/create/
      * @secure
@@ -1204,75 +1267,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     productsVariantDelete: (id: number, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/products/variant/${id}`,
-        method: 'DELETE',
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags products
-     * @name ProductsRead
-     * @request GET:/products/{id}
-     * @secure
-     */
-    productsRead: (id: number, params: RequestParams = {}) =>
-      this.request<Product, any>({
-        path: `/products/${id}`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags products
-     * @name ProductsUpdate
-     * @request PUT:/products/{id}
-     * @secure
-     */
-    productsUpdate: (id: number, data: Product, params: RequestParams = {}) =>
-      this.request<Product, any>({
-        path: `/products/${id}`,
-        method: 'PUT',
-        body: data,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags products
-     * @name ProductsPartialUpdate
-     * @request PATCH:/products/{id}
-     * @secure
-     */
-    productsPartialUpdate: (id: number, data: Product, params: RequestParams = {}) =>
-      this.request<Product, any>({
-        path: `/products/${id}`,
-        method: 'PATCH',
-        body: data,
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags products
-     * @name ProductsDelete
-     * @request DELETE:/products/{id}
-     * @secure
-     */
-    productsDelete: (id: number, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/products/${id}`,
         method: 'DELETE',
         secure: true,
         ...params,
