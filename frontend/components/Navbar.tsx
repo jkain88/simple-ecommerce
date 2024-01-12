@@ -28,7 +28,7 @@ const Navbar: React.FC = () => {
   }, [pathname])
 
   return (
-    <div className="flex items-center justify-between px-20 py-6 2xl:px-40">
+    <div className="flex items-center justify-around px-20 py-6 2xl:px-40">
       <a href="/">
         <Image src="/black-logo.svg" alt="logo" width={120} height={100} />
       </a>

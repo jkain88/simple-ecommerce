@@ -2190,6 +2190,18 @@
   dependencies:
     "@tanstack/query-core" "5.17.0"
 
+"@tanstack/query-core@5.12.1":
+  version "5.12.1"
+  resolved "https://registry.npmjs.org/@tanstack/query-core/-/query-core-5.12.1.tgz"
+  integrity sha512-WbZztNmKq0t6QjdNmHzezbi/uifYo9j6e2GLJkodsYaYUlzMbAp91RDyeHkIZrm7EfO4wa6Sm5sxJZm5SPlh6w==
+
+"@tanstack/react-query@^5.12.2":
+  version "5.12.2"
+  resolved "https://registry.npmjs.org/@tanstack/react-query/-/react-query-5.12.2.tgz"
+  integrity sha512-BeWZu8zVFH20oRc+S/K9ADPgWjEzP/XQCGBNz5IbApUwPQAdwkQYbXODVL5AyAlWiSxhx+P2xlARPBApj2Yrog==
+  dependencies:
+    "@tanstack/query-core" "5.12.1"
+
 "@types/color-convert@*":
   version "2.0.2"
   resolved "https://registry.npmjs.org/@types/color-convert/-/color-convert-2.0.2.tgz"
