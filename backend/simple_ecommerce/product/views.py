@@ -1,9 +1,15 @@
+from django_filters import rest_framework as filters
 from rest_framework import generics
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser
 
 from .models import Category, Product, ProductImage, ProductVariant
-from .serializers import CategorySerializer, ProductImageSerializer, ProductSerializer, ProductVariantSerializer
+from .serializers import (
+    CategorySerializer,
+    ProductImageSerializer,
+    ProductSerializer,
+    ProductVariantSerializer,
+)
 
 
 class CategoryCreate(generics.CreateAPIView):
@@ -22,7 +28,7 @@ class CategoryDetail(generics.RetrieveUpdateDestroyAPIView):
 
     def get_permissions(self):
         method = self.request.method
-        if method in ['PUT', 'PATCH', 'DELETE']:
+        if method in ["PUT", "PATCH", "DELETE"]:
             self.permission_classes = [IsAdminUser]
         else:
             self.permission_classes = []
@@ -38,6 +44,8 @@ class ProductCreate(generics.CreateAPIView):
 class ProductList(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    filter_backends = [filters.DjangoFilterBackend]
+    filterset_fields = ["is_featured", "category__slug"]
 
 
 class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -46,7 +54,7 @@ class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
 
     def get_permissions(self):
         method = self.request.method
-        if method in ['PUT', 'PATCH', 'DELETE']:
+        if method in ["PUT", "PATCH", "DELETE"]:
             self.permission_classes = [IsAdminUser]
         else:
             self.permission_classes = []
