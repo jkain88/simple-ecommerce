@@ -32,7 +32,7 @@ const NewArrivals: React.FC = () => {
     },
     initialPageParam: 1,
   })
-  console.log('HAS NEXT PAGE', hasNextPage)
+
   return (
     <section className="mb-8 flex flex-col items-center px-10 pb-20">
       <h1 className="text-center text-3xl">New Arrivals</h1>
@@ -43,14 +43,13 @@ const NewArrivals: React.FC = () => {
         {!isLoading &&
           products!.pages.map((page, i) =>
             page.results.map((product: Product) => (
-              <Link href={`/products/${product.id}`} key={product.id}>
-                <ProductCard
-                  key={product.id}
-                  price={product.price}
-                  image={product.images[0].image}
-                  name={product.name}
-                />
-              </Link>
+              <ProductCard
+                key={product.id}
+                price={product.price}
+                image={product.images[0].image}
+                name={product.name}
+                slug={product.slug}
+              />
             ))
           )}
       </div>

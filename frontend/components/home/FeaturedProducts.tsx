@@ -23,14 +23,13 @@ const FeaturedProducts: React.FC = () => {
       <div className="mt-5 grid max-w-max grid-cols-2 gap-10 px-10 md:grid-cols-4">
         {!isLoading &&
           products!.data.results.map((product: Product) => (
-            <Link href={`/products/${product.id}`} key={product.id}>
               <ProductCard
                 key={product.id}
                 price={product.price}
                 image={product.images[0].image}
                 name={product.name}
+                slug={product.slug}
               />
-            </Link>
           ))}
       </div>
     </section>

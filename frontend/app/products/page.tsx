@@ -6,16 +6,6 @@ import Link from 'next/link'
 import ProductPageContainer from '@/components/ProductPageContainer'
 import SortDropdown from '@/components/SortDropdown'
 
-const getProducts = async () => {
-  const response = await fetch('https://fakestoreapi.com/products?limit=5')
-
-  if (!response.ok) {
-    throw new Error('Failed to fetch data')
-  }
-
-  return response.json()
-}
-
 export default async function Products() {
   const products = await getProducts()
   return (
