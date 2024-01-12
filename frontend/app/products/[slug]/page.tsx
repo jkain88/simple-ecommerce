@@ -14,7 +14,7 @@ interface Props {
 
 const RelatedProducts: React.FC<Props> = ({ products }) => {
   return (
-    <div className="mt-10 grid auto-rows-auto sm:grid-cols-2 lg:grid-cols-4">
+    <div className="mt-10 grid auto-rows-auto justify-center gap-y-4 md:grid-cols-2 lg:grid-cols-4">
       {products.map((product) => (
         <Link href={`/products/${product.id}`} key={product.id}>
           <ProductCard
@@ -45,9 +45,21 @@ export default function ProductPage(
     },
   })
 
-  if (isProductLoading) return <div></div>
+  const { data: relatedProducts, isLoading: isRelatedProductsLoading } =
+    useQuery({
+      queryKey: ['relatedProducts', params.slug],
+      queryFn: async () => {
+        const api = new Api()
+        const response = await api.products.productsList({
+          category__slug: product!.data.category!.slug as string | undefined,
+          page_size: 4,
+        })
+        return response
+      },
+      enabled: product?.data.category?.slug !== undefined,
+    })
 
-  console.log('PRODUCT', product)
+  if (isProductLoading) return <div></div>
 
   // const product = await getProduct(params.slug)
   // const products = await getProducts()
@@ -62,12 +74,14 @@ export default function ProductPage(
       </div>
 
       <hr />
-      {/* <div>
-        <p className="font-serif text-3xl font-normal">Related Products</p>
+      {!isRelatedProductsLoading && (
         <div>
-          <RelatedProducts products={products} />
+          <p className="font-serif text-3xl font-normal">Related Products</p>
+          <div>
+            <RelatedProducts products={relatedProducts!.data.results} />
+          </div>
         </div>
-      </div> */}
+      )}
     </ProductPageContainer>
   )
 }
