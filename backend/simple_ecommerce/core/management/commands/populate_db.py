@@ -12,6 +12,7 @@ from simple_ecommerce.product.models import (
     ProductVariant,
     ProductImage,
 )
+from simple_ecommerce.user.models import User
 
 
 # Get the directory of the current script
@@ -93,5 +94,15 @@ class Command(BaseCommand):
         categories = Category.objects.all()
         for category in categories:
             create_zalora_products(category.name)
+
+        admin = User.objects.create(
+            email="admin@gmail.com",
+            is_staff=True,
+            is_superuser=True,
+            first_name="Admin",
+            last_name="Admin",
+        )
+        admin.set_password("admin")
+        admin.save()
 
         self.stdout.write(self.style.SUCCESS("Database populated!"))
