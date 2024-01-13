@@ -21,9 +21,10 @@ import { CalendarIcon } from 'lucide-react'
 import { Calendar } from '../ui/calendar'
 import { cn } from '@/lib/utils'
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { Api } from '@/lib/Api'
 import { useSession } from 'next-auth/react'
+import { Spinner } from '@nextui-org/react'
 
 type Inputs = z.infer<typeof profileSchema>
 
@@ -38,6 +39,28 @@ const ProfileForm: React.FC = () => {
       contactNumber: '',
       gender: 'male',
       email: '',
+    },
+  })
+  const { mutate, isPending } = useMutation({
+    mutationKey: ['userProfileUpdate'],
+    mutationFn: async (data: Inputs) => {
+      const api = new Api()
+      return await api.users.usersProfileUpdate(
+        {
+          first_name: data.firstName,
+          last_name: data.lastName,
+          email: data.email,
+          contact_number: data.contactNumber,
+          birthday: data.birthday,
+          sex: data.gender,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Token ${session?.token}`,
+          },
+        }
+      )
     },
   })
   const { data: userData, isLoading } = useQuery({
@@ -60,12 +83,15 @@ const ProfileForm: React.FC = () => {
       form.setValue('firstName', userData!.data.first_name)
       form.setValue('lastName', userData!.data.last_name)
       form.setValue('birthday', userData!.data.birthday)
+      form.setValue('contactNumber', userData!.data.contact_number)
+      form.setValue('gender', userData!.data.sex)
     }
   }, [isLoading, userData, form])
 
   const onSubmit = (data: Inputs) => {
     // API CALL
     console.log('SUBMIT', data)
+    mutate(data)
   }
   if (isLoading) return <div>Loading...</div>
   console.log('USER DATA', form.getValues())
@@ -149,7 +175,7 @@ const ProfileForm: React.FC = () => {
                 <FormControl>
                   <RadioGroup
                     onValueChange={field.onChange}
-                    defaultValue={field.value}
+                    value={field.value}
                     className="flex"
                   >
                     <FormItem className="flex items-center space-x-1 space-y-0">
@@ -209,7 +235,9 @@ const ProfileForm: React.FC = () => {
                         selected={
                           field.value ? new Date(field.value) : undefined
                         }
-                        onSelect={field.onChange}
+                        onSelect={(date) =>
+                          field.onChange(date ? format(date, 'yyyy-MM-dd') : '')
+                        }
                         disabled={(date) =>
                           date > new Date() || date < new Date('1900-01-01')
                         }
@@ -223,8 +251,11 @@ const ProfileForm: React.FC = () => {
             )}
           />
         </div>
-        <Button type="submit" className="mt-4">
-          Submit
+        <Button type="submit" className="mt-4" disabled={isPending}>
+          <div className="flex items-center gap-2">
+            {isPending && <Spinner size="sm" color="default" />}
+            <span>Submit</span>
+          </div>
         </Button>
       </form>
     </Form>

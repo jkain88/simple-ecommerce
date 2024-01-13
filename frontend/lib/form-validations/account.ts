@@ -3,8 +3,8 @@ import { z } from 'zod'
 export const profileSchema = z.object({
   firstName: z.string().min(2).max(100).optional(),
   lastName: z.string().min(2).max(100).optional(),
-  gender: z.enum(['male', 'female', 'others']),
-  contactNumber: z.string().min(10).max(13),
+  gender: z.enum(['male', 'female', 'others']).optional(),
+  contactNumber: z.string().min(10).max(13).optional(),
   birthday: z.string().nullable().optional(),
   email: z.string().email(),
 })

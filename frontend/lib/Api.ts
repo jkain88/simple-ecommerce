@@ -344,7 +344,7 @@ export interface User {
    */
   last_name?: string
   /** Sex */
-  sex?: 'male' | 'female'
+  sex?: 'male' | 'female' | 'others'
 }
 
 export interface UserRegister {
@@ -390,7 +390,7 @@ export interface UserRegister {
    */
   last_name?: string
   /** Sex */
-  sex?: 'male' | 'female'
+  sex?: 'male' | 'female' | 'others'
   /**
    * Password
    * @minLength 1
