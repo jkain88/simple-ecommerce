@@ -48,7 +48,7 @@ const Navbar: React.FC = () => {
             <a
               href={`/categories/${category.slug}`}
               key={category.id}
-              className="font-semibold uppercase"
+              className="font-semibold uppercase hover:text-gray-400"
             >
               {category.name}
             </a>
@@ -58,7 +58,7 @@ const Navbar: React.FC = () => {
       <div className="flex items-center gap-14 font-bold">
         <Link href="/cart">
           <Badge content="2">
-            <ShoppingCart size={30} />
+            <ShoppingCart size={30} className="hover:text-gray-400" />
           </Badge>
         </Link>
 
@@ -73,10 +73,16 @@ const Navbar: React.FC = () => {
           </div>
         ) : (
           <div className="flex divide-x-1 divide-black ">
-            <a href="/account/profile" className="pr-2 hover:text-gray-400">
+            <a
+              href="/account/profile"
+              className="cursor-pointer pr-2 hover:text-gray-400"
+            >
               Profile
             </a>
-            <a onClick={handleSignOut} className="pl-2 hover:text-gray-400">
+            <a
+              onClick={handleSignOut}
+              className="cursor-pointer pl-2 hover:text-gray-400"
+            >
               Logout
             </a>
           </div>

@@ -12,6 +12,12 @@ interface Props {
   products: Product[]
 }
 
+type ProductPageProps = {
+  params: {
+    slug: string
+  }
+}
+
 const RelatedProducts: React.FC<Props> = ({ products }) => {
   return (
     <div className="mt-10 grid auto-rows-auto justify-center gap-y-4 md:grid-cols-2 lg:grid-cols-4">
@@ -29,13 +35,7 @@ const RelatedProducts: React.FC<Props> = ({ products }) => {
   )
 }
 
-export default function ProductPage(
-  {
-    params,
-  }: {
-    params: { slug: string }
-  } = { params: { slug: '' } }
-) {
+export default function ProductPage({ params }: ProductPageProps) {
   const { data: product, isLoading: isProductLoading } = useQuery({
     queryKey: ['product', params.slug],
     queryFn: async () => {
@@ -51,7 +51,7 @@ export default function ProductPage(
       queryFn: async () => {
         const api = new Api()
         const response = await api.products.productsList({
-          category__slug: product!.data.category!.slug as string | undefined,
+          category__slug: product!.data.category!.slug as string,
           page_size: 4,
         })
         return response

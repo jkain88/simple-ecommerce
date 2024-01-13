@@ -10,9 +10,9 @@ import {
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import Providers from './providers'
-import { authOptions } from './api/auth/[...nextauth]/route'
 import { getServerSession } from 'next-auth'
 import { ToastContainer } from 'react-toastify'
+import { authOptions } from './api/auth/[...nextauth]/options'
 
 const inter = Inter({ subsets: ['latin'] })
 

@@ -7,10 +7,9 @@ import ProductPageContainer from '@/components/ProductPageContainer'
 import SortDropdown from '@/components/SortDropdown'
 
 export default async function Products() {
-  const products = await getProducts()
   return (
     <div className="">
-      <section className="lg:px- mt-8 px-10 md:mt-5 lg:px-64">
+      {/* <section className="lg:px- mt-8 px-10 md:mt-5 lg:px-64">
         <div className="flex flex-col items-center gap-4 py-8 md:flex-row md:justify-between md:gap-0">
           <p className="text-xs">Showing: 1 - 40 of 1000</p>
           <SortDropdown />
@@ -30,7 +29,7 @@ export default async function Products() {
           ))}
         </div>
         <Paginator />
-      </section>
+      </section> */}
     </div>
   )
 }
