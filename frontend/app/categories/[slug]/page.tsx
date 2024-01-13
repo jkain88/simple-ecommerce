@@ -3,21 +3,41 @@
 import Paginator from '@/components/Paginator'
 import ProductCard from '@/components/ProductCard'
 import SortDropdown from '@/components/SortDropdown'
+import { Button } from '@/components/ui/button'
 import { Api, Product } from '@/lib/Api'
-import { useQuery } from '@tanstack/react-query'
-import Link from 'next/link'
+import { extractPageFromUrl } from '@/lib/utils'
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
+
+const getProducts =
+  (slug: string) =>
+  async ({ pageParam = 1 }: { pageParam: number }) => {
+    const api = new Api()
+    const response = await api.products.productsList({
+      category__slug: slug,
+      page_size: 10,
+      page: pageParam,
+    })
+    return response.data
+  }
 
 export default function CategoriesPage({
   params,
 }: {
   params: { slug: string }
 }) {
-  const { data: products, isLoading } = useQuery({
+  const {
+    data: products,
+    fetchNextPage,
+    hasNextPage,
+    isLoading,
+  } = useInfiniteQuery({
     queryKey: ['category-products'],
-    queryFn: async () => {
-      const api = new Api()
-      return api.products.productsList({ category__slug: params.slug })
+    queryFn: getProducts(params.slug),
+    getNextPageParam: (lastPage) => {
+      const nextPage = extractPageFromUrl(lastPage.next)
+      return nextPage
     },
+    initialPageParam: 1,
   })
 
   return (
@@ -28,18 +48,26 @@ export default function CategoriesPage({
       </div>
       <div className="mt-10 grid grid-cols-2 gap-10 md:grid-cols-4">
         {!isLoading &&
-          products!.data.results.map((product: Product) => (
-            <Link href={`/products/${product.id}`} key={product.id}>
+          products!.pages.map((page, i) =>
+            page.results.map((product: Product) => (
               <ProductCard
                 key={product.id}
                 price={product.price}
                 image={product.images[0].image}
                 name={product.name}
+                slug={product.slug}
               />
-            </Link>
-          ))}
+            ))
+          )}
       </div>
-      <Paginator />
+      {hasNextPage && (
+        <Button
+          className="mt-10 bg-black px-8 text-white"
+          onClick={() => fetchNextPage()}
+        >
+          View More
+        </Button>
+      )}
     </section>
   )
 }
