@@ -56,6 +56,12 @@ class UserRegister(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
+        if User.objects.filter(email=data["email"]).exists():
+            return Response(
+                {"error": "Email already exists"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         User.objects.create_user(**data)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
