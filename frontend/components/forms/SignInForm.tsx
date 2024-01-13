@@ -35,10 +35,7 @@ const SignInForm: React.FC = () => {
       password: data.password,
       callbackUrl: '/',
     })
-    console.log('SUBMIT', data)
   }
-
-  console.log('FORM', form.getValues())
 
   return (
     <Form {...form}>

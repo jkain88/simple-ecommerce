@@ -1371,6 +1371,38 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags users
+     * @name UsersLoginCreate
+     * @request POST:/users/login/
+     * @secure
+     */
+    usersLoginCreate: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/users/login/`,
+        method: 'POST',
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags users
+     * @name UsersLogoutCreate
+     * @request POST:/users/logout/
+     * @secure
+     */
+    usersLogoutCreate: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/users/logout/`,
+        method: 'POST',
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags users
      * @name UsersProfileRead
      * @request GET:/users/profile
      * @secure

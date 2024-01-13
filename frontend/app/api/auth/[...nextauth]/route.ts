@@ -6,9 +6,9 @@ import NextAuth, {
 } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
-export const authOptions = {
+export const authOptions: AuthOptions = {
   session: {
-    strategy: 'jwt' as SessionStrategy,
+    strategy: 'jwt',
     maxAge: 60 * 10 * 30,
   },
   providers: [
@@ -32,9 +32,10 @@ export const authOptions = {
             },
           }
         )
-        const data = await response.json()
+        const data = (await response.json()) as User
         if (response.ok) {
-          return data
+          console.log('DATA', data)
+          return { id: data.id, token: data.token, email: data.email }
         } else {
           return null
         }
@@ -42,10 +43,21 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async session({ session, user }: { session: Session; user: User }) {
+    async jwt({ token, user, trigger, session }) {
+      if (trigger === 'update') {
+        return { ...token, ...session.user }
+      }
+      if (user) {
+        token.id = user.id
+        token.email = user.email
+        token.token = user.token
+      }
+      return token
+    },
+    async session({ session, token }) {
       return {
         ...session,
-        ...user,
+        ...token,
       }
     },
   },
