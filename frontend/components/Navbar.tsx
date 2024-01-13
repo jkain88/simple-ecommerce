@@ -8,7 +8,7 @@ import { ShoppingCart } from 'lucide-react'
 import { Badge } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
 import { Api, Category } from '@/lib/Api'
-import { useSession } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 
 const Navbar: React.FC = () => {
   const pathname = usePathname()
@@ -29,6 +29,11 @@ const Navbar: React.FC = () => {
     }
   }, [pathname])
 
+  const handleSignOut = async () => {
+    await signOut({
+      callbackUrl: '/',
+    })
+  }
   console.log('SESSION', session)
 
   return (
@@ -57,14 +62,22 @@ const Navbar: React.FC = () => {
           </Badge>
         </Link>
 
-        <div className="flex divide-x-1 divide-black ">
-          <a href="/signin" className="pr-2 hover:text-gray-400">
-            Sign In
-          </a>
-          <a href="/signup" className="pl-2 hover:text-gray-400">
-            Sign Up
-          </a>
-        </div>
+        {!session ? (
+          <div className="flex divide-x-1 divide-black ">
+            <a href="/signin" className="pr-2 hover:text-gray-400">
+              Sign In
+            </a>
+            <a href="/signup" className="pl-2 hover:text-gray-400">
+              Sign Up
+            </a>
+          </div>
+        ) : (
+          <div className="flex divide-x-1 divide-black ">
+            <a onClick={handleSignOut} className="pr-2 hover:text-gray-400">
+              Logout
+            </a>
+          </div>
+        )}
       </div>
     </div>
   )
