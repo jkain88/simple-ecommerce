@@ -8,7 +8,7 @@ from .models import Address, User
 from .serializers import AddressSerializer, UserSerializer, UserRegisterSerializer
 
 
-class CustomLogin(APIView):
+class Login(APIView):
     def post(self, request):
         email = request.data.get("email")
         password = request.data.get("password")
@@ -23,7 +23,7 @@ class CustomLogin(APIView):
             )
 
 
-class LogoutView(APIView):
+class Logout(APIView):
     def post(self, request):
         logout(request)
         return Response({"detail": "Logout successful"}, status=status.HTTP_200_OK)
