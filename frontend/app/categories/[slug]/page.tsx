@@ -1,6 +1,5 @@
 'use client'
 
-import Paginator from '@/components/Paginator'
 import ProductCard from '@/components/ProductCard'
 import SortDropdown from '@/components/SortDropdown'
 import { Button } from '@/components/ui/button'
