@@ -89,12 +89,11 @@ const ProfileForm: React.FC = () => {
   }, [isLoading, userData, form])
 
   const onSubmit = (data: Inputs) => {
-    // API CALL
-    console.log('SUBMIT', data)
     mutate(data)
   }
+
   if (isLoading) return <div>Loading...</div>
-  console.log('USER DATA', form.getValues())
+  
   return (
     <Form {...form}>
       <form

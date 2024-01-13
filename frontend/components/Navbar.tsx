@@ -34,7 +34,6 @@ const Navbar: React.FC = () => {
       callbackUrl: '/',
     })
   }
-  console.log('SESSION', session)
 
   return (
     <div className="flex items-center justify-around px-20 py-6 2xl:px-40">
