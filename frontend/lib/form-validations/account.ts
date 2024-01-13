@@ -1,10 +1,11 @@
 import { z } from 'zod'
 
 export const profileSchema = z.object({
-  fullName: z.string().min(2).max(100),
+  firstName: z.string().min(2).max(100).optional(),
+  lastName: z.string().min(2).max(100).optional(),
   gender: z.enum(['male', 'female', 'others']),
   contactNumber: z.string().min(10).max(13),
-  birthday: z.date(),
+  birthday: z.string().nullable().optional(),
   email: z.string().email(),
 })
 

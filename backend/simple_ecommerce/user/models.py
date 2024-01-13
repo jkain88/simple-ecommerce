@@ -32,7 +32,9 @@ class User(AbstractBaseUser):
     middle_name = models.CharField(max_length=100, blank=True)
     last_name = models.CharField(max_length=100, blank=True)
     contact_number = models.CharField(max_length=30, blank=True)
-    sex = models.CharField(choices=Sex.CHOICES, max_length=10, blank=True)
+    sex = models.CharField(
+        choices=Sex.CHOICES, default=Sex.MALE, max_length=10, blank=True
+    )
     birthday = models.DateField(null=True, blank=True)
     objects = UserManager()
 

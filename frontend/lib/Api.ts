@@ -312,6 +312,16 @@ export interface User {
    */
   age?: number | null
   /**
+   * Birthday
+   * @format date
+   */
+  birthday?: string | null
+  /**
+   * Contact number
+   * @maxLength 30
+   */
+  contact_number?: string
+  /**
    * Email
    * @format email
    * @minLength 1
@@ -347,6 +357,16 @@ export interface UserRegister {
    * @max 2147483647
    */
   age?: number | null
+  /**
+   * Birthday
+   * @format date
+   */
+  birthday?: string | null
+  /**
+   * Contact number
+   * @maxLength 30
+   */
+  contact_number?: string
   /**
    * Email
    * @format email
