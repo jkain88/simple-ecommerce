@@ -3,6 +3,7 @@
 import React from 'react'
 import type { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { signIn } from 'next-auth/react'
 
 import {
   Form,
@@ -24,13 +25,17 @@ const SignInForm: React.FC = () => {
     resolver: zodResolver(signInSchema),
     defaultValues: {
       email: '',
-      // password: '',
+      password: '',
     },
   })
 
-  const onSubmit = () => {
-    // API CALL
-    console.log('SUBMIT')
+  const onSubmit = async (data: Inputs) => {
+    await signIn('credentials', {
+      username: data.email,
+      password: data.password,
+      callbackUrl: '/',
+    })
+    console.log('SUBMIT', data)
   }
 
   console.log('FORM', form.getValues())

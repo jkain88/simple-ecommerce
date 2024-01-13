@@ -22,8 +22,8 @@ export const signInSchema = z.object({
     .string({
       required_error: 'This field is required',
     })
-    .min(8, {
-      message: 'This field is required'
+    .min(4, {
+      message: 'This field is required',
     }),
 })
 

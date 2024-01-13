@@ -8,10 +8,12 @@ import { ShoppingCart } from 'lucide-react'
 import { Badge } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
 import { Api, Category } from '@/lib/Api'
+import { useSession } from 'next-auth/react'
 
 const Navbar: React.FC = () => {
   const pathname = usePathname()
   const navbarRef = useRef<HTMLDivElement | null>(null)
+  const { data: session } = useSession()
 
   const { data: categories, isLoading } = useQuery({
     queryKey: ['categories'],
@@ -26,6 +28,8 @@ const Navbar: React.FC = () => {
       navbarRef.current?.scrollIntoView({ behavior: 'auto' })
     }
   }, [pathname])
+
+  console.log('SESSION', session)
 
   return (
     <div className="flex items-center justify-around px-20 py-6 2xl:px-40">
