@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "djmoney",
     "drf_yasg",
     "rest_framework",
+    "rest_framework.authtoken",
     "rest_framework_simplejwt",
     "whitenoise.runserver_nostatic",
 ]
@@ -131,9 +132,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Rest framework config
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework.authentication.SessionAuthentication",
-        "rest_framework.authentication.BasicAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
     ),
+    "DEFAULT_PERMISSION_CALSSES": ("rest_framework.permissions.AllowAny",),
     "DEFAULT_PAGINATION_CLASS": "simple_ecommerce.core.pagination.CustomPagination",
 }
 

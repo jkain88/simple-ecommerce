@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -12,12 +13,13 @@ class Login(APIView):
     def post(self, request):
         email = request.data.get("email")
         password = request.data.get("password")
+        user = authenticate(email=email, password=password)
 
-        user = authenticate(request, email=email, password=password)
         if user is not None:
-            login(request, user)
+            token, _ = Token.objects.get_or_create(user=user)
             return Response(
                 {
+                    "token": token.key,
                     "id": user.id,
                     "email": user.email,
                     "name": f"{user.first_name} {user.last_name}",
@@ -26,14 +28,16 @@ class Login(APIView):
             )
         else:
             return Response(
-                {"detail": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST
+                {"error": "Wrong Credentials"}, status=status.HTTP_400_BAD_REQUEST
             )
 
 
 class Logout(APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
-        logout(request)
-        return Response({"detail": "Logout successful"}, status=status.HTTP_200_OK)
+        request.user.auth_token.delete()
+        return Response(status=status.HTTP_200_OK)
 
 
 class UserList(generics.ListAPIView):
