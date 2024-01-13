@@ -16,10 +16,12 @@ import { useForm } from 'react-hook-form'
 import { verifyEmailSchema } from '@/lib/form-validations/auth'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
+import { useRouter } from 'next/navigation'
 
 type Inputs = z.infer<typeof verifyEmailSchema>
 
 const VerifyEmailForm: React.FC = () => {
+  const router = useRouter()
   const form = useForm<Inputs>({
     resolver: zodResolver(verifyEmailSchema),
     defaultValues: {
@@ -28,8 +30,9 @@ const VerifyEmailForm: React.FC = () => {
   })
 
   const onSubmit = () => {
-    console.log('SUBMIT')
+    router.push('/account/profile')
   }
+
   return (
     <Form {...form}>
       <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
@@ -46,7 +49,7 @@ const VerifyEmailForm: React.FC = () => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full">
+        <Button type="submit" className="mt-2 w-full">
           Submit
         </Button>
       </form>
