@@ -1,4 +1,5 @@
 import './globals.css'
+import 'react-toastify/dist/ReactToastify.css'
 import { Inter } from 'next/font/google'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
@@ -11,6 +12,7 @@ import Footer from '@/components/Footer'
 import Providers from './providers'
 import { authOptions } from './api/auth/[...nextauth]/route'
 import { getServerSession } from 'next-auth'
+import { ToastContainer } from 'react-toastify'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -34,6 +36,7 @@ export default async function RootLayout({
           <Navbar />
           {children}
           <Footer />
+          <ToastContainer />
         </Providers>
       </body>
     </html>

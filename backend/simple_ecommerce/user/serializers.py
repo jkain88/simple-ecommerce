@@ -7,20 +7,16 @@ class AddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = Address
         fields = [
-            'id',
-            'address_type',
-            'city_area',
-            'city',
-            'province',
-            'street',
-            'postal_code',
-            'user'
+            "id",
+            "address_type",
+            "city_area",
+            "city",
+            "province",
+            "street",
+            "postal_code",
+            "user",
         ]
-        extra_kwargs = {
-            'user': {
-                'write_only': True
-            }
-        }
+        extra_kwargs = {"user": {"write_only": True}}
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -29,23 +25,22 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            'id',
-            'addresses',
-            'age',
-            'email',
-            'first_name',
-            'middle_name',
-            'last_name',
-            'sex'
+            "id",
+            "addresses",
+            "age",
+            "email",
+            "first_name",
+            "middle_name",
+            "last_name",
+            "sex",
         ]
-
 
 
 class UserRegisterSerializer(UserSerializer):
     class Meta(UserSerializer.Meta):
-        fields = UserSerializer.Meta.fields + ['password']
+        fields = UserSerializer.Meta.fields + ["password"]
         extra_kwargs = {
-            'password': {
-                'write_only': True, 
+            "password": {
+                "write_only": True,
             }
         }

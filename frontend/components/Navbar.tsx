@@ -73,7 +73,10 @@ const Navbar: React.FC = () => {
           </div>
         ) : (
           <div className="flex divide-x-1 divide-black ">
-            <a onClick={handleSignOut} className="pr-2 hover:text-gray-400">
+            <a href="/account/profile" className="pr-2 hover:text-gray-400">
+              Profile
+            </a>
+            <a onClick={handleSignOut} className="pl-2 hover:text-gray-400">
               Logout
             </a>
           </div>

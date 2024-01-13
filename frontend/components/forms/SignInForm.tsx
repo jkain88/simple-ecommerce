@@ -31,7 +31,7 @@ const SignInForm: React.FC = () => {
 
   const onSubmit = async (data: Inputs) => {
     await signIn('credentials', {
-      username: data.email,
+      email: data.email,
       password: data.password,
       callbackUrl: '/',
     })

@@ -15,7 +15,7 @@ export const authOptions: AuthOptions = {
     CredentialsProvider({
       name: 'credentials',
       credentials: {
-        username: { label: 'Email', type: 'text', placeholder: 'Email' },
+        email: { label: 'Email', type: 'text', placeholder: 'Email' },
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
@@ -24,7 +24,7 @@ export const authOptions: AuthOptions = {
           {
             method: 'POST',
             body: JSON.stringify({
-              email: credentials?.username,
+              email: credentials?.email,
               password: credentials?.password,
             }),
             headers: {
@@ -34,7 +34,6 @@ export const authOptions: AuthOptions = {
         )
         const data = (await response.json()) as User
         if (response.ok) {
-          console.log('DATA', data)
           return { id: data.id, token: data.token, email: data.email }
         } else {
           return null
