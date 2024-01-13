@@ -131,7 +131,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Rest framework config
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.BasicAuthentication",
     ),
     "DEFAULT_PAGINATION_CLASS": "simple_ecommerce.core.pagination.CustomPagination",
 }
