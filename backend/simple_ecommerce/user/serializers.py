@@ -28,6 +28,8 @@ class UserSerializer(serializers.ModelSerializer):
             "id",
             "addresses",
             "age",
+            "birthday",
+            "contact_number",
             "email",
             "first_name",
             "middle_name",
