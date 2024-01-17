@@ -7,6 +7,9 @@ const nextConfig = {
         hostname: 'localhost',
         port: '8000',
       },
+      {
+        hostname: 'fakestoreapi.com',
+      },
     ],
   },
 }
