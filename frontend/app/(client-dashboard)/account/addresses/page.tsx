@@ -1,6 +1,6 @@
 import AddressActions from '@/components/account/address/AddressActions'
+import { Button } from '@/components/ui/button'
 import { addresses } from '@/constants/testData'
-import { Button } from '@nextui-org/react'
 
 export default function Addresses() {
   return (
@@ -31,6 +31,13 @@ export default function Addresses() {
               <AddressActions id={address.id} />
             </div>
           ))}
+          <div className="flex w-full justify-end">
+            <a href="/account/addresses/create">
+              <Button className="mt-6 bg-black px-10 text-sm font-semibold text-white hover:bg-gray-500">
+                Add Address
+              </Button>
+            </a>
+          </div>
         </div>
       </div>
     </div>
