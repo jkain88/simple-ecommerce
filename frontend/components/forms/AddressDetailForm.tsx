@@ -76,6 +76,7 @@ const AddressDetailForm: React.FC<Props> = ({ address }) => {
       ...data,
       delivery_label: deliveryLabel,
       address_type: address!.address_type!,
+      is_default: address?.is_default,
     })
   }
 
