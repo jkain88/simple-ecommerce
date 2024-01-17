@@ -2,11 +2,30 @@
 
 import AddressDetailForm from '@/components/forms/AddressDetailForm'
 import { addresses } from '@/constants/testData'
+import { Api } from '@/lib/Api'
+import { useQuery } from '@tanstack/react-query'
 import { MoveLeft } from 'lucide-react'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 
 export default function AddressDetail({ params }: { params: { id: string } }) {
-  const address = addresses.find((address) => address.id == parseInt(params.id))
+  const { data: session } = useSession()
+  const { data: address, isLoading } = useQuery({
+    queryKey: ['address', params.id],
+    queryFn: async () => {
+      const api = new Api()
+      return api.users.usersAddressesRead(params.id, {
+        headers: {
+          Authorization: `Token ${session?.token}`,
+        },
+      })
+    },
+    enabled: session?.token !== undefined,
+  })
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+  // const address = addresses.find((address) => address.id == parseInt(params.id))
 
   return (
     <div>
@@ -20,7 +39,7 @@ export default function AddressDetail({ params }: { params: { id: string } }) {
         </Link>
         <p className=" text-3xl font-bold">Address Detail</p>
       </div>
-      <AddressDetailForm address={address} />
+      <AddressDetailForm address={address!.data} />
     </div>
   )
 }

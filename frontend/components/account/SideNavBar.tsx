@@ -15,7 +15,6 @@ const SideNavBar: React.FC = () => {
     <div className="mr-10 flex flex-col gap-4">
       <p className="text-lg font-semibold">User Name</p>
       <div className="flex gap-2">
-        <FontAwesomeIcon icon="pencil" className="w-4 text-gray-600" />
         <Link href="/account/profile">
           <p className="text-sm text-gray-600">Edit Profile</p>
         </Link>

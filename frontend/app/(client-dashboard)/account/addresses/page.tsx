@@ -3,13 +3,15 @@
 import AddressActions from '@/components/account/address/AddressActions'
 import { Button } from '@/components/ui/button'
 import { Api } from '@/lib/Api'
-import { Spinner } from '@nextui-org/react'
+import { useAddressStore } from '@/store/address'
 import { useQuery } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
+import { useEffect } from 'react'
 
 export default function Addresses() {
   const { data: session } = useSession()
-
+  const setAddresses = useAddressStore((state) => state.setAddresses)
+  const addressStore = useAddressStore((state) => state.addresses)
   const { data: addresses, isLoading } = useQuery({
     queryKey: ['addresses'],
     queryFn: async () => {
@@ -22,9 +24,17 @@ export default function Addresses() {
     },
   })
 
-  if (isLoading) {
-    return <Spinner />
+  useEffect(() => {
+    if (!isLoading) {
+      setAddresses(addresses!.data)
+    }
+  }, [isLoading, addresses, setAddresses])
+
+  if (isLoading && addressStore.length === 0) {
+    return <div>Loading...</div>
   }
+
+  console.log('STORE', addressStore)
   return (
     <div className="divide-y-1">
       <p className="pb-3 text-3xl font-bold">My Addresses</p>
@@ -34,7 +44,7 @@ export default function Addresses() {
           {addresses!.data.map((address) => (
             <div className="flex justify-between" key={address.id}>
               <div key={address.id} className="flex flex-col gap-2 pt-7">
-                <p className="text-lg font-semibold">
+                <p className="text-xl font-semibold">
                   {address.street}, {address.city_area}, {address.city},{' '}
                   {address.province}
                 </p>

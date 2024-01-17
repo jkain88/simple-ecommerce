@@ -17,7 +17,7 @@ import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import { cn } from '@/lib/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Address } from '@/types'
+import { Address } from '@/lib/Api'
 
 type Input = z.infer<typeof addressSchema>
 
@@ -33,12 +33,12 @@ const AddressDetailForm: React.FC<Props> = ({ address }) => {
   const form = useForm<Address>({
     resolver: zodResolver(addressSchema),
     defaultValues: {
-      contactNumber: address?.contactNumber || '',
+      contact_number: address?.contact_number || '',
       street: address?.street || '',
-      barangay: address?.barangay || '',
+      city_area: address?.city_area || '',
       city: address?.city || '',
       province: address?.province || '',
-      deliveryLabel: address?.deliveryLabel || '',
+      // deliveryLabel: address?.deliveryLabel || '',
     },
     mode: 'onSubmit',
   })
@@ -64,7 +64,7 @@ const AddressDetailForm: React.FC<Props> = ({ address }) => {
           />
           <FormField
             control={form.control}
-            name="barangay"
+            name="city_area"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="font-bold">Barangay</FormLabel>
@@ -103,7 +103,7 @@ const AddressDetailForm: React.FC<Props> = ({ address }) => {
           />
           <FormField
             control={form.control}
-            name="contactNumber"
+            name="contact_number"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="font-bold">Contact Number</FormLabel>
