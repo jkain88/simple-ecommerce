@@ -8,6 +8,7 @@ class AddressSerializer(serializers.ModelSerializer):
         model = Address
         fields = [
             "id",
+            "is_default",
             "address_type",
             "city_area",
             "city",

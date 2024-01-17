@@ -124,6 +124,7 @@ class Command(BaseCommand):
 
         Address.objects.get_or_create(
             user=admin,
+            is_default=True,
             address_type=AddressType.SHIPPING,
             city_area="Manila",
             city="Manila",
