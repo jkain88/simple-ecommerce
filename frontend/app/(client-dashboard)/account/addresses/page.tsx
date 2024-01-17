@@ -60,7 +60,7 @@ export default function Addresses() {
                   </p>
                 </div>
               </div>
-              <AddressActions id={address!.id!} />
+              <AddressActions address={address} />
             </div>
           ))}
           <div className="flex w-full justify-end">
