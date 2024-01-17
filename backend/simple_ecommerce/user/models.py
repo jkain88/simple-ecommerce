@@ -43,6 +43,7 @@ class User(AbstractBaseUser):
 
 class Address(TimeStampedModel):
     address_type = models.CharField(max_length=15, choices=AddressType.CHOICES)
+    contact_number = models.CharField(max_length=30, blank=True)
     city_area = models.CharField(max_length=100)
     city = models.CharField(max_length=70)
     postal_code = models.CharField(max_length=20)

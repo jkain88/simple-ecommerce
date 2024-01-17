@@ -119,6 +119,7 @@ class Command(BaseCommand):
             postal_code="1000",
             province="Metro Manila",
             street="Tondo",
+            contact_number="+639999999999",
         )
 
         Address.objects.get_or_create(
@@ -129,5 +130,6 @@ class Command(BaseCommand):
             postal_code="1000",
             province="Metro Manila",
             street="Tondo",
+            contact_number="+639999999999",
         )
         self.stdout.write(self.style.SUCCESS("Database populated!"))
