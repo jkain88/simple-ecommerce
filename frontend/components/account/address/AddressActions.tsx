@@ -15,6 +15,7 @@ import { useMutation } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import React from 'react'
+import { toast } from 'react-toastify'
 
 type Props = {
   address: Address
@@ -46,7 +47,28 @@ const AddressActions: React.FC<Props> = ({ address }) => {
       )
     },
   })
+
+  const { mutate: deleteAddress } = useMutation({
+    mutationKey: ['addressDelete'],
+    mutationFn: async () => {
+      const api = new Api()
+      return api.users.usersAddressesDelete(address!.id!.toString(), {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Token ${session?.token}`,
+        },
+      })
+    },
+    onSuccess: () => {
+      setAddresses(
+        addresses.filter((addressObj) => addressObj.id !== address.id)
+      )
+      toast.success('Address deleted successfully')
+    },
+  })
+
   const onSubmitDelete = (onClose: () => void) => {
+    deleteAddress()
     onClose()
   }
 
