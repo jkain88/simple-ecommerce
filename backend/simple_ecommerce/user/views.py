@@ -86,9 +86,7 @@ class AddressCreate(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
-        Address.objects.update_or_create(
-            address_type=data["address_type"], user=data["user"], defaults={**data}
-        )
+        Address.objects.create(user=self.request.user, **data)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
