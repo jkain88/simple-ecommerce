@@ -1,34 +1,57 @@
+'use client'
+
 import AddressActions from '@/components/account/address/AddressActions'
 import { Button } from '@/components/ui/button'
-import { addresses } from '@/constants/testData'
+import { Api } from '@/lib/Api'
+import { Spinner } from '@nextui-org/react'
+import { useQuery } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
 
 export default function Addresses() {
+  const { data: session } = useSession()
+
+  const { data: addresses, isLoading } = useQuery({
+    queryKey: ['addresses'],
+    queryFn: async () => {
+      const api = new Api()
+      return api.users.usersAddressesList({
+        headers: {
+          Authorization: `Token ${session?.token}`,
+        },
+      })
+    },
+  })
+
+  if (isLoading) {
+    return <Spinner />
+  }
   return (
     <div className="divide-y-1">
       <p className="pb-3 text-3xl font-bold">My Addresses</p>
       <div className="pt-5">
         <p className="text-2xl font-semibold">Address</p>
         <div className="flex flex-col gap-7 divide-y-2">
-          {addresses.map((address) => (
+          {addresses!.data.map((address) => (
             <div className="flex justify-between" key={address.id}>
               <div key={address.id} className="flex flex-col gap-2 pt-7">
-                <div className="flex gap-2 divide-x-2 divide-black">
-                  <p className="text-lg font-bold">{address.fullName}</p>
-                  <p className="pl-2 text-gray-400">{address.contactNumber}</p>
-                </div>
-                <p>
-                  {address.street}, {address.barangay}, {address.city},{' '}
+                <p className="text-lg font-semibold">
+                  {address.street}, {address.city_area}, {address.city},{' '}
                   {address.province}
                 </p>
-                {address.isDefault && (
+                {address.is_default && (
                   <div className="flex-shrink-0">
                     <div className="inline-block border-2 border-black p-1 ">
                       <p className="text-xs font-semibold uppercase">Default</p>
                     </div>
                   </div>
                 )}
+                <div className="flex gap-2 divide-x-2 divide-black">
+                  <p className="pl-2 text-sm text-gray-400">
+                    {address.contact_number}
+                  </p>
+                </div>
               </div>
-              <AddressActions id={address.id} />
+              <AddressActions id={address!.id!} />
             </div>
           ))}
           <div className="flex w-full justify-end">

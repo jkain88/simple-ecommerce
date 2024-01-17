@@ -12,6 +12,8 @@
 export interface Address {
   /** ID */
   id?: number
+  /** Is default */
+  is_default?: boolean
   /** Address type */
   address_type: 'billing' | 'shipping'
   /**
@@ -43,8 +45,11 @@ export interface Address {
    * @maxLength 20
    */
   postal_code: string
-  /** User */
-  user: number
+  /**
+   * Contact number
+   * @maxLength 30
+   */
+  contact_number?: string
 }
 
 export interface Category {
@@ -1372,18 +1377,103 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags users
-     * @name UsersAddressCreateCreate
-     * @request POST:/users/address/create/
+     * @name UsersAddressesList
+     * @request GET:/users/addresses
      * @secure
      */
-    usersAddressCreateCreate: (data: Address, params: RequestParams = {}) =>
+    usersAddressesList: (params: RequestParams = {}) =>
+      this.request<Address[], any>({
+        path: `/users/addresses`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags users
+     * @name UsersAddressesCreateCreate
+     * @request POST:/users/addresses/create/
+     * @secure
+     */
+    usersAddressesCreateCreate: (data: Address, params: RequestParams = {}) =>
       this.request<Address, any>({
-        path: `/users/address/create/`,
+        path: `/users/addresses/create/`,
         method: 'POST',
         body: data,
         secure: true,
-        type: ContentType.Json,
         format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags users
+     * @name UsersAddressesRead
+     * @request GET:/users/addresses/{id}
+     * @secure
+     */
+    usersAddressesRead: (id: string, params: RequestParams = {}) =>
+      this.request<Address, any>({
+        path: `/users/addresses/${id}`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags users
+     * @name UsersAddressesUpdate
+     * @request PUT:/users/addresses/{id}
+     * @secure
+     */
+    usersAddressesUpdate: (id: string, data: Address, params: RequestParams = {}) =>
+      this.request<Address, any>({
+        path: `/users/addresses/${id}`,
+        method: 'PUT',
+        body: data,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags users
+     * @name UsersAddressesPartialUpdate
+     * @request PATCH:/users/addresses/{id}
+     * @secure
+     */
+    usersAddressesPartialUpdate: (id: string, data: Address, params: RequestParams = {}) =>
+      this.request<Address, any>({
+        path: `/users/addresses/${id}`,
+        method: 'PATCH',
+        body: data,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags users
+     * @name UsersAddressesDelete
+     * @request DELETE:/users/addresses/{id}
+     * @secure
+     */
+    usersAddressesDelete: (id: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/users/addresses/${id}`,
+        method: 'DELETE',
+        secure: true,
         ...params,
       }),
 

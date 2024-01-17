@@ -1,3 +1,5 @@
+'use client'
+
 import AddressDetailForm from '@/components/forms/AddressDetailForm'
 import { addresses } from '@/constants/testData'
 import { MoveLeft } from 'lucide-react'
