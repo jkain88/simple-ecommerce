@@ -13,7 +13,7 @@ export const addressSchema = z.object({
   street: z.string().min(2).max(100).optional(),
   contact_number: z.string().min(10).max(13).optional(),
   city_area: z.string().min(2).max(50),
-  city: z.string().min(2).max(13),
+  city: z.string().min(2).max(50),
   province: z.string().min(2).max(50),
   postal_code: z.string().min(2).max(10),
   delivery_label: z.string().min(2).max(10).optional(),

@@ -15,7 +15,7 @@ export interface Address {
   /** Is default */
   is_default?: boolean
   /** Address type */
-  address_type: 'billing' | 'shipping'
+  address_type?: 'billing' | 'shipping'
   /**
    * City area
    * @minLength 1

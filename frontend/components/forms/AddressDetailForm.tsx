@@ -27,17 +27,21 @@ type Input = z.infer<typeof addressSchema>
 
 type Props = {
   address?: Address
+  type: 'update' | 'create'
 }
 
-const AddressDetailForm: React.FC<Props> = ({ address }) => {
+const AddressDetailForm: React.FC<Props> = ({ address, type }) => {
   const [deliveryLabel, setDeliveryLabel] = useState<
     'home' | 'office' | undefined
-  >(address?.delivery_label)
+  >(address?.delivery_label === undefined ? 'home' : address?.delivery_label)
+  const [addressType, setAddressType] = useState<
+    'shipping' | 'billing' | undefined
+  >(address?.address_type === undefined ? 'shipping' : address?.address_type)
 
   const { data: session } = useSession()
   const router = useRouter()
 
-  const { mutate, isPending } = useMutation({
+  const { mutate: updateAddress, isPending: isUpdatePending } = useMutation({
     mutationKey: ['updateAddress', address?.id],
     mutationFn: async (input: Address) => {
       const api = new Api()
@@ -51,6 +55,23 @@ const AddressDetailForm: React.FC<Props> = ({ address }) => {
           },
         }
       )
+    },
+    onSuccess: () => {
+      router.push('/account/addresses')
+    },
+  })
+
+  const { mutate: createAddress, isPending: isCreatePending } = useMutation({
+    mutationKey: ['createAddress'],
+    mutationFn: async (input: Address) => {
+      const api = new Api()
+      console.log('CREATING')
+      return await api.users.usersAddressesCreateCreate(input, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Token ${session?.token}`,
+        },
+      })
     },
     onSuccess: () => {
       router.push('/account/addresses')
@@ -72,12 +93,21 @@ const AddressDetailForm: React.FC<Props> = ({ address }) => {
   })
 
   const onSubmit = (data: Input) => {
-    mutate({
-      ...data,
-      delivery_label: deliveryLabel,
-      address_type: address!.address_type!,
-      is_default: address?.is_default,
-    })
+    if (type === 'update') {
+      updateAddress({
+        ...data,
+        delivery_label: deliveryLabel,
+        address_type: address!.address_type!,
+        is_default: address?.is_default,
+      })
+    } else if (type == 'create') {
+      createAddress({
+        ...data,
+        delivery_label: deliveryLabel,
+        address_type: addressType,
+        is_default: false,
+      })
+    }
   }
 
   return (
@@ -190,9 +220,35 @@ const AddressDetailForm: React.FC<Props> = ({ address }) => {
               </Button>
             </div>
           </div>
+          <div>
+            <p>Address Type:</p>
+            <div className="mt-2 flex gap-3">
+              <Button
+                type="button"
+                onClick={() => setAddressType('shipping')}
+                className={cn(
+                  'border-2 border-gray-300 bg-white p-4 text-black hover:border-black hover:bg-white',
+                  { 'border-black': addressType == 'shipping' }
+                )}
+              >
+                Shipping
+              </Button>
+              <Button
+                type="button"
+                onClick={() => setAddressType('billing')}
+                className={cn(
+                  'border-2 border-gray-300 bg-white p-4 text-black hover:border-black hover:bg-white',
+                  { 'border-black': addressType == 'billing' }
+                )}
+              >
+                Billing
+              </Button>
+            </div>
+          </div>
           <Button className="mt-4 px-14" type="submit">
             <div className="flex items-center gap-2">
-              {isPending && <Spinner size="sm" color="default" />}
+              {isUpdatePending ||
+                (isCreatePending && <Spinner size="sm" color="default" />)}
               <span>Submit</span>
             </div>
           </Button>

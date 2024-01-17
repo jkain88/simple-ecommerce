@@ -39,7 +39,9 @@ const ProductDetail: React.FC<Props> = ({ product }: Props) => {
             value={1}
             onChange={() => console.log('Changed')}
           />
-          <Button className="bg-black px-10 text-white">Add To Cart</Button>
+          <a href="/cart">
+            <Button className="bg-black px-10 text-white">Add To Cart</Button>
+          </a>
         </div>
       </div>
     </div>

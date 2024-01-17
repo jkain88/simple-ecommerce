@@ -22,7 +22,7 @@ export default function AddressDetail({ params }: { params: { id: string } }) {
         </Link>
         <p className=" text-3xl font-bold">Address Detail</p>
       </div>
-      <AddressDetailForm address={address} />
+      <AddressDetailForm type="update" address={address} />
     </div>
   )
 }

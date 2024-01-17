@@ -15,7 +15,7 @@ export default function AddressCreate() {
         </Link>
         <p className=" text-3xl font-bold">Create Address</p>
       </div>
-      <AddressDetailForm />
+      <AddressDetailForm type="create" />
     </div>
   )
 }
