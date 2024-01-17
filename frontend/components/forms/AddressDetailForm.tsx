@@ -33,7 +33,6 @@ const AddressDetailForm: React.FC<Props> = ({ address }) => {
   const form = useForm<Address>({
     resolver: zodResolver(addressSchema),
     defaultValues: {
-      fullName: address?.fullName || '',
       contactNumber: address?.contactNumber || '',
       street: address?.street || '',
       barangay: address?.barangay || '',
@@ -48,40 +47,14 @@ const AddressDetailForm: React.FC<Props> = ({ address }) => {
   }
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8">
         <div className="grid grid-cols-2 gap-4">
-          <FormField
-            control={form.control}
-            name="fullName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Full Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Full Name" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="contactNumber"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Contact Number</FormLabel>
-                <FormControl>
-                  <Input placeholder="Contact Number" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <FormField
             control={form.control}
             name="street"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Street</FormLabel>
+                <FormLabel className="font-bold">Street</FormLabel>
                 <FormControl>
                   <Input placeholder="Street" {...field} />
                 </FormControl>
@@ -94,7 +67,7 @@ const AddressDetailForm: React.FC<Props> = ({ address }) => {
             name="barangay"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Barangay</FormLabel>
+                <FormLabel className="font-bold">Barangay</FormLabel>
                 <FormControl>
                   <Input placeholder="Barangay" {...field} />
                 </FormControl>
@@ -107,7 +80,7 @@ const AddressDetailForm: React.FC<Props> = ({ address }) => {
             name="city"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>City</FormLabel>
+                <FormLabel className="font-bold">City</FormLabel>
                 <FormControl>
                   <Input placeholder="City" {...field} />
                 </FormControl>
@@ -120,9 +93,22 @@ const AddressDetailForm: React.FC<Props> = ({ address }) => {
             name="province"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Province</FormLabel>
+                <FormLabel className="font-bold">Province</FormLabel>
                 <FormControl>
                   <Input placeholder="Province" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="contactNumber"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-bold">Contact Number</FormLabel>
+                <FormControl>
+                  <Input placeholder="Contact Number" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

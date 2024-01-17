@@ -10,7 +10,6 @@ export const profileSchema = z.object({
 })
 
 export const addressSchema = z.object({
-  fullName: z.string().min(2).max(100),
   street: z.string().min(2).max(100),
   contactNumber: z.string().min(10).max(13),
   barangay: z.string().min(2).max(13),
