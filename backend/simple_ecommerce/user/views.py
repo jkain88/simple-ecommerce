@@ -90,3 +90,22 @@ class AddressCreate(generics.CreateAPIView):
             address_type=data["address_type"], user=data["user"], defaults={**data}
         )
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class AddressList(generics.ListAPIView):
+    serializer_class = AddressSerializer
+    model = Address
+    permission_classes = [IsAuthenticated]
+    pagination_class = None
+
+    def get_queryset(self):
+        return Address.objects.filter(user=self.request.user)
+
+
+class AddressDetail(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = AddressSerializer
+    model = Address
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Address.objects.filter(user=self.request.user)

@@ -14,9 +14,7 @@ class AddressSerializer(serializers.ModelSerializer):
             "province",
             "street",
             "postal_code",
-            "user",
         ]
-        extra_kwargs = {"user": {"write_only": True}}
 
 
 class UserSerializer(serializers.ModelSerializer):
