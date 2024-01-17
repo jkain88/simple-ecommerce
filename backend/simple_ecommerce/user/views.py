@@ -109,3 +109,13 @@ class AddressDetail(generics.RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         return Address.objects.filter(user=self.request.user)
+
+    def perform_update(self, serializer):
+        response = super().perform_update(serializer)
+        instance = self.get_object()
+
+        # Set false to other addresses
+        if serializer.validated_data["is_default"]:
+            self.get_queryset().exclude(id=instance.id).update(is_default=False)
+
+        return response
