@@ -5,6 +5,7 @@ import requests
 
 from django.core.files import File
 from django.core.management.base import BaseCommand
+from django.db.utils import IntegrityError
 
 from simple_ecommerce.product.models import (
     Category,
@@ -12,7 +13,8 @@ from simple_ecommerce.product.models import (
     ProductVariant,
     ProductImage,
 )
-from simple_ecommerce.user.models import User
+from simple_ecommerce.user.choices import AddressType
+from simple_ecommerce.user.models import Address, User
 
 
 # Get the directory of the current script
@@ -40,37 +42,41 @@ def create_zalora_products(category_name):
         name = " ".join(product["Name"].split(" ")[:5])
         is_featured = random.choice([True, False])
         if not Product.objects.filter(name=name).exists() and product["ImageList"]:
-            db_product = Product.objects.create(
-                name=name,
-                price=price,
-                sku=product["ConfigSku"],
-                quantity=1000,
-                is_featured=is_featured,
-                category=category,
-            )
-
-            # Create product image
-            for index, image_url in enumerate(product["ImageList"]):
-                image_data = requests.get(image_url).content
-                image_name = "-".join(name.split(" ")).lower() + f"-{index}.webp"
-                print(image_name)
-                image_path = (
-                    f"/app/simple_ecommerce/static/images/products/{image_name}"
+            try:
+                db_product = Product.objects.create(
+                    name=name,
+                    price=price,
+                    sku=product["ConfigSku"],
+                    quantity=1000,
+                    is_featured=is_featured,
+                    category=category,
                 )
 
-                if not os.path.exists(image_path):
-                    os.makedirs(os.path.dirname(image_path), exist_ok=True)
-                    with open(
-                        image_path,
-                        "wb",
-                    ) as handler:
-                        handler.write(image_data)
+                # Create product image
+                for index, image_url in enumerate(product["ImageList"]):
+                    image_data = requests.get(image_url).content
+                    image_name = "-".join(name.split(" ")).lower() + f"-{index}.webp"
+                    print(image_name)
+                    image_path = (
+                        f"/app/simple_ecommerce/static/images/products/{image_name}"
+                    )
 
-                product_image = {"alt": name, "product": db_product}
-                with open(image_path, "rb") as f:
-                    product_image["image"] = File(f, name=image_name)
-                    print(f"Creating {image_name} product image")
-                    ProductImage.objects.get_or_create(**product_image)
+                    if not os.path.exists(image_path):
+                        os.makedirs(os.path.dirname(image_path), exist_ok=True)
+                        with open(
+                            image_path,
+                            "wb",
+                        ) as handler:
+                            handler.write(image_data)
+
+                    product_image = {"alt": name, "product": db_product}
+                    with open(image_path, "rb") as f:
+                        product_image["image"] = File(f, name=image_name)
+                        print(f"Creating {image_name} product image")
+                        ProductImage.objects.get_or_create(**product_image)
+
+            except IntegrityError:
+                continue
 
 
 def populate_categories():
@@ -95,7 +101,7 @@ class Command(BaseCommand):
         for category in categories:
             create_zalora_products(category.name)
 
-        admin = User.objects.create(
+        admin, _ = User.objects.get_or_create(
             email="admin@gmail.com",
             is_staff=True,
             is_superuser=True,
@@ -105,4 +111,23 @@ class Command(BaseCommand):
         admin.set_password("admin")
         admin.save()
 
+        Address.objects.get_or_create(
+            user=admin,
+            address_type=AddressType.BILLING,
+            city_area="Manila",
+            city="Manila",
+            postal_code="1000",
+            province="Metro Manila",
+            street="Tondo",
+        )
+
+        Address.objects.get_or_create(
+            user=admin,
+            address_type=AddressType.SHIPPING,
+            city_area="Manila",
+            city="Manila",
+            postal_code="1000",
+            province="Metro Manila",
+            street="Tondo",
+        )
         self.stdout.write(self.style.SUCCESS("Database populated!"))
