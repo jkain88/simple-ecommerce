@@ -2,7 +2,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 from model_utils.models import TimeStampedModel
 
-from .choices import AddressType, Sex
+from .choices import AddressType, AddressDeliveryLabel, Sex
 
 
 class UserManager(BaseUserManager):
@@ -50,4 +50,9 @@ class Address(TimeStampedModel):
     postal_code = models.CharField(max_length=20)
     province = models.CharField(max_length=70)
     street = models.CharField(max_length=100, blank=True)
+    delivery_label = models.CharField(
+        max_length=15,
+        choices=AddressDeliveryLabel.CHOICES,
+        default=AddressDeliveryLabel.HOME,
+    )
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="addresses")

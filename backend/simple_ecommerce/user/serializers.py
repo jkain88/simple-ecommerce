@@ -16,6 +16,7 @@ class AddressSerializer(serializers.ModelSerializer):
             "street",
             "postal_code",
             "contact_number",
+            "delivery_label",
         ]
 
 
