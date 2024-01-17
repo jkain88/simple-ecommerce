@@ -12,10 +12,4 @@ export const useAddressStore = create<AddressState>()((set) => ({
   addAddress: (address: Address) =>
     set((state) => ({ addresses: [...state.addresses, address] })),
   setAddresses: (addresses: Address[]) => set({ addresses }),
-  updateAddress: (address: Address) =>
-    set((state) => ({
-      addresses: state.addresses.map((a) =>
-        a.id === address.id ? address : a
-      ),
-    })),
 }))

@@ -50,6 +50,8 @@ export interface Address {
    * @maxLength 30
    */
   contact_number?: string
+  /** Delivery label */
+  delivery_label?: 'home' | 'office'
 }
 
 export interface Category {

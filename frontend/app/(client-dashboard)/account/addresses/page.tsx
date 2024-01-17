@@ -30,18 +30,17 @@ export default function Addresses() {
     }
   }, [isLoading, addresses, setAddresses])
 
-  if (isLoading && addressStore.length === 0) {
+  if (isLoading || addresses === undefined) {
     return <div>Loading...</div>
   }
 
-  console.log('STORE', addressStore)
   return (
     <div className="divide-y-1">
       <p className="pb-3 text-3xl font-bold">My Addresses</p>
       <div className="pt-5">
         <p className="text-2xl font-semibold">Address</p>
         <div className="flex flex-col gap-7 divide-y-2">
-          {addresses!.data.map((address) => (
+          {addressStore!.map((address) => (
             <div className="flex justify-between" key={address.id}>
               <div key={address.id} className="flex flex-col gap-2 pt-7">
                 <p className="text-xl font-semibold">
