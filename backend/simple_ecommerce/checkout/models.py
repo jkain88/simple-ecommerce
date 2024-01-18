@@ -6,8 +6,9 @@ from djmoney.money import Money
 from model_utils.models import TimeStampedModel
 
 from .utils import get_line_amount
+from simple_ecommerce.core.models import Address
 from simple_ecommerce.product.models import Product, ProductVariant
-from simple_ecommerce.user.models import Address, User
+from simple_ecommerce.user.models import User
 
 
 class Checkout(TimeStampedModel):

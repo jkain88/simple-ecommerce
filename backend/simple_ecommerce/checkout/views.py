@@ -58,16 +58,6 @@ class CheckoutLineCreate(generics.CreateAPIView):
         validate_line_input(serializer.validated_data)
         serializer.save()
 
-    # def create(self, request, *args, **kwargs):
-    #     user = self.request.user
-    #     serializer = self.get_serializer(data=request.data)
-    #     serializer.is_valid(raise_exception=True)
-    #     data = serializer.validated_data
-    #     print("USER", user)
-
-    #     validate_line_input(data)
-    #     return self.create(request, *args, **kwargs)
-
 
 class CheckoutLineDetail(
     mixins.UpdateModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView
