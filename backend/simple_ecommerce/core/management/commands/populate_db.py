@@ -45,19 +45,39 @@ def create_zalora_products(category_name):
         is_featured = random.choice([True, False])
         if not Product.objects.filter(name=name).exists() and product["ImageList"]:
             try:
-                db_product = Product.objects.create(
-                    name=name,
-                    price=price,
-                    sku=product["ConfigSku"],
-                    quantity=1000,
-                    is_featured=is_featured,
-                    has_variants=False,
-                    category=category,
-                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                thumbnail_data = requests.get(product["ImageList"][0]).content
+                thumbnail_name = "-".join(name.split(" ")).lower() + f"-thumbnail.webp"
+                thumbnail_path = (
+                    f"/app/simple_ecommerce/static/images/products/{thumbnail_name}"
                 )
-                ProductVariant.objects.create(
-                    name=name, price=price, sku=product["ConfigSku"], product=db_product
-                )
+
+                if not os.path.exists(thumbnail_path):
+                    os.makedirs(os.path.dirname(thumbnail_path), exist_ok=True)
+                    with open(
+                        thumbnail_path,
+                        "wb",
+                    ) as handler:
+                        handler.write(thumbnail_data)
+
+                with open(thumbnail_path, "rb") as f:
+                    db_product = Product.objects.create(
+                        name=name,
+                        price=price,
+                        thumbnail=File(f, name=thumbnail_name),
+                        sku=product["ConfigSku"],
+                        quantity=1000,
+                        is_featured=is_featured,
+                        has_variants=False,
+                        category=category,
+                        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                    )
+                    ProductVariant.objects.create(
+                        name=name,
+                        price=price,
+                        sku=product["ConfigSku"],
+                        product=db_product,
+                        thumbnail=File(f, name=thumbnail_name),
+                    )
                 # Create product image
                 for index, image_url in enumerate(product["ImageList"]):
                     image_data = requests.get(image_url).content

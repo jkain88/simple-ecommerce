@@ -42,6 +42,7 @@ class Product(PublishableModel, TimeStampedModel):
     is_featured = models.BooleanField(default=False)
     slug = models.SlugField(max_length=255, unique=True, null=True)
     description = models.TextField(null=True)
+    thumbnail = models.ImageField(upload_to="media/products/", null=True)
 
     def __str__(self) -> str:
         return self.name
@@ -66,6 +67,7 @@ class ProductVariant(TimeStampedModel):
     sku = models.CharField(max_length=255, blank=True)
     quantity = models.PositiveIntegerField(default=1)
     quantity_allocated = models.PositiveIntegerField(default=0)
+    thumbnail = models.ImageField(upload_to="media/products/", null=True)
 
 
 class ProductImage(models.Model):
