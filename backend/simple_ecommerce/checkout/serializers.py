@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from .models import Checkout, CheckoutLine
-from simple_ecommerce.user.serializers import (
+from simple_ecommerce.core.serializers import (
     AddressSerializer,
 )
 from simple_ecommerce.product.serializers import (
