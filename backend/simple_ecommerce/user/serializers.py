@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 
 from .models import Address, User
@@ -22,6 +23,7 @@ class AddressSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     addresses = AddressSerializer(many=True, read_only=True)
+    checkout = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -30,6 +32,7 @@ class UserSerializer(serializers.ModelSerializer):
             "addresses",
             "age",
             "birthday",
+            "checkout",
             "contact_number",
             "email",
             "first_name",
@@ -37,6 +40,16 @@ class UserSerializer(serializers.ModelSerializer):
             "last_name",
             "sex",
         ]
+
+    def get_checkout(self, obj):
+        from simple_ecommerce.checkout.serializers import CheckoutSerializer
+
+        try:
+            checkout = obj.checkout
+            print(obj.checkout)
+            return CheckoutSerializer(checkout).data
+        except ObjectDoesNotExist:
+            return {}
 
 
 class UserRegisterSerializer(UserSerializer):
