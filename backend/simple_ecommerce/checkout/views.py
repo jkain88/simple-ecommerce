@@ -20,16 +20,15 @@ class CheckoutCreate(generics.CreateAPIView):
     serializer_class = CheckoutSerializer
     permission_classes = [IsAuthenticated]
 
-    def perform_create(self, serializer):
+    def create(self, request, *args, **kwargs):
         user = self.request.user
+        serializer = self.get_serializer_class()
         try:
             checkout = user.checkout
-            serializer = self.get_serializer(checkout)
-            return Response(serializer.data)
+            return Response(serializer(checkout).data)
         except ObjectDoesNotExist:
-            pass
-
-        serializer.save(user=user)
+            checkout = Checkout.objects.create(user=user)
+            return Response(serializer(checkout).data)
 
 
 class CheckoutUpdate(generics.UpdateAPIView):
