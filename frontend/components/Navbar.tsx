@@ -16,6 +16,7 @@ const Navbar: React.FC = () => {
   const navbarRef = useRef<HTMLDivElement | null>(null)
   const { data: session } = useSession()
   const user = useUserStore((state) => state.user)
+  const resetUser = useUserStore((state) => state.resetUser)
 
   const { data: categories, isLoading } = useQuery({
     queryKey: ['categories'],
@@ -35,6 +36,7 @@ const Navbar: React.FC = () => {
     await signOut({
       callbackUrl: '/',
     })
+    resetUser()
   }
 
   console.log('USER STORE', user)
