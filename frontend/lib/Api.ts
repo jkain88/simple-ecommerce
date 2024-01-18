@@ -200,6 +200,11 @@ export interface Product {
    */
   name: string
   category?: Category
+  /**
+   * Description
+   * @minLength 1
+   */
+  description?: string | null
   images: ProductImage[]
   /** Is featured */
   is_featured?: boolean

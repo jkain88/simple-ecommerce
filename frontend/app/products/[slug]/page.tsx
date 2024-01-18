@@ -22,14 +22,13 @@ const RelatedProducts: React.FC<Props> = ({ products }) => {
   return (
     <div className="mt-10 grid auto-rows-auto justify-center gap-y-4 md:grid-cols-2 lg:grid-cols-4">
       {products.map((product) => (
-        <Link href={`/products/${product.id}`} key={product.id}>
-          <ProductCard
-            name={product.name}
-            slug={product.slug}
-            image={product.images[0].image}
-            price={product.price}
-          />
-        </Link>
+        <ProductCard
+          key={product.id}
+          name={product.name}
+          slug={product.slug}
+          image={product.images[0].image}
+          price={product.price}
+        />
       ))}
     </div>
   )
@@ -61,8 +60,6 @@ export default function ProductPage({ params }: ProductPageProps) {
 
   if (isProductLoading) return <div></div>
 
-  // const product = await getProduct(params.slug)
-  // const products = await getProducts()
   return (
     <ProductPageContainer>
       <ProductDetail product={product!.data} />

@@ -39,6 +39,7 @@ def create_zalora_products(category_name):
     category = Category.objects.get(name=category_name)
 
     for product in products:
+        print("PRODUCT", product)
         price = Decimal(product["Price"].replace("Php ", "").replace(",", ""))
         name = " ".join(product["Name"].split(" ")[:5])
         is_featured = random.choice([True, False])
@@ -52,6 +53,7 @@ def create_zalora_products(category_name):
                     is_featured=is_featured,
                     has_variants=False,
                     category=category,
+                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
                 )
                 ProductVariant.objects.create(
                     name=name, price=price, sku=product["ConfigSku"], product=db_product

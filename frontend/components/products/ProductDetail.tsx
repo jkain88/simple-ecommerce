@@ -2,6 +2,7 @@
 
 import { Product } from '@/lib/Api'
 import { Button } from '@nextui-org/react'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import React from 'react'
 
@@ -10,6 +11,10 @@ type Props = {
 }
 
 const ProductDetail: React.FC<Props> = ({ product }: Props) => {
+  const { data: session } = useSession()
+
+  console.log('DATA', session)
+
   return (
     <div className="grid auto-rows-auto lg:grid-cols-2">
       <div className="flex h-full w-full justify-center">
@@ -30,7 +35,7 @@ const ProductDetail: React.FC<Props> = ({ product }: Props) => {
           <p>{product.category?.name}</p>
         </div>
         <p className="text-2xl font-bold text-neutral-600">${product.price}</p>
-        {/* <p className="tracking-wide">{product.description}</p> */}
+        <p className="tracking-wide">{product.description}</p>
         <div className="mt-4 flex gap-4">
           <input
             type="number"
@@ -40,7 +45,12 @@ const ProductDetail: React.FC<Props> = ({ product }: Props) => {
             onChange={() => console.log('Changed')}
           />
           <a href="/cart">
-            <Button className="bg-black px-10 text-white">Add To Cart</Button>
+            <Button
+              className="bg-black px-10 text-white disabled:bg-gray-300"
+              disabled={!session}
+            >
+              Add To Cart
+            </Button>
           </a>
         </div>
       </div>

@@ -58,9 +58,13 @@ const Navbar: React.FC = () => {
 
       <div className="flex items-center gap-14 font-bold">
         <Link href="/cart">
-          <Badge content="2">
+          {user && user.checkout && user.checkout.lines ? (
+            <Badge content={user?.checkout?.lines?.length}>
+              <ShoppingCart size={30} className="hover:text-gray-400" />
+            </Badge>
+          ) : (
             <ShoppingCart size={30} className="hover:text-gray-400" />
-          </Badge>
+          )}
         </Link>
 
         {!session ? (

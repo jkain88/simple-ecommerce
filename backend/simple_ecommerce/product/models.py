@@ -41,6 +41,7 @@ class Product(PublishableModel, TimeStampedModel):
     has_variants = models.BooleanField(default=False)
     is_featured = models.BooleanField(default=False)
     slug = models.SlugField(max_length=255, unique=True, null=True)
+    description = models.TextField(null=True)
 
     def __str__(self) -> str:
         return self.name
