@@ -18,15 +18,13 @@ class Checkout(TimeStampedModel):
     shipping_address = models.ForeignKey(
         Address, null=True, on_delete=models.SET_NULL, related_name="+"
     )
-    total_amount = MoneyField(
-        max_digits=9,
-        decimal_places=2,
-        null=True,
-        default_currency=settings.DEFAULT_CURRENCY,
-    )
     user = models.OneToOneField(
         User, null=True, on_delete=models.SET_NULL, related_name="checkout"
     )
+
+    @property
+    def total_amount(self):
+        return self.lines.all().aggregate(total=models.Sum("amount"))["total"]
 
 
 class CheckoutLine(TimeStampedModel):

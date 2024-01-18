@@ -11,9 +11,6 @@ from .serializers import (
     CheckoutCompleteSerializer,
     CheckoutLineSerializer,
 )
-from .utils import (
-    validate_line_input,
-)
 from simple_ecommerce.order.models import Order, OrderLine
 from simple_ecommerce.order.serializers import OrderSerializer
 
@@ -55,21 +52,10 @@ class CheckoutLineCreate(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
 
 
-class CheckoutLineDetail(
-    mixins.UpdateModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView
-):
+class CheckoutLineDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = CheckoutLine.objects.all()
     serializer_class = CheckoutLineSerializer
     permission_classes = [IsAuthenticated]
-
-    def put(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        validate_line_input(serializer.validated_data)
-        return self.update(request, *args, **kwargs)
-
-    def delete(self, request, *args, **kwargs):
-        return self.destroy(request, *args, **kwargs)
 
 
 class CheckoutComplete(generics.GenericAPIView):
