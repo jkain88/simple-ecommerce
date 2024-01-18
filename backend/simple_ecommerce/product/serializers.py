@@ -55,6 +55,7 @@ class ProductSerializer(serializers.ModelSerializer):
             "description",
             "images",
             "is_featured",
+            "has_variants",
             "price",
             "price_currency",
             "slug",
