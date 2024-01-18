@@ -9,11 +9,13 @@ import { Badge } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
 import { Api, Category } from '@/lib/Api'
 import { signOut, useSession } from 'next-auth/react'
+import { useUserStore } from '@/store/user'
 
 const Navbar: React.FC = () => {
   const pathname = usePathname()
   const navbarRef = useRef<HTMLDivElement | null>(null)
   const { data: session } = useSession()
+  const user = useUserStore((state) => state.user)
 
   const { data: categories, isLoading } = useQuery({
     queryKey: ['categories'],

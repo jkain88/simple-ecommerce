@@ -1,9 +1,9 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import type { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { signIn } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 
 import {
   Form,
@@ -17,10 +17,16 @@ import { signInSchema } from '@/lib/form-validations/auth'
 import { useForm } from 'react-hook-form'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
+import { useQuery } from '@tanstack/react-query'
+import { Api } from '@/lib/Api'
+import { useUserStore } from '@/store/user'
+import { useRouter } from 'next/navigation'
 
 type Inputs = z.infer<typeof signInSchema>
 
 const SignInForm: React.FC = () => {
+  const { data: session } = useSession()
+  const router = useRouter()
   const form = useForm<Inputs>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -28,14 +34,34 @@ const SignInForm: React.FC = () => {
       password: '',
     },
   })
+  const setUser = useUserStore((state) => state.setUser)
+  const { data: user } = useQuery({
+    queryKey: ['userProfile'],
+    queryFn: async () => {
+      const api = new Api()
+      return api.users.usersProfileRead({
+        headers: {
+          Authorization: `Token ${session?.token}`,
+        },
+      })
+    },
+    enabled: session?.token !== undefined,
+  })
 
   const onSubmit = async (data: Inputs) => {
     await signIn('credentials', {
       email: data.email,
       password: data.password,
-      callbackUrl: '/',
+      redirect: false,
     })
   }
+
+  useEffect(() => {
+    if (session?.token && user?.data) {
+      setUser(user.data)
+      router.push('/')
+    }
+  }, [session, user, setUser, router])
 
   return (
     <Form {...form}>
