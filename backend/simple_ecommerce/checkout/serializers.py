@@ -11,7 +11,6 @@ from simple_ecommerce.product.serializers import (
 
 
 class CheckoutLineSerializer(serializers.ModelSerializer):
-    product_detail = ProductSerializer(read_only=True, source="product")
     product_variant_detail = ProductVariantSerializer(
         read_only=True, source="product_variant"
     )
@@ -22,8 +21,6 @@ class CheckoutLineSerializer(serializers.ModelSerializer):
             "id",
             "amount",
             "checkout",
-            "product",
-            "product_detail",
             "product_variant",
             "product_variant_detail",
             "quantity",

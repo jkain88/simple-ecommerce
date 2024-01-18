@@ -4,15 +4,6 @@ from rest_framework.exceptions import APIException
 from simple_ecommerce.product.models import Product, ProductVariant
 
 
-def validate_line_input(data):
-    """
-        Validate if line create/update input has both product and product variant
-    """
-    product_id = data.get('product', None)
-    product_variant_id = data.get('product_variant', None)
-
-    if product_id is not None and product_variant_id is not None:
-        raise APIException('Cannot have product and product variant in one line.')
 
 
 def get_line_amount(line):

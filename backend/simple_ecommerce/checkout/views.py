@@ -54,10 +54,6 @@ class CheckoutLineCreate(generics.CreateAPIView):
     serializer_class = CheckoutLineSerializer
     permission_classes = [IsAuthenticated]
 
-    def perform_create(self, serializer):
-        validate_line_input(serializer.validated_data)
-        serializer.save()
-
 
 class CheckoutLineDetail(
     mixins.UpdateModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView

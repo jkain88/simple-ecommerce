@@ -16,8 +16,15 @@ class ProductImageSerializer(serializers.ModelSerializer):
         fields = ["id", "image", "alt", "product", "variant"]
 
 
+class BaseProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = ["id", "name", "slug"]
+
+
 class ProductVariantSerializer(serializers.ModelSerializer):
     images = ProductImageSerializer(many=True)
+    product = BaseProductSerializer(read_only=True)
 
     class Meta:
         model = ProductVariant
