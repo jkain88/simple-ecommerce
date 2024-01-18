@@ -13,8 +13,9 @@ from simple_ecommerce.product.models import (
     ProductVariant,
     ProductImage,
 )
-from simple_ecommerce.user.choices import AddressType
-from simple_ecommerce.user.models import Address, User
+from simple_ecommerce.core.models import Address
+from simple_ecommerce.core.choices import AddressType
+from simple_ecommerce.user.models import User
 
 
 # Get the directory of the current script
@@ -49,9 +50,12 @@ def create_zalora_products(category_name):
                     sku=product["ConfigSku"],
                     quantity=1000,
                     is_featured=is_featured,
+                    has_variants=False,
                     category=category,
                 )
-
+                ProductVariant.objects.create(
+                    name=name, price=price, sku=product["ConfigSku"], product=db_product
+                )
                 # Create product image
                 for index, image_url in enumerate(product["ImageList"]):
                     image_data = requests.get(image_url).content
