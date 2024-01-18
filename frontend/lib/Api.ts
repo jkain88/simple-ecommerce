@@ -54,27 +54,6 @@ export interface Address {
   delivery_label?: 'home' | 'office'
 }
 
-export interface Category {
-  /** ID */
-  id?: number
-  /**
-   * Name
-   * @minLength 1
-   * @maxLength 50
-   */
-  name: string
-  /** Description */
-  description?: string
-  /**
-   * Slug
-   * @format slug
-   * @minLength 1
-   * @maxLength 255
-   * @pattern ^[-a-zA-Z0-9_]+$
-   */
-  slug?: string | null
-}
-
 export interface ProductImage {
   /** ID */
   id?: number
@@ -94,6 +73,25 @@ export interface ProductImage {
   variant?: number | null
 }
 
+export interface BaseProduct {
+  /** ID */
+  id?: number
+  /**
+   * Name
+   * @minLength 1
+   * @maxLength 150
+   */
+  name: string
+  /**
+   * Slug
+   * @format slug
+   * @minLength 1
+   * @maxLength 255
+   * @pattern ^[-a-zA-Z0-9_]+$
+   */
+  slug?: string | null
+}
+
 export interface ProductVariant {
   /** ID */
   id?: number
@@ -104,8 +102,7 @@ export interface ProductVariant {
    * @maxLength 150
    */
   name: string
-  /** Product */
-  product: number
+  product?: BaseProduct
   /**
    * Price
    * @format decimal
@@ -128,6 +125,69 @@ export interface ProductVariant {
    * @maxLength 255
    */
   sku?: string
+}
+
+export interface CheckoutLine {
+  /** ID */
+  id?: number
+  /**
+   * Amount
+   * @format decimal
+   */
+  amount?: string | null
+  /** Checkout */
+  checkout: number
+  /** Product variant */
+  product_variant?: number | null
+  product_variant_detail?: ProductVariant
+  /**
+   * Quantity
+   * @min 0
+   * @max 2147483647
+   */
+  quantity?: number
+}
+
+export interface Checkout {
+  /** ID */
+  id?: number
+  /** Billing address */
+  billing_address?: number | null
+  billing_address_detail?: Address
+  lines?: CheckoutLine[]
+  /** Shipping address */
+  shipping_address?: number | null
+  shipping_address_detail?: Address
+  /** Total amount */
+  total_amount?: string
+  /** User */
+  user?: number | null
+}
+
+export interface CheckoutComplete {
+  /** Checkout */
+  checkout: number
+}
+
+export interface Category {
+  /** ID */
+  id?: number
+  /**
+   * Name
+   * @minLength 1
+   * @maxLength 50
+   */
+  name: string
+  /** Description */
+  description?: string
+  /**
+   * Slug
+   * @format slug
+   * @minLength 1
+   * @maxLength 255
+   * @pattern ^[-a-zA-Z0-9_]+$
+   */
+  slug?: string | null
 }
 
 export interface Product {
@@ -179,54 +239,6 @@ export interface Product {
    */
   quantity_allocated?: number
   variants: ProductVariant[]
-}
-
-export interface CheckoutLine {
-  /** ID */
-  id?: number
-  /**
-   * Amount
-   * @format decimal
-   */
-  amount?: string | null
-  /** Checkout */
-  checkout: number
-  /** Product */
-  product?: number | null
-  product_detail?: Product
-  /** Product variant */
-  product_variant?: number | null
-  product_variant_detail?: ProductVariant
-  /**
-   * Quantity
-   * @min 0
-   * @max 2147483647
-   */
-  quantity?: number
-}
-
-export interface Checkout {
-  /** ID */
-  id?: number
-  /** Billing address */
-  billing_address?: number | null
-  billing_address_detail?: Address
-  lines?: CheckoutLine[]
-  /** Shipping address */
-  shipping_address?: number | null
-  shipping_address_detail?: Address
-  /**
-   * Total amount
-   * @format decimal
-   */
-  total_amount?: string | null
-  /** User */
-  user?: number | null
-}
-
-export interface CheckoutComplete {
-  /** Checkout */
-  checkout: number
 }
 
 export interface OrderLine {
@@ -323,6 +335,7 @@ export interface User {
    * @format date
    */
   birthday?: string | null
+  checkout?: Checkout
   /**
    * Contact number
    * @maxLength 30
@@ -369,6 +382,7 @@ export interface UserRegister {
    * @format date
    */
   birthday?: string | null
+  checkout?: Checkout
   /**
    * Contact number
    * @maxLength 30
@@ -704,6 +718,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags checkout
+     * @name CheckoutLineRead
+     * @request GET:/checkout/line/{id}
+     * @secure
+     */
+    checkoutLineRead: (id: number, params: RequestParams = {}) =>
+      this.request<CheckoutLine, any>({
+        path: `/checkout/line/${id}`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags checkout
      * @name CheckoutLineUpdate
      * @request PUT:/checkout/line/{id}
      * @secure
@@ -712,6 +743,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<CheckoutLine, any>({
         path: `/checkout/line/${id}`,
         method: 'PUT',
+        body: data,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags checkout
+     * @name CheckoutLinePartialUpdate
+     * @request PATCH:/checkout/line/{id}
+     * @secure
+     */
+    checkoutLinePartialUpdate: (id: number, data: CheckoutLine, params: RequestParams = {}) =>
+      this.request<CheckoutLine, any>({
+        path: `/checkout/line/${id}`,
+        method: 'PATCH',
         body: data,
         secure: true,
         format: 'json',
