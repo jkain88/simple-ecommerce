@@ -74,9 +74,7 @@ export default function ProductPage({ params }: ProductPageProps) {
       {!isRelatedProductsLoading && (
         <div>
           <p className="font-serif text-3xl font-normal">Related Products</p>
-          <div>
-            <RelatedProducts products={relatedProducts!.data.results} />
-          </div>
+          <RelatedProducts products={relatedProducts!.data.results} />
         </div>
       )}
     </ProductPageContainer>

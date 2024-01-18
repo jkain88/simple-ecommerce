@@ -1,20 +1,82 @@
 'use client'
 
-import { Product } from '@/lib/Api'
+import { Api, CheckoutLine, Product } from '@/lib/Api'
+import { useUserStore } from '@/store/user'
 import { Button } from '@nextui-org/react'
+import { useMutation } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
-import React from 'react'
+import React, { useState } from 'react'
+import { toast } from 'react-toastify'
 
 type Props = {
   product: Product
 }
 
 const ProductDetail: React.FC<Props> = ({ product }: Props) => {
+  const [quantity, setQuantity] = useState(1)
+  const [selectedVariant, setSelectedVariant] = useState(product.variants[0])
+  const user = useUserStore((state) => state.user)
+  const setUser = useUserStore((state) => state.setUser)
+  const { mutate: createCheckoutLine } = useMutation({
+    mutationKey: ['createCheckoutLine'],
+    mutationFn: async (data: CheckoutLine) => {
+      const api = new Api()
+      return api.checkout.checkoutLineCreateCreate(data, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Token ${session?.token}`,
+        },
+      })
+    },
+    onSuccess: (data) => {
+      setUser({
+        ...user,
+        checkout: {
+          ...user.checkout,
+          lines: [...(user.checkout?.lines || []), data.data],
+        },
+      })
+      toast.success('Added to cart')
+    },
+  })
+  const { mutate: initializeCheckout } = useMutation({
+    mutationKey: ['createCheckout'],
+    mutationFn: async () => {
+      const api = new Api()
+      return api.checkout.checkoutCreateCreate(
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Token ${session?.token}`,
+          },
+        }
+      )
+    },
+    onSuccess: (data) => {
+      setUser({ ...user, checkout: data.data })
+      createCheckoutLine({
+        checkout: data.data.id!,
+        quantity,
+        product_variant: selectedVariant.id,
+      })
+      toast.success('Added to cart')
+    },
+  })
   const { data: session } = useSession()
 
-  console.log('DATA', session)
-
+  const onAddToCart = () => {
+    if (user && !user.checkout) {
+      initializeCheckout()
+    } else {
+      createCheckoutLine({
+        checkout: user.checkout!.id!,
+        quantity,
+        product_variant: selectedVariant.id,
+      })
+    }
+  }
   return (
     <div className="grid auto-rows-auto lg:grid-cols-2">
       <div className="flex h-full w-full justify-center">
@@ -41,17 +103,23 @@ const ProductDetail: React.FC<Props> = ({ product }: Props) => {
             type="number"
             className="w-12 border-[1px] border-solid border-neutral-200 py-1 pl-3"
             min="1"
-            value={1}
-            onChange={() => console.log('Changed')}
+            value={quantity}
+            onInput={(e) => {
+              const newValue = parseInt(e.currentTarget.value)
+              if (newValue > quantity) {
+                setQuantity((prev) => prev + 1)
+              } else if (newValue < quantity) {
+                setQuantity((prev) => prev - 1)
+              }
+            }}
           />
-          <a href="/cart">
-            <Button
-              className="bg-black px-10 text-white disabled:bg-gray-300"
-              disabled={!session}
-            >
-              Add To Cart
-            </Button>
-          </a>
+          <Button
+            className="bg-black px-10 text-white disabled:bg-gray-300"
+            onClick={onAddToCart}
+            disabled={!session}
+          >
+            Add To Cart
+          </Button>
         </div>
       </div>
     </div>
