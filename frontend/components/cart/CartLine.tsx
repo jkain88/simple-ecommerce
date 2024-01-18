@@ -14,8 +14,10 @@ import {
   useDisclosure,
 } from '@nextui-org/react'
 import { Button } from '../ui/button'
+import { useUserStore } from '@/store/user'
 
 const CartLine: React.FC = () => {
+  const user = useUserStore((state) => state.user)
   const [quantities, setQuantities] = useState(
     Object.fromEntries(checkoutLines.map((line) => [line.id, line.quantity]))
   )
@@ -38,12 +40,14 @@ const CartLine: React.FC = () => {
     }))
   }
 
+  if (user?.checkout?.lines?.length === 0) return <div></div>
+
   return (
     <div className="w-full max-w-3xl grow">
-      <div className="flex justify-between bg-white px-4 py-2">
+      <div className="flex justify-between rounded-lg bg-white px-6 py-4">
         <div className=" flex items-center justify-center gap-2">
           <Checkbox id="select-all" />
-          <label htmlFor="select-all" className="text-sm">
+          <label htmlFor="select-all" className="text-base font-semibold">
             {' '}
             Select All
           </label>
@@ -55,36 +59,34 @@ const CartLine: React.FC = () => {
           </button>
         </div>
       </div>
-      {checkoutLines.map((line) => (
+      {user!.checkout!.lines!.map((line) => (
         <div
           key={line.id}
-          className="mt-5 flex items-center justify-between gap-4 bg-white p-4"
+          className="mt-5 flex items-center justify-between gap-4 rounded-lg bg-white p-4"
         >
           <div className="flex items-center gap-4">
             <Checkbox id={`line-${line.id}`} />
             <Image
-              src={line.product_variant.image.url}
+              src={line!.product_variant_detail!.product!.thumbnail!}
               alt="Checkout Line"
-              width={45}
+              width={65}
               height={10}
             />
             <div className="flex flex-col">
-              <p>{line.product_variant.product.name}</p>
-              {line.product_variant.name && (
+              <p>{line.product_variant_detail!.name}</p>
+              {/* {line.product_variant.name && (
                 <p className="text-xs text-gray-400">
                   Variant: {line.product_variant.name}
                 </p>
-              )}
+              )} */}
             </div>
           </div>
           <div className="flex items-center gap-36">
             <div className="flex flex-col items-center gap-2">
-              <p className="text-lg font-semibold">
-                ₱{line.product_variant.price}
-              </p>
+              <p className="text-lg font-semibold">₱{line.amount}</p>
               <button
                 onClick={() => {
-                  setSelectedLineToDelete(line.id)
+                  setSelectedLineToDelete(line.id!)
                   onOpen()
                 }}
               >
@@ -94,17 +96,18 @@ const CartLine: React.FC = () => {
             <div className="flex items-center">
               <button
                 className="h-7 border-1 px-1"
-                onClick={() => handleMinus(line.id)}
+                onClick={() => handleMinus(line.id!)}
               >
                 <Minus className="text-gray-500" />
               </button>
               <input
                 className="h-7 w-10 rounded-none border-1 border-l-0 border-r-0 text-center"
-                value={quantities[line.id]}
+                value={line.quantity}
+                onChange={() => {}}
               />
               <button
                 className="h-7 border-1 px-1"
-                onClick={() => handlePlus(line.id)}
+                onClick={() => handlePlus(line.id!)}
               >
                 <Plus className="w-5 text-gray-500" />
               </button>

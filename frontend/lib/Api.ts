@@ -90,6 +90,11 @@ export interface BaseProduct {
    * @pattern ^[-a-zA-Z0-9_]+$
    */
   slug?: string | null
+  /**
+   * Thumbnail
+   * @format uri
+   */
+  thumbnail?: string | null
 }
 
 export interface ProductVariant {
@@ -208,6 +213,8 @@ export interface Product {
   images: ProductImage[]
   /** Is featured */
   is_featured?: boolean
+  /** Has variants */
+  has_variants?: boolean
   /**
    * Price
    * @format decimal

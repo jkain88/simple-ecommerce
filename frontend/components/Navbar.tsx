@@ -1,9 +1,8 @@
 'use client'
 
 import Image from 'next/image'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import React, { useEffect, useRef } from 'react'
+import { useRouter } from 'next/navigation'
+import React from 'react'
 import { ShoppingCart } from 'lucide-react'
 import { Badge } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
@@ -12,8 +11,7 @@ import { signOut, useSession } from 'next-auth/react'
 import { useUserStore } from '@/store/user'
 
 const Navbar: React.FC = () => {
-  const pathname = usePathname()
-  const navbarRef = useRef<HTMLDivElement | null>(null)
+  const router = useRouter()
   const { data: session } = useSession()
   const user = useUserStore((state) => state.user)
   const resetUser = useUserStore((state) => state.resetUser)
@@ -25,12 +23,6 @@ const Navbar: React.FC = () => {
       return api.products.productsCategoriesList()
     },
   })
-
-  useEffect(() => {
-    if (navbarRef.current && pathname == '/') {
-      navbarRef.current?.scrollIntoView({ behavior: 'auto' })
-    }
-  }, [pathname])
 
   const handleSignOut = async () => {
     await signOut({
@@ -60,15 +52,27 @@ const Navbar: React.FC = () => {
       </div>
 
       <div className="flex items-center gap-14 font-bold">
-        <Link href="/cart">
-          {user && user.checkout && user.checkout.lines!.length > 0 ? (
-            <Badge content={user?.checkout?.lines?.length}>
-              <ShoppingCart size={30} className="hover:text-gray-400" />
-            </Badge>
-          ) : (
-            <ShoppingCart size={30} className="hover:text-gray-400" />
-          )}
-        </Link>
+        {user && user.checkout && user.checkout.lines!.length > 0 ? (
+          <Badge content={user!.checkout!.lines!.length}>
+            <a href="/cart">
+              <ShoppingCart
+                size={30}
+                className="cursor-pointer hover:text-gray-400"
+                // onClick={() => router.push('/cart')}
+              />
+            </a>
+          </Badge>
+        ) : (
+          <Badge content={user!.checkout!.lines!.length}>
+            <a href="/cart">
+              <ShoppingCart
+                size={30}
+                className="cursor-pointer hover:text-gray-400"
+                onClick={() => router.push('/cart')}
+              />
+            </a>
+          </Badge>
+        )}
 
         {!session ? (
           <div className="flex divide-x-1 divide-black ">
@@ -87,12 +91,12 @@ const Navbar: React.FC = () => {
             >
               Profile
             </a>
-            <a
+            <p
               onClick={handleSignOut}
               className="cursor-pointer pl-2 hover:text-gray-400"
             >
               Logout
-            </a>
+            </p>
           </div>
         )}
       </div>
