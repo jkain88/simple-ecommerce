@@ -1,7 +1,13 @@
 from djmoney.contrib.django_rest_framework import MoneyField
 from rest_framework import serializers
 
-from .models import Category, Product, ProductImage, ProductVariant
+from .models import Brand, Category, Product, ProductImage, ProductVariant
+
+
+class BrandSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Brand
+        fields = ["id", "name"]
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -42,6 +48,7 @@ class ProductVariantSerializer(serializers.ModelSerializer):
 
 class ProductSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)
+    brand = BrandSerializer(read_only=True)
     price = MoneyField(max_digits=9, decimal_places=2)
     variants = ProductVariantSerializer(many=True)
     images = ProductImageSerializer(many=True)

@@ -17,6 +17,7 @@ product_image_detail = views.ProductImageViewSet.as_view(
 
 urlpatterns = [
     path("", views.ProductList.as_view(), name="product_list"),
+    path("brands", views.BrandList.as_view(), name="brand_list"),
     path("detail/<str:slug>", views.ProductDetail.as_view(), name="product_detail"),
     path("categories", views.CategoryList.as_view(), name="category_list"),
     path("category/<int:pk>", views.CategoryDetail.as_view(), name="category_detail"),

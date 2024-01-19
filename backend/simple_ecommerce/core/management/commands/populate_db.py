@@ -8,13 +8,13 @@ from django.core.management.base import BaseCommand
 from django.db.utils import IntegrityError
 
 from simple_ecommerce.product.models import (
+    Brand,
     Category,
     Product,
     ProductVariant,
     ProductImage,
 )
 from simple_ecommerce.core.models import Address
-from simple_ecommerce.core.choices import AddressType
 from simple_ecommerce.user.models import User
 
 
@@ -43,6 +43,7 @@ def create_zalora_products(category_name):
         price = Decimal(product["Price"].replace("Php ", "").replace(",", ""))
         name = " ".join(product["Name"].split(" ")[:5])
         is_featured = random.choice([True, False])
+        brand, _ = Brand.objects.get_or_create(name=product["Brand"])
         if not Product.objects.filter(name=name).exists() and product["ImageList"]:
             try:
                 thumbnail_data = requests.get(product["ImageList"][0]).content
@@ -69,6 +70,7 @@ def create_zalora_products(category_name):
                         is_featured=is_featured,
                         has_variants=False,
                         category=category,
+                        brand=brand,
                         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
                     )
                     ProductVariant.objects.create(
@@ -139,7 +141,6 @@ class Command(BaseCommand):
 
         Address.objects.get_or_create(
             user=admin,
-            address_type=AddressType.BILLING,
             city_area="Manila",
             city="Manila",
             postal_code="1000",
@@ -151,7 +152,6 @@ class Command(BaseCommand):
         Address.objects.get_or_create(
             user=admin,
             is_default=True,
-            address_type=AddressType.SHIPPING,
             city_area="Manila",
             city="Manila",
             postal_code="1000",

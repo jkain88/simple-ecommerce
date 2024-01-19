@@ -24,10 +24,17 @@ class Category(PublishableModel, TimeStampedModel):
         super().save(*args, **kwargs)
 
 
+class Brand(TimeStampedModel):
+    name = models.CharField(max_length=50)
+
+
 class Product(PublishableModel, TimeStampedModel):
     name = models.CharField(max_length=150)
     category = models.ForeignKey(
         Category, on_delete=models.PROTECT, null=True, related_name="products"
+    )
+    brand = models.ForeignKey(
+        Brand, on_delete=models.PROTECT, null=True, related_name="products"
     )
     price = MoneyField(
         max_digits=9,
