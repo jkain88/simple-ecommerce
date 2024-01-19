@@ -6,7 +6,7 @@ import React from 'react'
 import { ShoppingCart } from 'lucide-react'
 import { Badge, Input } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
-import { Api, Category } from '@/lib/Api'
+import { Api, Brand, Category } from '@/lib/Api'
 import { signOut, useSession } from 'next-auth/react'
 import { useUserStore } from '@/store/user'
 import { useCheckoutStore } from '@/store/checkout'
@@ -29,11 +29,19 @@ const Navbar: React.FC = () => {
   const resetUser = useUserStore((state) => state.resetUser)
   const resetCheckout = useCheckoutStore((state) => state.resetCheckout)
 
-  const { data: categories, isLoading } = useQuery({
+  const { data: categories, isLoading: isCategoriesLoading } = useQuery({
     queryKey: ['categories'],
     queryFn: async () => {
       const api = new Api()
       return api.products.productsCategoriesList()
+    },
+  })
+
+  const { data: brands, isLoading: isBrandsLoading } = useQuery({
+    queryKey: ['brands'],
+    queryFn: async () => {
+      const api = new Api()
+      return api.products.productsBrandsList({ page_size: 5 })
     },
   })
 
@@ -44,6 +52,8 @@ const Navbar: React.FC = () => {
     resetUser()
     resetCheckout()
   }
+
+  console.log('BRANDS', brands)
 
   return (
     <div className="flex items-center justify-around px-20 py-6 2xl:px-40">
@@ -63,7 +73,7 @@ const Navbar: React.FC = () => {
             placeholder="Type to search..."
           />
         </div>
-        <div className="hidden gap-8 text-sm lg:flex">
+        <div className="hidden gap-2 text-sm lg:flex">
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
@@ -71,7 +81,7 @@ const Navbar: React.FC = () => {
                   Categories
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  {!isLoading &&
+                  {!isCategoriesLoading &&
                     categories!.data.results.map((category: Category) => (
                       <ul key={category.id}>
                         <ListItem
@@ -79,11 +89,28 @@ const Navbar: React.FC = () => {
                           href={`/categories/${category.slug}`}
                         >
                           <p className="font-semibold">{category.name}</p>
-                          {/* <a
-                          href={`/categories/${category.slug}`}
-                          className="font-semibold uppercase hover:text-gray-400"
+                        </ListItem>
+                      </ul>
+                    ))}
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
+          <NavigationMenu>
+            <NavigationMenuList>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger className="text-base font-semibold">
+                  Brands
+                </NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  {!isBrandsLoading &&
+                    brands!.data.results.map((brand: Brand) => (
+                      <ul key={brand.id}>
+                        <ListItem
+                          className="z-50 px-8 hover:bg-slate-100"
+                          href={`/brands/${brand.name}`}
                         >
-                        </a> */}
+                          <p className="font-semibold">{brand.name}</p>
                         </ListItem>
                       </ul>
                     ))}

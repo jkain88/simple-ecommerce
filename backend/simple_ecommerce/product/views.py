@@ -51,7 +51,7 @@ class ProductList(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     filter_backends = [filters.DjangoFilterBackend]
-    filterset_fields = ["is_featured", "category__slug"]
+    filterset_fields = ["is_featured", "category__slug", "brand__slug"]
 
 
 class ProductDetail(generics.RetrieveUpdateDestroyAPIView):

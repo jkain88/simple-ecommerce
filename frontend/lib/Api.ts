@@ -175,6 +175,17 @@ export interface CheckoutLineMultipleDelete {
   lines: number[]
 }
 
+export interface Brand {
+  /** ID */
+  id?: number
+  /**
+   * Name
+   * @minLength 1
+   * @maxLength 50
+   */
+  name: string
+}
+
 export interface Category {
   /** ID */
   id?: number
@@ -205,6 +216,7 @@ export interface Product {
    * @maxLength 150
    */
   name: string
+  brand?: Brand
   category?: Category
   /**
    * Description
@@ -970,6 +982,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: {
         is_featured?: string
         category__slug?: string
+        brand__name?: string
         /** A page number within the paginated result set. */
         page?: number
         /** Number of results to return per page. */
@@ -989,6 +1002,42 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         any
       >({
         path: `/products/`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags products
+     * @name ProductsBrandsList
+     * @request GET:/products/brands
+     * @secure
+     */
+    productsBrandsList: (
+      query?: {
+        /** A page number within the paginated result set. */
+        page?: number
+        /** Number of results to return per page. */
+        page_size?: number
+      },
+      params: RequestParams = {}
+    ) =>
+      this.request<
+        {
+          count: number
+          /** @format uri */
+          next?: string | null
+          /** @format uri */
+          previous?: string | null
+          results: Brand[]
+        },
+        any
+      >({
+        path: `/products/brands`,
         method: 'GET',
         query: query,
         secure: true,

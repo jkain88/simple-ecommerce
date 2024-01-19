@@ -8,30 +8,26 @@ import { extractPageFromUrl } from '@/lib/utils'
 import { useInfiniteQuery } from '@tanstack/react-query'
 
 const getProducts =
-  (slug: string) =>
+  (name: string) =>
   async ({ pageParam = 1 }: { pageParam: number }) => {
     const api = new Api()
     const response = await api.products.productsList({
-      category__slug: slug,
+      brand__name: name,
       page_size: 10,
       page: pageParam,
     })
     return response.data
   }
 
-export default function CategoriesPage({
-  params,
-}: {
-  params: { slug: string }
-}) {
+export default function BrandsPage({ params }: { params: { name: string } }) {
   const {
     data: products,
     fetchNextPage,
     hasNextPage,
     isLoading,
   } = useInfiniteQuery({
-    queryKey: ['category-products'],
-    queryFn: getProducts(params.slug),
+    queryKey: ['brand-products'],
+    queryFn: getProducts(params.name),
     getNextPageParam: (lastPage) => {
       const nextPage = extractPageFromUrl(lastPage.next)
       return nextPage
