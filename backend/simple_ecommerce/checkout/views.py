@@ -28,6 +28,12 @@ class CheckoutCreate(generics.CreateAPIView):
             return Response(serializer(checkout).data)
         except ObjectDoesNotExist:
             checkout = Checkout.objects.create(user=user)
+            default_address = user.addresses.filter(is_default=True)
+
+            if default_address.exists():
+                checkout.shipping_address = default_address.first()
+                checkout.save()
+
             return Response(serializer(checkout).data)
 
 

@@ -29,7 +29,6 @@ class CheckoutLineSerializer(serializers.ModelSerializer):
 
 
 class CheckoutSerializer(serializers.ModelSerializer):
-    billing_address_detail = AddressSerializer(read_only=True, source="billing_address")
     shipping_address_detail = AddressSerializer(
         read_only=True, source="shipping_address"
     )
@@ -39,8 +38,6 @@ class CheckoutSerializer(serializers.ModelSerializer):
         model = Checkout
         fields = [
             "id",
-            "billing_address",
-            "billing_address_detail",
             "lines",
             "shipping_address",
             "shipping_address_detail",

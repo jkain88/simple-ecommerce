@@ -12,9 +12,6 @@ from simple_ecommerce.user.models import User
 
 
 class Checkout(TimeStampedModel):
-    billing_address = models.ForeignKey(
-        Address, null=True, on_delete=models.SET_NULL, related_name="+"
-    )
     shipping_address = models.ForeignKey(
         Address, null=True, on_delete=models.SET_NULL, related_name="+"
     )
