@@ -1,9 +1,10 @@
 'use client'
 
+import _ from 'lodash'
 import { Checkbox } from '../ui/checkbox'
 import { Minus, Plus, Trash2 } from 'lucide-react'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import {
   Modal,
   ModalBody,
@@ -48,16 +49,34 @@ const CartLine: React.FC<Props> = ({ line }) => {
       })
     },
   })
-  const handleMinus = (id: number) => {
-    setQuantity((prev) => (prev! > 1 ? (prev! -= 1) : prev))
-    if (quantity === 1) {
-      onOpen()
-    }
+  const logAndSideEffects = (quantity: number) => {
+    console.log('New Quantity:', quantity)
+    // Add any other side effects here
   }
 
-  const handlePlus = (id: number) => {
-    setQuantity((prev) => (prev! += 1))
-  }
+  const debouncedLogAndSideEffects = _.debounce(logAndSideEffects, 600) // 1000ms debounce time
+
+  const handlePlus = useCallback(() => {
+    setQuantity((prev) => {
+      const newQuantity = prev! + 1
+      debouncedLogAndSideEffects(newQuantity)
+      return newQuantity
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const handleMinus = useCallback(() => {
+    setQuantity((prev) => {
+      if (prev === 1) {
+        onOpen()
+        return prev
+      }
+      const newQuantity = prev! - 1
+      debouncedLogAndSideEffects(newQuantity)
+      return newQuantity
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const onDeleteCheckoutLine = (onClose: () => void) => {
     checkoutLineDelete()
@@ -114,10 +133,7 @@ const CartLine: React.FC<Props> = ({ line }) => {
           </button>
         </div>
         <div className="flex items-center">
-          <button
-            className="h-7 border-1 px-1"
-            onClick={() => handleMinus(line.id!)}
-          >
+          <button className="h-7 border-1 px-1" onClick={() => handleMinus()}>
             <Minus className="text-gray-500" />
           </button>
           <input
@@ -127,10 +143,7 @@ const CartLine: React.FC<Props> = ({ line }) => {
               console.log('CHANGED')
             }}
           />
-          <button
-            className="h-7 border-1 px-1"
-            onClick={() => handlePlus(line.id!)}
-          >
+          <button className="h-7 border-1 px-1" onClick={() => handlePlus()}>
             <Plus className="w-5 text-gray-500" />
           </button>
         </div>

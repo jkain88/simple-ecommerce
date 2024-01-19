@@ -35,8 +35,6 @@ const Navbar: React.FC = () => {
     resetCheckout()
   }
 
-  console.log('CHECKOUT', checkout)
-
   return (
     <div className="flex items-center justify-around px-20 py-6 2xl:px-40">
       <a href="/">
@@ -57,7 +55,7 @@ const Navbar: React.FC = () => {
       </div>
 
       <div className="flex items-center gap-14 font-bold">
-        {user && checkout && checkout.lines!.length > 0 ? (
+        {user && checkout && checkout.lines && checkout.lines.length > 0 ? (
           <Badge content={checkout!.lines!.length}>
             <a href="/cart">
               <ShoppingCart
