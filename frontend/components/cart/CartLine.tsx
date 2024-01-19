@@ -26,7 +26,6 @@ type Props = {
 const CartLine: React.FC<Props> = ({ line }) => {
   const { data: session } = useSession()
   const [quantity, setQuantity] = useState(line.quantity)
-  // const [selected, setSelected] = useState(line.isSelected)
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const checkout = useCheckoutStore((state) => state.checkout)
   const setCheckout = useCheckoutStore((state) => state.setCheckout)
@@ -50,11 +49,14 @@ const CartLine: React.FC<Props> = ({ line }) => {
     },
   })
   const handleMinus = (id: number) => {
-    setQuantity((prev) => (prev! += 1))
+    setQuantity((prev) => (prev! > 1 ? (prev! -= 1) : prev))
+    if (quantity === 1) {
+      onOpen()
+    }
   }
 
   const handlePlus = (id: number) => {
-    setQuantity((prev) => (prev! -= 1))
+    setQuantity((prev) => (prev! += 1))
   }
 
   const onDeleteCheckoutLine = (onClose: () => void) => {
@@ -81,7 +83,7 @@ const CartLine: React.FC<Props> = ({ line }) => {
   return (
     <div
       key={line.id}
-      className="mt-5 flex items-center justify-between gap-4 rounded-lg bg-white p-4"
+      className="mt-3 flex items-center justify-between gap-4 rounded-lg bg-white p-4"
     >
       <div className="flex items-center gap-4">
         <Checkbox

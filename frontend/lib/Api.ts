@@ -169,6 +169,12 @@ export interface CheckoutComplete {
   checkout: number
 }
 
+export interface CheckoutLineMultipleDelete {
+  /** Checkout */
+  checkout: number
+  lines: number[]
+}
+
 export interface Category {
   /** ID */
   id?: number
@@ -787,6 +793,25 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/checkout/line/${id}`,
         method: 'DELETE',
         secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags checkout
+     * @name CheckoutLinesDeleteCreate
+     * @request POST:/checkout/lines/delete/
+     * @secure
+     */
+    checkoutLinesDeleteCreate: (data: CheckoutLineMultipleDelete, params: RequestParams = {}) =>
+      this.request<CheckoutLineMultipleDelete, any>({
+        path: `/checkout/lines/delete/`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
         ...params,
       }),
 
