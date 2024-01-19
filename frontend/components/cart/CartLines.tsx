@@ -12,32 +12,61 @@ import {
   ModalFooter,
   ModalHeader,
   useDisclosure,
+  useUser,
 } from '@nextui-org/react'
 import { Button } from '../ui/button'
 import { useUserStore } from '@/store/user'
+import { useMutation } from '@tanstack/react-query'
+import { Api } from '@/lib/Api'
+import { useSession } from 'next-auth/react'
+import { useCheckoutStore } from '@/store/checkout'
 
-const CartLine: React.FC = () => {
+const CartLines: React.FC = () => {
   const user = useUserStore((state) => state.user)
+  const setUser = useUserStore((state) => state.setUser)
+  const checkout = useCheckoutStore((state) => state.checkout)
+  const { data: session } = useSession()
   const [quantities, setQuantities] = useState(
-    Object.fromEntries(checkoutLines.map((line) => [line.id, line.quantity]))
+    Object.fromEntries(
+      user!.checkout!.lines!.map((line) => [line.id, line.quantity])
+    )
   )
   const [selectLineToDelete, setSelectedLineToDelete] = useState<number | null>(
     null
   )
+  const { data: deleteCheckoutLine } = useMutation({
+    mutationKey: ['deleteCheckoutLine'],
+    mutationFn: async (id: number) => {
+      const api = new Api()
+      return api.checkout.checkoutLineDelete(id, {
+        headers: {
+          Authorization: `Token ${session?.token}`,
+        },
+      })
+    },
+    onSuccess: () => {
+      console.log('yes')
+    },
+  })
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
+  console.log('QUANTITES', quantities, user.checkout?.lines)
   const handleMinus = (id: number) => {
-    setQuantities((prev) => ({
+    setQuantities((prev: any) => ({
       ...prev,
       [id]: Math.max((prev[id] || 0) - 1, 0),
     }))
   }
 
   const handlePlus = (id: number) => {
-    setQuantities((prev) => ({
+    setQuantities((prev: any) => ({
       ...prev,
       [id]: (prev[id] || 0) + 1,
     }))
+  }
+
+  const onDeleteCheckoutLine = (onClose: () => void) => {
+    onClose()
   }
 
   if (user?.checkout?.lines?.length === 0) return <div></div>
@@ -102,8 +131,10 @@ const CartLine: React.FC = () => {
               </button>
               <input
                 className="h-7 w-10 rounded-none border-1 border-l-0 border-r-0 text-center"
-                value={line.quantity}
-                onChange={() => {}}
+                value={quantities[line.id!]}
+                onChange={() => {
+                  console.log('CHANGED')
+                }}
               />
               <button
                 className="h-7 border-1 px-1"
@@ -130,7 +161,10 @@ const CartLine: React.FC = () => {
                 <Button color="danger" onClick={onClose}>
                   Close
                 </Button>
-                <Button color="primary" onClick={onClose}>
+                <Button
+                  color="primary"
+                  onClick={() => onDeleteCheckoutLine(onClose)}
+                >
                   Remove
                 </Button>
               </ModalFooter>
@@ -142,4 +176,4 @@ const CartLine: React.FC = () => {
   )
 }
 
-export default CartLine
+export default CartLines

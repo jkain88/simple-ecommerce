@@ -1,6 +1,7 @@
 'use client'
 
 import { Api, CheckoutLine, Product } from '@/lib/Api'
+import { useCheckoutStore } from '@/store/checkout'
 import { useUserStore } from '@/store/user'
 import { Button } from '@nextui-org/react'
 import { useMutation } from '@tanstack/react-query'
@@ -17,7 +18,9 @@ const ProductDetail: React.FC<Props> = ({ product }: Props) => {
   const [quantity, setQuantity] = useState(1)
   const [selectedVariant, setSelectedVariant] = useState(product.variants[0])
   const user = useUserStore((state) => state.user)
+  const checkout = useCheckoutStore((state) => state.checkout)
   const setUser = useUserStore((state) => state.setUser)
+  const setCheckout = useCheckoutStore((state) => state.setCheckout)
   const { mutate: createCheckoutLine } = useMutation({
     mutationKey: ['createCheckoutLine'],
     mutationFn: async (data: CheckoutLine) => {
@@ -30,12 +33,9 @@ const ProductDetail: React.FC<Props> = ({ product }: Props) => {
       })
     },
     onSuccess: (data) => {
-      setUser({
-        ...user,
-        checkout: {
-          ...user.checkout,
-          lines: [...(user.checkout?.lines || []), data.data],
-        },
+      setCheckout({
+        ...checkout,
+        lines: [...(checkout?.lines || []), data.data],
       })
       toast.success('Added to cart')
     },
@@ -55,7 +55,7 @@ const ProductDetail: React.FC<Props> = ({ product }: Props) => {
       )
     },
     onSuccess: (data) => {
-      setUser({ ...user, checkout: data.data })
+      // setUser({ ...user, checkout: data.data })
       createCheckoutLine({
         checkout: data.data.id!,
         quantity,

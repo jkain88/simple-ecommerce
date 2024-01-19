@@ -220,31 +220,6 @@ const AddressDetailForm: React.FC<Props> = ({ address, type }) => {
               </Button>
             </div>
           </div>
-          <div>
-            <p>Address Type:</p>
-            <div className="mt-2 flex gap-3">
-              <Button
-                type="button"
-                onClick={() => setAddressType('shipping')}
-                className={cn(
-                  'border-2 border-gray-300 bg-white p-4 text-black hover:border-black hover:bg-white',
-                  { 'border-black': addressType == 'shipping' }
-                )}
-              >
-                Shipping
-              </Button>
-              <Button
-                type="button"
-                onClick={() => setAddressType('billing')}
-                className={cn(
-                  'border-2 border-gray-300 bg-white p-4 text-black hover:border-black hover:bg-white',
-                  { 'border-black': addressType == 'billing' }
-                )}
-              >
-                Billing
-              </Button>
-            </div>
-          </div>
           <Button className="mt-4 px-14" type="submit">
             <div className="flex items-center gap-2">
               {isUpdatePending ||

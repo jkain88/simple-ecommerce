@@ -9,11 +9,13 @@ import { useQuery } from '@tanstack/react-query'
 import { Api, Category } from '@/lib/Api'
 import { signOut, useSession } from 'next-auth/react'
 import { useUserStore } from '@/store/user'
+import { useCheckoutStore } from '@/store/checkout'
 
 const Navbar: React.FC = () => {
   const router = useRouter()
   const { data: session } = useSession()
   const user = useUserStore((state) => state.user)
+  const checkout = useCheckoutStore((state) => state.checkout)
   const resetUser = useUserStore((state) => state.resetUser)
 
   const { data: categories, isLoading } = useQuery({
@@ -31,7 +33,8 @@ const Navbar: React.FC = () => {
     resetUser()
   }
 
-  console.log('USER STORE', user)
+  console.log('CHECKOUT', checkout)
+
   return (
     <div className="flex items-center justify-around px-20 py-6 2xl:px-40">
       <a href="/">
@@ -52,26 +55,23 @@ const Navbar: React.FC = () => {
       </div>
 
       <div className="flex items-center gap-14 font-bold">
-        {user && user.checkout && user.checkout.lines!.length > 0 ? (
-          <Badge content={user!.checkout!.lines!.length}>
+        {user && checkout && checkout.lines!.length > 0 ? (
+          <Badge content={checkout!.lines!.length}>
             <a href="/cart">
               <ShoppingCart
                 size={30}
                 className="cursor-pointer hover:text-gray-400"
-                // onClick={() => router.push('/cart')}
               />
             </a>
           </Badge>
         ) : (
-          <Badge content={user!.checkout!.lines!.length}>
-            <a href="/cart">
-              <ShoppingCart
-                size={30}
-                className="cursor-pointer hover:text-gray-400"
-                onClick={() => router.push('/cart')}
-              />
-            </a>
-          </Badge>
+          <a href="/cart">
+            <ShoppingCart
+              size={30}
+              className="cursor-pointer hover:text-gray-400"
+              onClick={() => router.push('/cart')}
+            />
+          </a>
         )}
 
         {!session ? (

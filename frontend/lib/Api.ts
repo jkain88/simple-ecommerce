@@ -9,51 +9,6 @@
  * ---------------------------------------------------------------
  */
 
-export interface Address {
-  /** ID */
-  id?: number
-  /** Is default */
-  is_default?: boolean
-  /** Address type */
-  address_type?: 'billing' | 'shipping'
-  /**
-   * City area
-   * @minLength 1
-   * @maxLength 100
-   */
-  city_area: string
-  /**
-   * City
-   * @minLength 1
-   * @maxLength 70
-   */
-  city: string
-  /**
-   * Province
-   * @minLength 1
-   * @maxLength 70
-   */
-  province: string
-  /**
-   * Street
-   * @maxLength 100
-   */
-  street?: string
-  /**
-   * Postal code
-   * @minLength 1
-   * @maxLength 20
-   */
-  postal_code: string
-  /**
-   * Contact number
-   * @maxLength 30
-   */
-  contact_number?: string
-  /** Delivery label */
-  delivery_label?: 'home' | 'office'
-}
-
 export interface ProductImage {
   /** ID */
   id?: number
@@ -153,12 +108,52 @@ export interface CheckoutLine {
   quantity?: number
 }
 
+export interface Address {
+  /** ID */
+  id?: number
+  /** Is default */
+  is_default?: boolean
+  /**
+   * City area
+   * @minLength 1
+   * @maxLength 100
+   */
+  city_area: string
+  /**
+   * City
+   * @minLength 1
+   * @maxLength 70
+   */
+  city: string
+  /**
+   * Province
+   * @minLength 1
+   * @maxLength 70
+   */
+  province: string
+  /**
+   * Street
+   * @maxLength 100
+   */
+  street?: string
+  /**
+   * Postal code
+   * @minLength 1
+   * @maxLength 20
+   */
+  postal_code: string
+  /**
+   * Contact number
+   * @maxLength 30
+   */
+  contact_number?: string
+  /** Delivery label */
+  delivery_label?: 'home' | 'office'
+}
+
 export interface Checkout {
   /** ID */
   id?: number
-  /** Billing address */
-  billing_address?: number | null
-  billing_address_detail?: Address
   lines?: CheckoutLine[]
   /** Shipping address */
   shipping_address?: number | null

@@ -13,7 +13,6 @@ const initialUserState = {
   firstName: '',
   lastName: '',
   id: 0,
-  checkout: undefined,
 }
 
 export const useUserStore = create<UserState>()(

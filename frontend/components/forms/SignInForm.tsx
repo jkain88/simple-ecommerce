@@ -21,6 +21,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Api } from '@/lib/Api'
 import { useUserStore } from '@/store/user'
 import { useRouter } from 'next/navigation'
+import { useCheckoutStore } from '@/store/checkout'
 
 type Inputs = z.infer<typeof signInSchema>
 
@@ -35,6 +36,7 @@ const SignInForm: React.FC = () => {
     },
   })
   const setUser = useUserStore((state) => state.setUser)
+  const setCheckout = useCheckoutStore((state) => state.setCheckout)
   const { data: user } = useQuery({
     queryKey: ['userProfile'],
     queryFn: async () => {
@@ -59,6 +61,7 @@ const SignInForm: React.FC = () => {
   useEffect(() => {
     if (session?.token && user?.data) {
       setUser(user.data)
+      setCheckout(user?.data?.checkout!)
       router.push('/')
     }
   }, [session, user, setUser, router])
