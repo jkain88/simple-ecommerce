@@ -48,3 +48,10 @@ class CheckoutSerializer(serializers.ModelSerializer):
 
 class CheckoutCompleteSerializer(serializers.Serializer):
     checkout = serializers.IntegerField()
+
+
+class CheckoutLineMultipleDeleteSerializer(serializers.Serializer):
+    checkout = serializers.PrimaryKeyRelatedField(queryset=Checkout.objects.all())
+    lines = serializers.ListField(
+        child=serializers.PrimaryKeyRelatedField(queryset=CheckoutLine.objects.all())
+    )

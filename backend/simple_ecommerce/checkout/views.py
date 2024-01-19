@@ -10,6 +10,7 @@ from .serializers import (
     CheckoutSerializer,
     CheckoutCompleteSerializer,
     CheckoutLineSerializer,
+    CheckoutLineMultipleDeleteSerializer,
 )
 from simple_ecommerce.order.models import Order, OrderLine
 from simple_ecommerce.order.serializers import OrderSerializer
@@ -61,6 +62,29 @@ class CheckoutLineDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = CheckoutLine.objects.all()
     serializer_class = CheckoutLineSerializer
     permission_classes = [IsAuthenticated]
+
+
+class CheckoutLineMultipleDelete(generics.GenericAPIView):
+    serializer_class = CheckoutLineMultipleDeleteSerializer
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        validated_data = serializer.validated_data
+
+        # Validate checkout line if exists in checkout
+        for line in validated_data["lines"]:
+            if line not in validated_data["checkout"].lines.all():
+                return Response(
+                    {"detail": "Invalid checkout line"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+        for line in validated_data["lines"]:
+            line.delete()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class CheckoutComplete(generics.GenericAPIView):
