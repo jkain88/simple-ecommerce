@@ -83,11 +83,15 @@ class AddressCreate(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
+        user = self.request.user
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
-        address = Address.objects.create(user=self.request.user, **data)
+        if not user.addresses.all():
+            data["is_default"] = True
+
+        address = Address.objects.create(user=user, **data)
         return Response(AddressSerializer(address).data, status=status.HTTP_200_OK)
 
 
