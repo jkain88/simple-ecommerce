@@ -68,7 +68,7 @@ class CheckoutLineMultipleDelete(generics.GenericAPIView):
     serializer_class = CheckoutLineMultipleDeleteSerializer
     permission_classes = [IsAuthenticated]
 
-    def delete(self, request):
+    def post(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         validated_data = serializer.validated_data
