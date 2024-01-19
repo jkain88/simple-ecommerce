@@ -17,6 +17,7 @@ const Navbar: React.FC = () => {
   const user = useUserStore((state) => state.user)
   const checkout = useCheckoutStore((state) => state.checkout)
   const resetUser = useUserStore((state) => state.resetUser)
+  const resetCheckout = useCheckoutStore((state) => state.resetCheckout)
 
   const { data: categories, isLoading } = useQuery({
     queryKey: ['categories'],
@@ -31,6 +32,7 @@ const Navbar: React.FC = () => {
       callbackUrl: '/',
     })
     resetUser()
+    resetCheckout()
   }
 
   console.log('CHECKOUT', checkout)

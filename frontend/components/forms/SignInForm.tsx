@@ -61,10 +61,16 @@ const SignInForm: React.FC = () => {
   useEffect(() => {
     if (session?.token && user?.data) {
       setUser(user.data)
-      setCheckout(user?.data?.checkout!)
+      setCheckout({
+        ...user?.data.checkout!,
+        lines: user?.data.checkout?.lines?.map((line) => ({
+          ...line,
+          isSelected: false,
+        })),
+      })
       router.push('/')
     }
-  }, [session, user, setUser, router])
+  }, [session, user, setUser, router, setCheckout])
 
   return (
     <Form {...form}>
