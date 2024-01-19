@@ -102,7 +102,7 @@ const CartLine: React.FC<Props> = ({ line }) => {
   return (
     <div
       key={line.id}
-      className="mt-3 flex items-center justify-between gap-4 rounded-lg bg-white p-4"
+      className="mt-3 grid grid-cols-2 items-center justify-between rounded-lg bg-white p-4 sm:flex-row md:grid-cols-3 md:gap-4"
     >
       <div className="flex items-center gap-4">
         <Checkbox
@@ -116,23 +116,20 @@ const CartLine: React.FC<Props> = ({ line }) => {
           width={65}
           height={10}
         />
-        <div className="flex flex-col">
+        <div className="flex max-w-xs flex-col font-semibold md:text-lg">
           <p>{line.product_variant_detail!.name}</p>
         </div>
       </div>
-      <div className="flex items-center gap-36">
+      <div>
         <div className="flex flex-col items-center gap-2">
-          <p className="text-lg font-semibold">₱{line.amount}</p>
-          <button
-            onClick={() => {
-              //   setSelectedLineToDelete(line.id!)
-              onOpen()
-            }}
-          >
+          <p className="font-semibold">₱{line.amount}</p>
+          <button onClick={onOpen}>
             <Trash2 className="w-5" />
           </button>
         </div>
-        <div className="flex items-center">
+      </div>
+      <div className="flex items-center">
+        <div className="mt-4 flex items-center">
           <button className="h-7 border-1 px-1" onClick={() => handleMinus()}>
             <Minus className="text-gray-500" />
           </button>

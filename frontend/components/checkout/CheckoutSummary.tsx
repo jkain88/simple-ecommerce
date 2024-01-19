@@ -9,7 +9,7 @@ type Props = {
 
 const CheckoutSummary: React.FC<Props> = ({ buttonLabel, redirectLink }) => {
   return (
-    <div className="sticky top-6 max-h-72 w-72 shrink-0 rounded-lg bg-white px-4 py-8">
+    <div className="sticky top-6 shrink-0 rounded-lg bg-white px-4 py-8 md:max-h-72 md:w-72">
       <p className="text-lg font-semibold">Checkout Summary</p>
       <div className="mt-4 flex flex-col gap-4 divide-y-2">
         <div className="flex flex-col gap-4">
