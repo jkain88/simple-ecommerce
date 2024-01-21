@@ -12,7 +12,7 @@ class Category(PublishableModel, TimeStampedModel):
     description = models.TextField(blank=True)
     slug = models.SlugField(max_length=255, unique=True, null=True)
     parent = models.ForeignKey(
-        "self", on_delete=models.CASCADE, null=True, related_name="children"
+        "self", on_delete=models.CASCADE, null=True, related_name="children", db_constraint=False
     )
 
     def __str__(self):
@@ -37,10 +37,10 @@ class Brand(TimeStampedModel):
 class Product(PublishableModel, TimeStampedModel):
     name = models.CharField(max_length=150)
     category = models.ForeignKey(
-        Category, on_delete=models.PROTECT, null=True, related_name="products"
+        Category, on_delete=models.PROTECT, null=True, related_name="products", db_constraint=False
     )
     brand = models.ForeignKey(
-        Brand, on_delete=models.PROTECT, null=True, related_name="products"
+        Brand, on_delete=models.PROTECT, null=True, related_name="products", db_constraint=False
     )
     price = MoneyField(
         max_digits=9,
@@ -69,7 +69,7 @@ class Product(PublishableModel, TimeStampedModel):
 class ProductVariant(TimeStampedModel):
     name = models.CharField(max_length=150)
     product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, related_name="variants"
+        Product, on_delete=models.CASCADE, related_name="variants", db_constraint=False
     )
     price = MoneyField(
         max_digits=9,
@@ -86,9 +86,9 @@ class ProductVariant(TimeStampedModel):
 class ProductImage(models.Model):
     image = models.ImageField(upload_to="media/products/")
     product = models.ForeignKey(
-        Product, null=True, on_delete=models.CASCADE, related_name="images"
+        Product, null=True, on_delete=models.CASCADE, related_name="images", db_constraint=False
     )
     variant = models.ForeignKey(
-        ProductVariant, null=True, on_delete=models.SET_NULL, related_name="images"
+        ProductVariant, null=True, on_delete=models.SET_NULL, related_name="images", db_constraint=False
     )
     alt = models.CharField(max_length=50, blank=True)

@@ -11,10 +11,10 @@ from simple_ecommerce.user.models import User
 
 class Order(TimeStampedModel):
     billing_address = models.ForeignKey(
-        Address, null=True, on_delete=models.SET_NULL, related_name="+"
+        Address, null=True, on_delete=models.SET_NULL, related_name="+", db_constraint=False
     )
     shipping_address = models.ForeignKey(
-        Address, null=True, on_delete=models.SET_NULL, related_name="+"
+        Address, null=True, on_delete=models.SET_NULL, related_name="+", db_constraint=False
     )
     total_amount = MoneyField(
         max_digits=9,
@@ -22,7 +22,7 @@ class Order(TimeStampedModel):
         null=True,
         default_currency=settings.DEFAULT_CURRENCY,
     )
-    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, db_constraint=False)
     status = models.CharField(
         max_length=20, choices=OrderStatus.CHOICES, default=OrderStatus.PENDING
     )
@@ -35,11 +35,11 @@ class OrderLine(TimeStampedModel):
         null=True,
         default_currency=settings.DEFAULT_CURRENCY,
     )
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="lines")
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="lines", db_constraint=False)
     product = models.ForeignKey(
-        Product, null=True, on_delete=models.SET_NULL, related_name="+"
+        Product, null=True, on_delete=models.SET_NULL, related_name="+", db_constraint=False
     )
     product_variant = models.ForeignKey(
-        ProductVariant, null=True, on_delete=models.SET_NULL, related_name="+"
+        ProductVariant, null=True, on_delete=models.SET_NULL, related_name="+", db_constraint=False
     )
     quantity = models.PositiveIntegerField(default=1)

@@ -1,12 +1,16 @@
 import os
+from dotenv import load_dotenv
 
 from .base import *
 
-PROJECT_ENVIRONMENT = os.getenv('PROJECT_ENVIRONMENT')
+load_dotenv()
 
-if PROJECT_ENVIRONMENT == 'prod':
-  from .prod import *
-elif PROJECT_ENVIRONMENT == 'dev':
-  from .dev import *
-elif PROJECT_ENVIRONMENT == 'local':
-  from . local import *
+PROJECT_ENVIRONMENT = os.getenv("PROJECT_ENVIRONMENT")
+
+print(PROJECT_ENVIRONMENT)
+if PROJECT_ENVIRONMENT == "prod":
+    from .prod import *
+elif PROJECT_ENVIRONMENT == "dev":
+    from .dev import *
+elif PROJECT_ENVIRONMENT == "local":
+    from .local import *

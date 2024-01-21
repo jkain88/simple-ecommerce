@@ -2,8 +2,8 @@
 
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import React from 'react'
-import { ShoppingCart } from 'lucide-react'
+import React, { useState } from 'react'
+import { ChevronDown, ChevronUp, Menu, ShoppingCart } from 'lucide-react'
 import { Badge, Input } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
 import { Api, Brand, Category } from '@/lib/Api'
@@ -20,10 +20,20 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from './ui/navigation-menu'
+import { Sheet, SheetContent, SheetTrigger } from './ui/sheet'
+import { Accordion, AccordionItem, AccordionTrigger } from './ui/accordion'
+import { AccordionContent } from '@radix-ui/react-accordion'
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from './ui/collapsible'
+import { Button } from './ui/button'
 
 const Navbar: React.FC = () => {
   const router = useRouter()
   const { data: session } = useSession()
+  const [isCategoriesOpened, setIsCategoriesOpened] = useState(false)
   const user = useUserStore((state) => state.user)
   const checkout = useCheckoutStore((state) => state.checkout)
   const resetUser = useUserStore((state) => state.resetUser)
@@ -167,6 +177,95 @@ const Navbar: React.FC = () => {
           </div>
         )}
       </div>
+      <Sheet>
+        <SheetTrigger asChild>
+          <Menu />
+        </SheetTrigger>
+        <SheetContent className="w-72 px-4">
+          {/* <div> */}
+          <div className="flex flex-col gap-5 divide-y-1 divide-slate-300 text-lg font-semibold">
+            <a
+              href="/account/profile"
+              className="cursor-pointer pr-2 hover:text-gray-400"
+            >
+              Profile
+            </a>
+            <Collapsible className="pt-2">
+              <CollapsibleTrigger
+                onClick={() => setIsCategoriesOpened((prev) => !prev)}
+              >
+                {/* <CaretSortIcon className="h-4 w-4" /> */}
+                <div className="flex items-center gap-4">
+                  <p>Categories</p>
+                  {isCategoriesOpened ? <ChevronUp /> : <ChevronDown />}
+                </div>
+              </CollapsibleTrigger>
+
+              <CollapsibleContent>
+                {!isBrandsLoading &&
+                  brands!.data.results.map((brand: Brand) => (
+                    <ul key={brand.id}>
+                      <a
+                        className="hover:text-slate-100"
+                        href={`/brands/${brand.name}`}
+                      >
+                        <p className="font-semibold">{brand.name}</p>
+                      </a>
+                    </ul>
+                  ))}
+              </CollapsibleContent>
+              {/* <CollapsibleContent>Category1</CollapsibleContent> */}
+            </Collapsible>
+            {/* <Accordion type="multiple">
+              <AccordionItem value="cat1">
+                <AccordionTrigger className="border-b-0">
+                  Categories
+                </AccordionTrigger>
+                <AccordionContent>Cat1</AccordionContent>
+              </AccordionItem>
+            </Accordion> */}
+            {/* <Accordion className="w-full cursor-pointer pt-2 hover:text-gray-400">
+              <AccordionItem
+                key="1"
+                aria-label="Accordion 1"
+                title="Categories"
+              >
+                Categories
+              </AccordionItem>
+            </Accordion> */}
+            <p
+              onClick={handleSignOut}
+              className="w-full cursor-pointer pt-2 hover:text-gray-400"
+            >
+              Categories
+            </p>
+            <p
+              onClick={handleSignOut}
+              className="w-full cursor-pointer pt-2 hover:text-gray-400"
+            >
+              Brands
+            </p>
+            <p
+              onClick={handleSignOut}
+              className="w-full cursor-pointer pt-2 hover:text-gray-400"
+            >
+              Best Sellers
+            </p>
+            <p
+              onClick={handleSignOut}
+              className="w-full cursor-pointer pt-2 hover:text-gray-400"
+            >
+              New Arrivals
+            </p>
+            <p
+              onClick={handleSignOut}
+              className="w-full cursor-pointer pt-2 hover:text-gray-400"
+            >
+              Logout
+            </p>
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   )
 }

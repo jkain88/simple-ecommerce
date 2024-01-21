@@ -13,7 +13,7 @@ from simple_ecommerce.user.models import User
 
 class Checkout(TimeStampedModel):
     shipping_address = models.ForeignKey(
-        Address, null=True, on_delete=models.SET_NULL, related_name="+"
+        Address, null=True, on_delete=models.SET_NULL, related_name="+", db_constraint=False
     )
     user = models.OneToOneField(
         User, null=True, on_delete=models.SET_NULL, related_name="checkout"
@@ -32,13 +32,13 @@ class CheckoutLine(TimeStampedModel):
         default_currency=settings.DEFAULT_CURRENCY,
     )
     checkout = models.ForeignKey(
-        Checkout, on_delete=models.CASCADE, related_name="lines"
+        Checkout, on_delete=models.CASCADE, related_name="lines", db_constraint=False
     )
     product = models.ForeignKey(
-        Product, null=True, on_delete=models.SET_NULL, related_name="lines"
+        Product, null=True, on_delete=models.SET_NULL, related_name="lines", db_constraint=False
     )
     product_variant = models.ForeignKey(
-        ProductVariant, null=True, on_delete=models.SET_NULL, related_name="lines"
+        ProductVariant, null=True, on_delete=models.SET_NULL, related_name="lines", db_constraint=False
     )
     quantity = models.PositiveIntegerField(default=1)
 
