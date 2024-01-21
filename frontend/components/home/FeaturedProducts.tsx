@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/link'
 import React from 'react'
 import ProductCard from '../ProductCard'
 import { useQuery } from '@tanstack/react-query'
@@ -11,7 +10,10 @@ const FeaturedProducts: React.FC = () => {
     queryKey: ['featured-products'],
     queryFn: () => {
       const api = new Api()
-      const response = api.products.productsList({ is_featured: 'true' })
+      const response = api.products.productsList({
+        is_featured: 'true',
+        page_size: 4,
+      })
       return response
     },
   })
@@ -23,13 +25,13 @@ const FeaturedProducts: React.FC = () => {
       <div className="mt-5 grid max-w-max grid-cols-2 gap-10 px-10 md:grid-cols-4">
         {!isLoading &&
           products!.data.results.map((product: Product) => (
-              <ProductCard
-                key={product.id}
-                price={product.price}
-                image={product.images[0].image}
-                name={product.name}
-                slug={product.slug}
-              />
+            <ProductCard
+              key={product.id}
+              price={product.price}
+              image={product.images[0].image}
+              name={product.name}
+              slug={product.slug}
+            />
           ))}
       </div>
     </section>
