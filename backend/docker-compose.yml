@@ -1,14 +1,17 @@
 version: '3.8'
 
 services:
-  postgres:
-    image: postgres
+  mysql:
+    image: mysql:8.0
     restart: unless-stopped
     container_name: simple_ecommerce_database
     environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: database_name
+      MYSQL_USER: username
+      MYSQL_PASSWORD: password
+    volumes:
+      - mysql_data:/var/lib/mysql
   backend:
     build: .
     env_file: .env
@@ -22,4 +25,7 @@ services:
     ports:
       - '8000:8000'
     depends_on:
-      - postgres
+      - mysql
+
+volumes:
+  mysql_data:

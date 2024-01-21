@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+DEBUG = True
+
 DATABASES = {
     "default": {
         "ENGINE": "django_psdb_engine",
