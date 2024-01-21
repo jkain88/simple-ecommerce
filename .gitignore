@@ -3,4 +3,5 @@
 
 backend/simple_ecommerce/media/*
 backend/simple_ecommerce/static/*
+backend/simple_ecommerce/images/*
 backend/.env

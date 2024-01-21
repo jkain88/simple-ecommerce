@@ -6,6 +6,7 @@ import requests
 from django.core.files import File
 from django.core.management.base import BaseCommand
 from django.db.utils import IntegrityError
+from django.conf import settings
 
 from simple_ecommerce.product.models import (
     Brand,
@@ -48,9 +49,7 @@ def create_zalora_products(category_name):
             try:
                 thumbnail_data = requests.get(product["ImageList"][0]).content
                 thumbnail_name = "-".join(name.split(" ")).lower() + f"-thumbnail.webp"
-                thumbnail_path = (
-                    f"/app/simple_ecommerce/static/images/products/{thumbnail_name}"
-                )
+                thumbnail_path = f"{settings.BASE_DIR}/images/products/{thumbnail_name}"
 
                 if not os.path.exists(thumbnail_path):
                     os.makedirs(os.path.dirname(thumbnail_path), exist_ok=True)
@@ -141,22 +140,27 @@ class Command(BaseCommand):
 
         Address.objects.get_or_create(
             user=admin,
-            city_area="Manila",
-            city="Manila",
-            postal_code="1000",
-            province="Metro Manila",
-            street="Tondo",
-            contact_number="+639999999999",
+            defaults={
+                "is_default": True,
+                "city_area": "Manila",
+                "city": "Manila",
+                "postal_code": "1000",
+                "province": "Metro Manila",
+                "street": "Tondo",
+                "contact_number": "+639999999999",
+            },
         )
 
         Address.objects.get_or_create(
             user=admin,
-            is_default=True,
-            city_area="Manila",
-            city="Manila",
-            postal_code="1000",
-            province="Metro Manila",
-            street="Tondo",
-            contact_number="+639999999999",
+            defaults={
+                "is_default": False,
+                "city_area": "Matahimik",
+                "city": "Cainta",
+                "postal_code": "1000",
+                "province": "Metro Manila",
+                "street": "Tondo",
+                "contact_number": "+639999999999",
+            },
         )
         self.stdout.write(self.style.SUCCESS("Database populated!"))
