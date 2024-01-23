@@ -39,7 +39,7 @@ const NewArrivals: React.FC = () => {
       <p className="mt-2 text-center text-sm">
         Grabe these new items before they&apos;re gone!
       </p>
-      <div className="mt-5 grid max-w-max grid-cols-2 gap-10 px-10 md:grid-cols-4">
+      <div className="mt-5 grid max-w-max grid-cols-1 gap-10 px-10 md:grid-cols-2 xl:grid-cols-4">
         {!isLoading &&
           products!.pages.map((page, i) =>
             page.results.map((product: Product) => (
