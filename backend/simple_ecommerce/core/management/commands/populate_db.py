@@ -134,6 +134,7 @@ class Command(BaseCommand):
             is_superuser=True,
             first_name="Admin",
             last_name="Admin",
+            contact_number="+63999999999",
         )
         admin.set_password("admin")
         admin.save()
