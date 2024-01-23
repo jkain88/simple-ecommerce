@@ -41,7 +41,7 @@ const NavbarHamburger: React.FC<Props> = ({
       <SheetContent className=" w-72 overflow-y-auto">
         {/* <div> */}
         <div className="flex flex-col gap-5 text-lg font-semibold">
-          {session && (
+          {session ? (
             <div className="flex flex-col ">
               <div>
                 <p className="mt-4 text-xl font-semibold">
@@ -57,6 +57,13 @@ const NavbarHamburger: React.FC<Props> = ({
                 Profile
               </a>
             </div>
+          ) : (
+            <a
+              href="/signin"
+              className="cursor-pointer rounded-lg bg-white px-4 py-2 pr-2 hover:bg-gray-200"
+            >
+              Login
+            </a>
           )}
           <Collapsible>
             <CollapsibleTrigger
@@ -128,12 +135,14 @@ const NavbarHamburger: React.FC<Props> = ({
           >
             New Arrivals
           </p>
-          <p
-            onClick={handleSignOut}
-            className="cursor-pointer rounded-lg bg-white px-4 py-2 pr-2 hover:bg-gray-200"
-          >
-            Logout
-          </p>
+          {session && (
+            <p
+              onClick={handleSignOut}
+              className="cursor-pointer rounded-lg bg-white px-4 py-2 pr-2 hover:bg-gray-200"
+            >
+              Logout
+            </p>
+          )}
         </div>
       </SheetContent>
     </Sheet>

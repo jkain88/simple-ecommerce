@@ -54,17 +54,17 @@ const Navbar: React.FC = () => {
   }
 
   return (
-    <div className="flex items-center px-20 py-6 lg:justify-around 2xl:px-40">
+    <div className="flex items-center justify-around px-20 py-6 2xl:px-40">
       <div className="flex items-center gap-10">
         <a href="/">
           <Image src="/black-logo.svg" alt="logo" width={120} height={100} />
         </a>
 
-        <div className="hidden lg:block">
+        <div className="hidden md:block">
           <Input
             size="md"
             radius="sm"
-            className="w-40 lg:w-80"
+            className="w-40 md:w-80"
             endContent={
               <SearchIcon className="pointer-events-none mb-0.5 flex-shrink-0 text-black dark:text-white/90" />
             }
