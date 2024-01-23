@@ -71,13 +71,13 @@ export interface ProductVariant {
   /**
    * Quantity
    * @min 0
-   * @max 2147483647
+   * @max 4294967295
    */
   quantity?: number
   /**
    * Quantity allocated
    * @min 0
-   * @max 2147483647
+   * @max 4294967295
    */
   quantity_allocated?: number
   /**
@@ -103,7 +103,7 @@ export interface CheckoutLine {
   /**
    * Quantity
    * @min 0
-   * @max 2147483647
+   * @max 4294967295
    */
   quantity?: number
 }
@@ -184,6 +184,14 @@ export interface Brand {
    * @maxLength 50
    */
   name: string
+  /**
+   * Slug
+   * @format slug
+   * @minLength 1
+   * @maxLength 100
+   * @pattern ^[-a-zA-Z0-9_]+$
+   */
+  slug?: string | null
 }
 
 export interface Category {
@@ -254,13 +262,13 @@ export interface Product {
   /**
    * Quantity
    * @min 0
-   * @max 2147483647
+   * @max 4294967295
    */
   quantity?: number
   /**
    * Quantity allocated
    * @min 0
-   * @max 2147483647
+   * @max 4294967295
    */
   quantity_allocated?: number
   variants: ProductVariant[]
@@ -283,7 +291,7 @@ export interface OrderLine {
   /**
    * Quantity
    * @min 0
-   * @max 2147483647
+   * @max 4294967295
    */
   quantity?: number
 }
@@ -352,7 +360,7 @@ export interface User {
   /**
    * Age
    * @min 0
-   * @max 2147483647
+   * @max 4294967295
    */
   age?: number | null
   /**
@@ -399,7 +407,7 @@ export interface UserRegister {
   /**
    * Age
    * @min 0
-   * @max 2147483647
+   * @max 4294967295
    */
   age?: number | null
   /**
@@ -982,7 +990,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: {
         is_featured?: string
         category__slug?: string
-        brand__name?: string
+        brand__slug?: string
         /** A page number within the paginated result set. */
         page?: number
         /** Number of results to return per page. */
