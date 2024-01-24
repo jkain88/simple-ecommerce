@@ -1,9 +1,8 @@
 'use client'
 
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
-import { ChevronDown, ChevronUp, Menu, ShoppingCart } from 'lucide-react'
+import React, { useEffect, useState } from 'react'
+import { ShoppingCart } from 'lucide-react'
 import { Badge, Input } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
 import { Api, Brand, Category } from '@/lib/Api'
@@ -22,12 +21,12 @@ import {
 import NavbarHamburger from './NavbarHamburger'
 
 const Navbar: React.FC = () => {
-  const router = useRouter()
   const { data: session } = useSession()
   const user = useUserStore((state) => state.user)
   const checkout = useCheckoutStore((state) => state.checkout)
   const resetUser = useUserStore((state) => state.resetUser)
   const resetCheckout = useCheckoutStore((state) => state.resetCheckout)
+  const setCheckout = useCheckoutStore((state) => state.setCheckout)
 
   const { data: categories, isLoading: isCategoriesLoading } = useQuery({
     queryKey: ['categories'],
@@ -35,6 +34,19 @@ const Navbar: React.FC = () => {
       const api = new Api()
       return api.products.productsCategoriesList()
     },
+  })
+
+  const { data: checkoutResponse, isLoading: isCheckoutLoading } = useQuery({
+    queryKey: ['userCheckout'],
+    queryFn: async () => {
+      const api = new Api()
+      return api.checkout.checkoutRead({
+        headers: {
+          Authorization: `Token ${session?.token}`,
+        },
+      })
+    },
+    enabled: session?.token !== undefined && checkout === null,
   })
 
   const { data: brands, isLoading: isBrandsLoading } = useQuery({
@@ -52,6 +64,18 @@ const Navbar: React.FC = () => {
     resetUser()
     resetCheckout()
   }
+
+  useEffect(() => {
+    if (checkoutResponse !== undefined) {
+      setCheckout({
+        ...checkoutResponse.data,
+        lines: checkoutResponse.data.lines!.map((line) => ({
+          ...line,
+          isSelected: false,
+        })),
+      })
+    }
+  }, [checkoutResponse, setCheckout])
 
   return (
     <div className="flex items-center justify-around px-20 py-6 2xl:px-40">
@@ -120,24 +144,14 @@ const Navbar: React.FC = () => {
       </div>
 
       <div className="flex items-center gap-14 font-bold">
-        {user && checkout && checkout.lines && checkout.lines.length > 0 ? (
-          <Badge content={checkout!.lines!.length}>
-            <a href="/cart">
-              <ShoppingCart
-                size={30}
-                className="cursor-pointer hover:text-gray-400"
-              />
-            </a>
-          </Badge>
-        ) : (
+        <Badge content={checkout?.lines?.length}>
           <a href="/cart">
             <ShoppingCart
               size={30}
               className="cursor-pointer hover:text-gray-400"
-              onClick={() => router.push('/cart')}
             />
           </a>
-        )}
+        </Badge>
 
         {!session ? (
           <div className="hidden divide-x-1 divide-black lg:flex ">
