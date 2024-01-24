@@ -71,8 +71,6 @@ const CartLines: React.FC = () => {
     }
   }, [checkout])
 
-  if (checkout?.lines?.length === 0) return <div></div>
-
   const onSelectAll = () => {
     setIsAllSelected((prev) => {
       const newIsAllSelected = !prev
