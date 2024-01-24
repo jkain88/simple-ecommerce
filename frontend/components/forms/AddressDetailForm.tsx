@@ -34,9 +34,6 @@ const AddressDetailForm: React.FC<Props> = ({ address, type }) => {
   const [deliveryLabel, setDeliveryLabel] = useState<
     'home' | 'office' | undefined
   >(address?.delivery_label === undefined ? 'home' : address?.delivery_label)
-  const [addressType, setAddressType] = useState<
-    'shipping' | 'billing' | undefined
-  >(address?.address_type === undefined ? 'shipping' : address?.address_type)
 
   const { data: session } = useSession()
   const router = useRouter()
@@ -97,14 +94,12 @@ const AddressDetailForm: React.FC<Props> = ({ address, type }) => {
       updateAddress({
         ...data,
         delivery_label: deliveryLabel,
-        address_type: address!.address_type!,
         is_default: address?.is_default,
       })
     } else if (type == 'create') {
       createAddress({
         ...data,
         delivery_label: deliveryLabel,
-        address_type: addressType,
         is_default: false,
       })
     }
