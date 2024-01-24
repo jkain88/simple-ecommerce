@@ -49,17 +49,39 @@ const CartLine: React.FC<Props> = ({ line }) => {
       })
     },
   })
-  const logAndSideEffects = (quantity: number) => {
-    console.log('New Quantity:', quantity)
-    // Add any other side effects here
+  const { mutate: updateLineQuantityMutation } = useMutation({
+    mutationKey: ['checkoutLineUpdate'],
+    mutationFn: async (data: CheckoutLine) => {
+      const api = new Api()
+      return api.checkout.checkoutLineUpdate(data.id!, data, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Token ${session?.token}`,
+        },
+      })
+    },
+    onSuccess: (data) => {
+      setCheckout({
+        ...checkout,
+        lines: checkout!.lines!.map((line) => {
+          if (line.id === data.data.id) {
+            return { ...data.data, isSelected: line.isSelected }
+          }
+          return line
+        }),
+      })
+    },
+  })
+  const updateLineQuantity = (quantity: number) => {
+    updateLineQuantityMutation({ ...line, quantity: quantity })
   }
 
-  const debouncedLogAndSideEffects = _.debounce(logAndSideEffects, 600) // 1000ms debounce time
+  const debouncedUpdateLineQuantity = _.debounce(updateLineQuantity, 600) // 1000ms debounce time
 
   const handlePlus = useCallback(() => {
     setQuantity((prev) => {
       const newQuantity = prev! + 1
-      debouncedLogAndSideEffects(newQuantity)
+      debouncedUpdateLineQuantity(newQuantity)
       return newQuantity
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -72,7 +94,7 @@ const CartLine: React.FC<Props> = ({ line }) => {
         return prev
       }
       const newQuantity = prev! - 1
-      debouncedLogAndSideEffects(newQuantity)
+      debouncedUpdateLineQuantity(newQuantity)
       return newQuantity
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -84,7 +106,6 @@ const CartLine: React.FC<Props> = ({ line }) => {
   }
 
   const onSelectline = () => {
-    // setSelected((prev) => !prev)
     setCheckout({
       ...checkout,
       lines: checkout?.lines?.map((lineStore) => {
