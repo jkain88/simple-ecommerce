@@ -14,7 +14,7 @@ type Props = {
 const ProductCard: React.FC<Props> = ({ name, price, image, slug }: Props) => {
   return (
     <Link href={`/products/${slug}`}>
-      <Card className="z-0 flex h-full w-56 flex-col" isPressable>
+      <Card className="z-0 flex h-full w-48 flex-col lg:w-56" isPressable>
         <CardBody className="grow-1 relative items-center justify-center overflow-hidden px-0 ">
           <Image
             alt="product"
