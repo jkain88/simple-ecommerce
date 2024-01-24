@@ -35,7 +35,10 @@ const ProductDetail: React.FC<Props> = ({ product }: Props) => {
     onSuccess: (data) => {
       setCheckout({
         ...checkout,
-        lines: [...(checkout?.lines || []), data.data],
+        lines: [
+          ...(checkout?.lines || []),
+          { ...data.data, isSelected: false },
+        ],
       })
       toast.success('Added to cart')
     },
@@ -55,7 +58,6 @@ const ProductDetail: React.FC<Props> = ({ product }: Props) => {
       )
     },
     onSuccess: (data) => {
-      // setUser({ ...user, checkout: data.data })
       createCheckoutLine({
         checkout: data.data.id!,
         quantity,
@@ -67,11 +69,12 @@ const ProductDetail: React.FC<Props> = ({ product }: Props) => {
   const { data: session } = useSession()
 
   const onAddToCart = () => {
-    if (user && !user.checkout) {
+    if (user && !checkout) {
       initializeCheckout()
     } else {
+      console.log('CHECKOUT', checkout)
       createCheckoutLine({
-        checkout: user.checkout!.id!,
+        checkout: checkout!.id!,
         quantity,
         product_variant: selectedVariant.id,
       })
