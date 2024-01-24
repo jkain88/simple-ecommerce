@@ -129,6 +129,11 @@
   dependencies:
     tslib "^2.4.0"
 
+"@formkit/auto-animate@^0.8.1":
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/@formkit/auto-animate/-/auto-animate-0.8.1.tgz#bcaba2969609ca3a7453eacd42b383a2739dfa35"
+  integrity sha512-0/Z2cuNXWVVIG/l0SpcHAWFhGdvLJ8DRvEfRWvmojtmRWfEy+LWNwgDazbZqY0qQYtkHcoEK3jBLkhiZaB/4Ig==
+
 "@fortawesome/fontawesome-common-types@6.4.2":
   version "6.4.2"
   resolved "https://registry.npmjs.org/@fortawesome/fontawesome-common-types/-/fontawesome-common-types-6.4.2.tgz"
