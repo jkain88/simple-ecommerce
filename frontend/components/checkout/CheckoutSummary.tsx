@@ -1,6 +1,9 @@
+'use client'
+
 import Link from 'next/link'
 import React from 'react'
 import { Button } from '../ui/button'
+import { useCheckoutStore } from '@/store/checkout'
 
 type Props = {
   buttonLabel: string
@@ -8,6 +11,12 @@ type Props = {
 }
 
 const CheckoutSummary: React.FC<Props> = ({ buttonLabel, redirectLink }) => {
+  const checkout = useCheckoutStore((state) => state.checkout)
+  const checkoutTotal = checkout?.lines?.reduce(
+    (accumulator, line) => accumulator + Number(line.amount),
+    0
+  )
+
   return (
     <div className="sticky top-6 shrink-0 rounded-lg bg-white px-4 py-8 md:max-h-72 md:w-72">
       <p className="text-lg font-semibold">Checkout Summary</p>
@@ -15,7 +24,7 @@ const CheckoutSummary: React.FC<Props> = ({ buttonLabel, redirectLink }) => {
         <div className="flex flex-col gap-4">
           <div className="flex justify-between">
             <p>Subtotal:</p>
-            <p>₱0.00</p>
+            <p>₱{checkoutTotal}</p>
           </div>
           <div className="flex justify-between">
             <p>Shipping Fee:</p>
@@ -24,7 +33,7 @@ const CheckoutSummary: React.FC<Props> = ({ buttonLabel, redirectLink }) => {
         </div>
         <div className="flex justify-between pt-4">
           <p>Total:</p>
-          <p>₱0.00</p>
+          <p>₱{checkoutTotal}</p>
         </div>
       </div>
       <Link href={redirectLink}>
