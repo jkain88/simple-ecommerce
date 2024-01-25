@@ -693,6 +693,42 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
+     * No description
+     *
+     * @tags checkout
+     * @name CheckoutAddressUpdateUpdate
+     * @request PUT:/checkout/address/update/
+     * @secure
+     */
+    checkoutAddressUpdateUpdate: (data: Address, params: RequestParams = {}) =>
+      this.request<Address, any>({
+        path: `/checkout/address/update/`,
+        method: 'PUT',
+        body: data,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags checkout
+     * @name CheckoutAddressUpdatePartialUpdate
+     * @request PATCH:/checkout/address/update/
+     * @secure
+     */
+    checkoutAddressUpdatePartialUpdate: (data: Address, params: RequestParams = {}) =>
+      this.request<Address, any>({
+        path: `/checkout/address/update/`,
+        method: 'PATCH',
+        body: data,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
      * @description Create order, order line and delete checkout
      *
      * @tags checkout

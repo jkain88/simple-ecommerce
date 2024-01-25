@@ -22,12 +22,13 @@ import { useMutation } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { Spinner } from '@nextui-org/react'
+import { useCheckoutStore } from '@/store/checkout'
 
 type Input = z.infer<typeof addressSchema>
 
 type Props = {
   address?: Address
-  type: 'update' | 'create'
+  type: 'update' | 'create' | 'updateCheckoutShipping'
 }
 
 const AddressDetailForm: React.FC<Props> = ({ address, type }) => {
@@ -37,6 +38,8 @@ const AddressDetailForm: React.FC<Props> = ({ address, type }) => {
 
   const { data: session } = useSession()
   const router = useRouter()
+  const checkout = useCheckoutStore((state) => state.checkout)
+  const setCheckout = useCheckoutStore((state) => state.setCheckout)
 
   const { mutate: updateAddress, isPending: isUpdatePending } = useMutation({
     mutationKey: ['updateAddress', address?.id],
@@ -58,6 +61,28 @@ const AddressDetailForm: React.FC<Props> = ({ address, type }) => {
     },
   })
 
+  const {
+    mutate: updateCheckoutAddress,
+    isPending: isUpdateCheckoutAddressPending,
+  } = useMutation({
+    mutationKey: ['updateCheckoutAddress'],
+    mutationFn: async (input: Address) => {
+      const api = new Api()
+      return api.checkout.checkoutAddressUpdateUpdate(input, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Token ${session?.token}`,
+        },
+      })
+    },
+    onSuccess: (data) => {
+      setCheckout({
+        ...checkout,
+        shipping_address_detail: data.data,
+      })
+    },
+  })
+
   const { mutate: createAddress, isPending: isCreatePending } = useMutation({
     mutationKey: ['createAddress'],
     mutationFn: async (input: Address) => {
@@ -70,9 +95,7 @@ const AddressDetailForm: React.FC<Props> = ({ address, type }) => {
         },
       })
     },
-    onSuccess: () => {
-      router.push('/account/addresses')
-    },
+    onSuccess: () => {},
   })
 
   const form = useForm<Address>({
@@ -96,8 +119,14 @@ const AddressDetailForm: React.FC<Props> = ({ address, type }) => {
         delivery_label: deliveryLabel,
         is_default: address?.is_default,
       })
-    } else if (type == 'create') {
+    } else if (type === 'create') {
       createAddress({
+        ...data,
+        delivery_label: deliveryLabel,
+        is_default: false,
+      })
+    } else if (type === 'updateCheckoutShipping') {
+      updateCheckoutAddress({
         ...data,
         delivery_label: deliveryLabel,
         is_default: false,
@@ -218,6 +247,7 @@ const AddressDetailForm: React.FC<Props> = ({ address, type }) => {
           <Button className="mt-4 px-14" type="submit">
             <div className="flex items-center gap-2">
               {isUpdatePending ||
+                isUpdateCheckoutAddressPending ||
                 (isCreatePending && <Spinner size="sm" color="default" />)}
               <span>Submit</span>
             </div>

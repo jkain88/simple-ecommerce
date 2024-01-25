@@ -9,15 +9,20 @@ import autoAnimate from '@formkit/auto-animate'
 import { useAnimate } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
+import { useUserStore } from '@/store/user'
 
 export default function Checkout() {
   const [isFormVisible, setIsFormVisible] = useState(false)
+  const user = useUserStore((state) => state.user)
   const checkout = useCheckoutStore((state) => state.checkout)
   const [parent] = useAutoAnimate({
     duration: 150,
     easing: 'linear',
   })
 
+  useEffect(() => {
+    setIsFormVisible(false)
+  }, [checkout?.shipping_address_detail])
   console.log('ADDRESS', checkout?.shipping_address_detail)
   return (
     <div className="flex justify-center gap-4 bg-gray-100 py-10">
@@ -35,13 +40,15 @@ export default function Checkout() {
                     <div className="px-4 pb-4" ref={parent}>
                       <AddressDetailForm
                         address={checkout?.shipping_address_detail}
-                        type="update"
+                        type="updateCheckoutShipping"
                       />
                     </div>
                   ) : (
                     <div ref={parent}>
-                      <div className="flex gap-4">
-                        {/* <p>{address?.}</p> */}
+                      <div className="flex items-center gap-2">
+                        <p className="text-lg font-semibold">
+                          {user.first_name} {user.last_name}
+                        </p>
                         <p>
                           {checkout?.shipping_address_detail?.contact_number}
                         </p>
