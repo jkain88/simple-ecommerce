@@ -12,6 +12,7 @@ from .serializers import (
     CheckoutLineSerializer,
     CheckoutLineMultipleDeleteSerializer,
 )
+from simple_ecommerce.core.serializers import AddressSerializer
 from simple_ecommerce.order.models import Order, OrderLine
 from simple_ecommerce.order.serializers import OrderSerializer
 
@@ -118,3 +119,11 @@ class CheckoutComplete(generics.GenericAPIView):
                 )
             checkout.delete()
         return Response(OrderSerializer(order).data, status=status.HTTP_201_CREATED)
+
+
+class CheckoutAddressUpdate(generics.UpdateAPIView):
+    serializer_class = AddressSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user.checkout.shipping_address
