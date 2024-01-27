@@ -48,6 +48,8 @@ class CheckoutSerializer(serializers.ModelSerializer):
 
 
 class CheckoutPaymentCreateSerializer(serializers.ModelSerializer):
+    checkout = serializers.IntegerField()
+
     class Meta:
         model = Payment
         fields = ["id", "checkout", "gateway", "status"]

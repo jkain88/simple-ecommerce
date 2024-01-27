@@ -20,6 +20,7 @@ from simple_ecommerce.order.models import Order, OrderLine
 from simple_ecommerce.order.serializers import OrderSerializer
 from simple_ecommerce.payment.choices import PaymentStatus
 from simple_ecommerce.payment.models import Payment
+from simple_ecommerce.payment.serializers import PaymentSerializer
 
 
 class CheckoutCreate(generics.CreateAPIView):
@@ -102,7 +103,7 @@ class CheckoutPaymentCreate(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
-        checkout = data["checkout"]
+        checkout = get_object_or_404(Checkout, id=data["checkout"])
 
         amount = Money(checkout.total_amount, settings.DEFAULT_CURRENCY)
         payment, _ = Payment.objects.update_or_create(
@@ -114,7 +115,7 @@ class CheckoutPaymentCreate(generics.GenericAPIView):
                 "customer": checkout.user,
             },
         )
-        return Response(self.serializer_class(payment).data)
+        return Response(PaymentSerializer(payment).data)
 
 
 class CheckoutComplete(generics.GenericAPIView):
