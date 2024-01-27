@@ -153,7 +153,7 @@ class CheckoutComplete(generics.GenericAPIView):
                     quantity=checkout_line.quantity,
                 )
 
-            payment = checkout.payments.first()
+            payment = checkout.payment
             payment.order = order
             payment.save()
 
