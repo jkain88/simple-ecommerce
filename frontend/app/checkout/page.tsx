@@ -5,9 +5,7 @@ import CheckoutPaymentMethods from '@/components/checkout/CheckoutPaymentMethods
 import CheckoutSummary from '@/components/checkout/CheckoutSummary'
 import AddressDetailForm from '@/components/forms/AddressDetailForm'
 import { useCheckoutStore } from '@/store/checkout'
-import autoAnimate from '@formkit/auto-animate'
-import { useAnimate } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { useUserStore } from '@/store/user'
 
@@ -27,7 +25,7 @@ export default function Checkout() {
       setIsFormVisible(false)
     }
   }, [checkout?.shipping_address_detail])
-  console.log('ADDRESS', checkout?.shipping_address_detail)
+
   return (
     <div className="flex justify-center gap-4 bg-gray-100 py-10">
       <div className="w-full max-w-3xl ">
