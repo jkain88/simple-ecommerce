@@ -15,8 +15,8 @@ const CheckoutPaymentMethods: React.FC = () => {
     console.log('clicked', value)
   }
   return (
-    <div className="mt-4 bg-white ">
-      <div className="bg-gray-50 px-4 py-2">
+    <div className="mt-4 rounded-lg bg-white">
+      <div className="rounded-lg bg-gray-50 px-4 py-2">
         <p className="text-lg font-bold">Payment Methods</p>
       </div>
       <div className="px-4 py-6">

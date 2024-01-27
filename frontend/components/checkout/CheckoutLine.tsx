@@ -8,8 +8,8 @@ const CheckoutLine: React.FC = () => {
   const checkout = useCheckoutStore((state) => state.checkout)
 
   return (
-    <div className="mt-4 bg-white ">
-      <div className="bg-gray-50 px-4 py-2">
+    <div className="mt-4 rounded-lg bg-white">
+      <div className="rounded-lg bg-gray-50 px-4 py-2">
         <p className="text-lg font-bold">Items</p>
       </div>
       <div className="px-4 py-2">
@@ -29,10 +29,12 @@ const CheckoutLine: React.FC = () => {
                 <p>{line.product_variant_detail?.product?.name}</p>
               </div>
             </div>
-            <p className="text-lg font-semibold">
-              ₱{line.product_variant_detail?.price}
-            </p>
-            <p>Qty: {line.quantity}</p>
+            <div>
+              <p className="text-lg font-semibold">
+                ₱{line.product_variant_detail?.price}
+              </p>
+              <p>Qty: {line.quantity}</p>
+            </div>
           </div>
         ))}
       </div>

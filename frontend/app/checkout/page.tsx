@@ -27,11 +27,11 @@ export default function Checkout() {
   }, [checkout?.shipping_address_detail])
 
   return (
-    <div className="flex justify-center gap-4 bg-gray-100 py-10">
+    <div className="flex flex-col justify-center gap-4 bg-gray-100 px-5 py-10 md:flex-row">
       <div className="w-full max-w-3xl ">
-        <div className=" bg-white">
+        <div className=" rounded-lg bg-white">
           <div>
-            <div className="flex justify-between bg-gray-50 px-4 py-2  font-bold">
+            <div className="flex justify-between rounded-lg bg-gray-50 px-4  py-2 font-bold">
               <p className="text-lg">Shipping Address</p>
               {checkout?.shipping_address_detail !== null && (
                 <p onClick={() => setIsFormVisible((prev) => !prev)}>Edit</p>
