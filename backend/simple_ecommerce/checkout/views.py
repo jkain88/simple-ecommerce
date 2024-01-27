@@ -57,8 +57,11 @@ class CheckoutDetail(generics.RetrieveAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
-        obj = get_object_or_404(Checkout, user=self.request.user)
-        return obj
+        try:
+            return self.request.user.checkout
+        except ObjectDoesNotExist:
+            checkout, _ = Checkout.objects.get_or_create(user=self.request.user)
+            return checkout
 
 
 class CheckoutLineCreate(generics.CreateAPIView):
