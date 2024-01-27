@@ -57,11 +57,18 @@ class CheckoutDetail(generics.RetrieveAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
+        user = self.request.user
         try:
-            return self.request.user.checkout
+            checkout = user.checkout
         except ObjectDoesNotExist:
-            checkout, _ = Checkout.objects.get_or_create(user=self.request.user)
-            return checkout
+            checkout, _ = Checkout.objects.get_or_create(user=user)
+
+        default_address = user.addresses.filter(is_default=True)
+        if default_address.exists() and checkout.shipping_address is None:
+            checkout.shipping_address = default_address.first()
+            checkout.save()
+
+        return checkout
 
 
 class CheckoutLineCreate(generics.CreateAPIView):
