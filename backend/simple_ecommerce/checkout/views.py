@@ -131,6 +131,11 @@ class CheckoutComplete(generics.GenericAPIView):
         validated_data = serializer.validated_data
 
         checkout = get_object_or_404(Checkout, pk=validated_data["checkout"])
+        if checkout.shipping_address is None:
+            return Response(
+                {"error": "Add shipping address in order to proceed"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         with transaction.atomic():
             order = Order.objects.create(
                 shipping_address=checkout.shipping_address,
