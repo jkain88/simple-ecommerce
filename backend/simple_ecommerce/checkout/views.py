@@ -15,6 +15,7 @@ from .serializers import (
     CheckoutLineMultipleDeleteSerializer,
     CheckoutPaymentCreateSerializer,
 )
+from simple_ecommerce.core.models import Address
 from simple_ecommerce.core.serializers import AddressSerializer
 from simple_ecommerce.order.models import Order, OrderLine
 from simple_ecommerce.order.serializers import OrderSerializer
@@ -165,4 +166,14 @@ class CheckoutAddressUpdate(generics.UpdateAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
+        checkout = self.request.user.checkout
+        address = self.request.user.checkout.shipping_address
+
+        # Creates a blank temporary address if address is not set before this
+        if address is None:
+            address = Address.objects.create()
+            checkout.shipping_address = address
+            checkout.save()
+            return address
+
         return self.request.user.checkout.shipping_address

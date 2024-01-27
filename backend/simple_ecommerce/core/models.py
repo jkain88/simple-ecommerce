@@ -25,4 +25,10 @@ class Address(TimeStampedModel):
         choices=AddressDeliveryLabel.CHOICES,
         default=AddressDeliveryLabel.HOME,
     )
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="addresses", db_constraint=False)
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="addresses",
+        db_constraint=False,
+        null=True,
+    )
