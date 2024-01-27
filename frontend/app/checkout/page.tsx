@@ -21,7 +21,11 @@ export default function Checkout() {
   })
 
   useEffect(() => {
-    setIsFormVisible(false)
+    if (checkout?.shipping_address_detail === null) {
+      setIsFormVisible(true)
+    } else {
+      setIsFormVisible(false)
+    }
   }, [checkout?.shipping_address_detail])
   console.log('ADDRESS', checkout?.shipping_address_detail)
   return (
@@ -31,7 +35,9 @@ export default function Checkout() {
           <div>
             <div className="flex justify-between bg-gray-50 px-4 py-2  font-bold">
               <p className="text-lg">Shipping Address</p>
-              <p onClick={() => setIsFormVisible((prev) => !prev)}>Edit</p>
+              {checkout?.shipping_address_detail !== null && (
+                <p onClick={() => setIsFormVisible((prev) => !prev)}>Edit</p>
+              )}
             </div>
             {checkout?.shipping_address_detail !== undefined && (
               <>
@@ -49,7 +55,7 @@ export default function Checkout() {
                         <p className="text-lg font-semibold">
                           {user.first_name} {user.last_name}
                         </p>
-                        <p>
+                        <p className="text-sm text-gray-600">
                           {checkout?.shipping_address_detail?.contact_number}
                         </p>
                       </div>

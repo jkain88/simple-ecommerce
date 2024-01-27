@@ -1,21 +1,83 @@
 'use client'
 
-import Link from 'next/link'
 import React from 'react'
 import { Button } from '../ui/button'
 import { useCheckoutStore } from '@/store/checkout'
+import { useMutation } from '@tanstack/react-query'
+import { Api } from '@/lib/Api'
+import { useSession } from 'next-auth/react'
+import { Spinner } from '@nextui-org/react'
+import { useRouter } from 'next/navigation'
+import { toast } from 'react-toastify'
 
 type Props = {
-  buttonLabel: string
+  buttonLabel: 'Place Order' | 'Proceed to Checkout'
   redirectLink: string
 }
 
 const CheckoutSummary: React.FC<Props> = ({ buttonLabel, redirectLink }) => {
+  const { data: session } = useSession()
   const checkout = useCheckoutStore((state) => state.checkout)
+  const resetCheckout = useCheckoutStore((state) => state.resetCheckout)
   const checkoutTotal = checkout?.lines?.reduce(
     (accumulator, line) => accumulator + Number(line.amount),
     0
   )
+  const router = useRouter()
+  const { mutate: checkoutComplete, isPending: isCheckoutCompleteLoading } =
+    useMutation({
+      mutationKey: ['checkoutComplete'],
+      mutationFn: async () => {
+        const api = new Api()
+        return api.checkout.checkoutCompleteCreate(
+          { checkout: checkout!.id! },
+          {
+            headers: {
+              Authorization: `Token ${session?.token}`,
+            },
+          }
+        )
+      },
+      onSuccess: () => {
+        resetCheckout()
+        router.push('/orders')
+      },
+      onError: () => {
+        toast.error('Something went wrong')
+      },
+    })
+  const { mutate: checkoutPaymentCreate, isPending: isPaymentCreateLoading } =
+    useMutation({
+      mutationKey: ['checkoutPaymentCreate'],
+      mutationFn: async () => {
+        const api = new Api()
+        return api.checkout.checkoutPaymentCreateCreate(
+          {
+            checkout: checkout?.id,
+            gateway: 'dummy',
+          },
+          {
+            headers: {
+              Authorization: `Token ${session?.token}`,
+            },
+          }
+        )
+      },
+      onSuccess: () => {
+        checkoutComplete()
+      },
+      onError: () => {
+        toast.error('Something went wrong')
+      },
+    })
+
+  const onCheckoutSubmit = () => {
+    if (buttonLabel === 'Place Order') {
+      checkoutPaymentCreate()
+    } else if (buttonLabel === 'Proceed to Checkout') {
+      router.push('/checkout')
+    }
+  }
 
   return (
     <div className="sticky top-6 shrink-0 rounded-lg bg-white px-4 py-8 md:max-h-72 md:w-72">
@@ -36,9 +98,16 @@ const CheckoutSummary: React.FC<Props> = ({ buttonLabel, redirectLink }) => {
           <p>₱{checkoutTotal}</p>
         </div>
       </div>
-      <Link href={redirectLink}>
-        <Button className="mt-4 w-full">{buttonLabel}</Button>
-      </Link>
+      <Button
+        className="mt-4 w-full"
+        onClick={onCheckoutSubmit}
+        disabled={isPaymentCreateLoading}
+      >
+        <div className="flex items-center gap-2">
+          {isPaymentCreateLoading && <Spinner size="sm" color="default" />}
+          {buttonLabel}
+        </div>
+      </Button>
     </div>
   )
 }

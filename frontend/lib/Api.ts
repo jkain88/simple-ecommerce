@@ -175,6 +175,17 @@ export interface CheckoutLineMultipleDelete {
   lines: number[]
 }
 
+export interface CheckoutPaymentCreate {
+  /** ID */
+  id?: number
+  /** Checkout */
+  checkout?: number | null
+  /** Gateway */
+  gateway?: 'dummy'
+  /** Status */
+  status?: 'pending' | 'fully-charged' | 'partially-charged' | 'refunded' | 'failed'
+}
+
 export interface Brand {
   /** ID */
   id?: number
@@ -296,6 +307,20 @@ export interface OrderLine {
   quantity?: number
 }
 
+export interface Payment {
+  /** ID */
+  id?: number
+  /** Gateway */
+  gateway?: 'dummy'
+  /**
+   * Amount
+   * @format decimal
+   */
+  amount?: string | null
+  /** Status */
+  status?: 'pending' | 'fully-charged' | 'partially-charged' | 'refunded' | 'failed'
+}
+
 export interface Order {
   /** ID */
   id?: number
@@ -315,6 +340,7 @@ export interface Order {
   total_amount?: string | null
   /** User */
   user?: number | null
+  payment?: Payment
 }
 
 export interface CustomTokenObtainPair {
@@ -863,6 +889,25 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     checkoutLinesDeleteCreate: (data: CheckoutLineMultipleDelete, params: RequestParams = {}) =>
       this.request<CheckoutLineMultipleDelete, any>({
         path: `/checkout/lines/delete/`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags checkout
+     * @name CheckoutPaymentCreateCreate
+     * @request POST:/checkout/payment/create/
+     * @secure
+     */
+    checkoutPaymentCreateCreate: (data: CheckoutPaymentCreate, params: RequestParams = {}) =>
+      this.request<CheckoutPaymentCreate, any>({
+        path: `/checkout/payment/create/`,
         method: 'POST',
         body: data,
         secure: true,
