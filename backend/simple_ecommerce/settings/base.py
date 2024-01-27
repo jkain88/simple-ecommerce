@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "simple_ecommerce.order",
     "simple_ecommerce.product",
     "simple_ecommerce.user",
+    "simple_ecommerce.payment",
     # External dependencies
     "corsheaders",
     "django_filters",
