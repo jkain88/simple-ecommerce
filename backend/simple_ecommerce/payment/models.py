@@ -15,7 +15,6 @@ class Payment(TimeStampedModel):
         null=True,
         default_currency=settings.DEFAULT_CURRENCY,
     )
-    currency = models.CharField(max_length=3)
     reference = models.CharField(max_length=255)
     status = models.CharField(
         max_length=30, choices=PaymentStatus.CHOICES, default=PaymentStatus.PENDING
@@ -23,14 +22,14 @@ class Payment(TimeStampedModel):
     gateway = models.CharField(
         max_length=50, choices=PaymentGateway.CHOICES, default=PaymentGateway.DUMMY
     )
-    checkout = models.ForeignKey(
+    checkout = models.OneToOneField(
         Checkout,
         null=True,
         on_delete=models.SET_NULL,
-        related_name="payments",
+        related_name="payment",
     )
-    order = models.ForeignKey(
-        Order, null=True, on_delete=models.SET_NULL, related_name="payments"
+    order = models.OneToOneField(
+        Order, null=True, on_delete=models.SET_NULL, related_name="payment"
     )
     customer = models.ForeignKey(
         "user.User", on_delete=models.CASCADE, related_name="payments"

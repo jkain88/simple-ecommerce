@@ -5,7 +5,11 @@ from . import views
 urlpatterns = [
     path("", views.CheckoutDetail.as_view(), name="checkout_detail"),
     path("<int:pk>", views.CheckoutUpdate.as_view(), name="checkout_detail"),
-    path("address/update/", views.CheckoutAddressUpdate.as_view(), name="checkout_address_update"),
+    path(
+        "address/update/",
+        views.CheckoutAddressUpdate.as_view(),
+        name="checkout_address_update",
+    ),
     path("create/", views.CheckoutCreate.as_view(), name="checkout_create"),
     path("complete/", views.CheckoutComplete.as_view(), name="checkout_complete"),
     path(
@@ -18,5 +22,10 @@ urlpatterns = [
         "lines/delete/",
         views.CheckoutLineMultipleDelete.as_view(),
         name="checkout_line_multiple_delete",
+    ),
+    path(
+        "payment/create/",
+        views.CheckoutPaymentCreate.as_view(),
+        name="checkout_payment_create",
     ),
 ]

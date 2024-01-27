@@ -4,6 +4,7 @@ from .models import Checkout, CheckoutLine
 from simple_ecommerce.core.serializers import (
     AddressSerializer,
 )
+from simple_ecommerce.payment.models import Payment
 from simple_ecommerce.product.serializers import (
     ProductSerializer,
     ProductVariantSerializer,
@@ -44,6 +45,13 @@ class CheckoutSerializer(serializers.ModelSerializer):
             "total_amount",
             "user",
         ]
+
+
+class CheckoutPaymentCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        fields = ["id", "checkout", "gateway", "status"]
+        read_only_fields = ["status"]
 
 
 class CheckoutCompleteSerializer(serializers.Serializer):

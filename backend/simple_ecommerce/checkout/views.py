@@ -1,6 +1,8 @@
+from django.conf import settings
 from django.db import transaction
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
+from djmoney.money import Money
 from rest_framework import generics, mixins, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -11,10 +13,13 @@ from .serializers import (
     CheckoutCompleteSerializer,
     CheckoutLineSerializer,
     CheckoutLineMultipleDeleteSerializer,
+    CheckoutPaymentCreateSerializer,
 )
 from simple_ecommerce.core.serializers import AddressSerializer
 from simple_ecommerce.order.models import Order, OrderLine
 from simple_ecommerce.order.serializers import OrderSerializer
+from simple_ecommerce.payment.choices import PaymentStatus
+from simple_ecommerce.payment.models import Payment
 
 
 class CheckoutCreate(generics.CreateAPIView):
@@ -88,6 +93,30 @@ class CheckoutLineMultipleDelete(generics.GenericAPIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+class CheckoutPaymentCreate(generics.GenericAPIView):
+    serializer_class = CheckoutPaymentCreateSerializer
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+
+        checkout = data["checkout"]
+
+        amount = Money(checkout.total_amount, settings.DEFAULT_CURRENCY)
+        payment, _ = Payment.objects.update_or_create(
+            checkout=checkout,
+            defaults={
+                "gateway": data["gateway"],
+                "amount": amount,
+                "status": PaymentStatus.FULLY_CHARGED,
+                "customer": checkout.user,
+            },
+        )
+        return Response(self.serializer_class(payment).data)
+
+
 class CheckoutComplete(generics.GenericAPIView):
     """
     Create order, order line and delete checkout
@@ -104,7 +133,6 @@ class CheckoutComplete(generics.GenericAPIView):
         checkout = get_object_or_404(Checkout, pk=validated_data["checkout"])
         with transaction.atomic():
             order = Order.objects.create(
-                billing_address=checkout.billing_address,
                 shipping_address=checkout.shipping_address,
                 total_amount=checkout.total_amount,
                 user=checkout.user,
@@ -117,6 +145,11 @@ class CheckoutComplete(generics.GenericAPIView):
                     product_variant=checkout_line.product_variant,
                     quantity=checkout_line.quantity,
                 )
+
+            payment = checkout.payments.first()
+            payment.order = order
+            payment.save()
+
             checkout.delete()
         return Response(OrderSerializer(order).data, status=status.HTTP_201_CREATED)
 
