@@ -2,7 +2,13 @@ import { withAuth } from 'next-auth/middleware'
 
 // middleware is applied to all routes, use conditionals to select
 
-const protectedRoutes = ['/account/profile', '/account/addresses']
+const protectedRoutes = [
+  '/account/profile',
+  '/account/addresses',
+  '/cart',
+  '/checkout',
+  '/orders',
+]
 
 export default withAuth(function middleware(req) {}, {
   callbacks: {
