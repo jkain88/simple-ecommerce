@@ -1,5 +1,6 @@
 import re
 from django.http import Http404
+from django_filters import rest_framework as filters
 from rest_framework import generics
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 
@@ -12,6 +13,8 @@ class OrderList(generics.ListAPIView):
     queryset = Order.objects.all().order_by("-created")
     serializer_class = OrderSerializer
     permission_classes = [IsAdminUser]
+    filter_backends = [filters.DjangoFilterBackend]
+    filterset_fields = ["status"]
 
 
 class OrderDetail(generics.RetrieveUpdateDestroyAPIView):

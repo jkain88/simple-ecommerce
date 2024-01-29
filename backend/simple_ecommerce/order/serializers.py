@@ -51,4 +51,5 @@ class OrderSerializer(serializers.ModelSerializer):
             "total_amount",
             "user",
             "payment",
+            "reference",
         ]
