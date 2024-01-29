@@ -179,7 +179,7 @@ export interface CheckoutPaymentCreate {
   /** ID */
   id?: number
   /** Checkout */
-  checkout?: number | null
+  checkout: number
   /** Gateway */
   gateway?: 'dummy'
   /** Status */
@@ -341,6 +341,11 @@ export interface Order {
   /** User */
   user?: number | null
   payment?: Payment
+  /**
+   * Reference
+   * @maxLength 30
+   */
+  reference?: string
 }
 
 export interface CustomTokenObtainPair {
@@ -963,6 +968,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     ordersList: (
       query?: {
+        status?: string
         /** A page number within the paginated result set. */
         page?: number
         /** Number of results to return per page. */
