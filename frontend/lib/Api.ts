@@ -1000,12 +1000,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags orders
      * @name OrdersRead
-     * @request GET:/orders/{id}
+     * @request GET:/orders/{reference}
      * @secure
      */
-    ordersRead: (id: number, params: RequestParams = {}) =>
+    ordersRead: (reference: string, params: RequestParams = {}) =>
       this.request<Order, any>({
-        path: `/orders/${id}`,
+        path: `/orders/${reference}`,
         method: 'GET',
         secure: true,
         format: 'json',
@@ -1017,12 +1017,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags orders
      * @name OrdersUpdate
-     * @request PUT:/orders/{id}
+     * @request PUT:/orders/{reference}
      * @secure
      */
-    ordersUpdate: (id: number, data: Order, params: RequestParams = {}) =>
+    ordersUpdate: (reference: string, data: Order, params: RequestParams = {}) =>
       this.request<Order, any>({
-        path: `/orders/${id}`,
+        path: `/orders/${reference}`,
         method: 'PUT',
         body: data,
         secure: true,
@@ -1035,12 +1035,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags orders
      * @name OrdersPartialUpdate
-     * @request PATCH:/orders/{id}
+     * @request PATCH:/orders/{reference}
      * @secure
      */
-    ordersPartialUpdate: (id: number, data: Order, params: RequestParams = {}) =>
+    ordersPartialUpdate: (reference: string, data: Order, params: RequestParams = {}) =>
       this.request<Order, any>({
-        path: `/orders/${id}`,
+        path: `/orders/${reference}`,
         method: 'PATCH',
         body: data,
         secure: true,
@@ -1053,12 +1053,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags orders
      * @name OrdersDelete
-     * @request DELETE:/orders/{id}
+     * @request DELETE:/orders/{reference}
      * @secure
      */
-    ordersDelete: (id: number, params: RequestParams = {}) =>
+    ordersDelete: (reference: string, params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/orders/${id}`,
+        path: `/orders/${reference}`,
         method: 'DELETE',
         secure: true,
         ...params,

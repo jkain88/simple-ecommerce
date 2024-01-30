@@ -1,6 +1,6 @@
 'use client'
 
-import { Order } from '@/types'
+import { Order } from '@/lib/Api'
 import { Image } from '@nextui-org/react'
 import Link from 'next/link'
 import React from 'react'
@@ -18,21 +18,23 @@ const OrderDetails: React.FC<Props> = ({ order }) => {
         </div>
         <div className=" pt-2">
           <div className="divide-y-1">
-            {order.lines.map((line) => (
+            {order.lines!.map((line) => (
               <div key={line.id} className="flex gap-5 px-6 py-4">
                 <Image
                   alt="product"
                   isZoomed
                   className="h-20 justify-center rounded-xl object-cover"
-                  src={line.product_variant.image.url}
+                  src={line.product_variant_detail?.product?.thumbnail!}
                 />
                 <div className="flex w-full justify-between">
                   <div>
-                    <p className="text-xl">{line.product_variant.name}</p>
+                    <p className="text-xl">
+                      {line.product_variant_detail?.name}
+                    </p>
                     <p>Qty: {line.quantity}</p>
                   </div>
                   <div>
-                    <p>₱{line.product_variant.price}</p>
+                    <p>₱{line.product_variant_detail?.price}</p>
                   </div>
                 </div>
               </div>
@@ -60,14 +62,15 @@ const OrderDetails: React.FC<Props> = ({ order }) => {
           </div>
           <div>
             <div className="my-2 inline-block rounded-lg bg-black px-3 py-1 capitalize text-white">
-              {order.shipping_address.deliveryLabel}
+              {order.shipping_address_detail?.delivery_label}
             </div>
-            <p>{order.shipping_address.fullName}</p>
             <p>
-              {order.shipping_address.street}, {order.shipping_address.barangay}
-              , {order.shipping_address.city}, {order.shipping_address.province}
+              {order.shipping_address_detail?.street},{' '}
+              {order.shipping_address_detail?.city_area},{' '}
+              {order.shipping_address_detail?.city},{' '}
+              {order.shipping_address_detail?.province}
             </p>
-            <p>{order.shipping_address.contactNumber}</p>
+            <p>{order.shipping_address_detail?.contact_number}</p>
           </div>
         </div>
 
@@ -76,16 +79,16 @@ const OrderDetails: React.FC<Props> = ({ order }) => {
           <div className="py-4 ">
             <div className="flex justify-between">
               <p>Subtotal:</p>
-              <p>₱{order.sub_total}</p>
+              <p>₱{order.total_amount}</p>
             </div>
             <div className="flex justify-between">
               <p>Shipping Fee:</p>
-              <p>₱{order.shipping_fee}</p>
+              <p>₱0</p>
             </div>
           </div>
           <div className="flex justify-between pt-4">
             <p className="text-lg font-semibold">Total:</p>
-            <p className="text-lg font-semibold">₱{order.total}</p>
+            <p className="text-lg font-semibold">₱{order.total_amount}</p>
           </div>
         </div>
       </div>

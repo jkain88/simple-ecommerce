@@ -141,7 +141,7 @@ const OrdersList: React.FC = () => {
               <div className=" pt-2">
                 <div className="divide-y-1">
                   {order?.lines?.map((line) => (
-                    <Link key={line.id} href={`/orders/${order.id}`}>
+                    <Link key={line.id} href={`/orders/${order.reference}`}>
                       <div className="flex gap-5 px-6 py-4">
                         <Image
                           alt="product"
