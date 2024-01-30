@@ -20,6 +20,7 @@ class OrderList(generics.ListAPIView):
 class OrderDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+    lookup_field = "reference"
 
     def get_permissions(self):
         method = self.request.method
