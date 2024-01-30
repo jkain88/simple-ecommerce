@@ -78,7 +78,7 @@ const Navbar: React.FC = () => {
   }, [checkoutResponse, setCheckout])
 
   return (
-    <div className="sticky top-0 z-50 flex items-center justify-around bg-white px-20 py-6 2xl:px-40">
+    <div className="sticky top-0 z-50  flex items-center justify-around bg-white px-20 py-6 2xl:px-40">
       <div className="flex items-center gap-10">
         <a href="/">
           <Image src="/black-logo.svg" alt="logo" width={120} height={100} />
@@ -181,7 +181,6 @@ const Navbar: React.FC = () => {
       </div>
       <NavbarHamburger
         session={session}
-        user={user}
         categories={categories?.data.results}
         brands={brands?.data.results}
         isCategoriesLoading={isCategoriesLoading}

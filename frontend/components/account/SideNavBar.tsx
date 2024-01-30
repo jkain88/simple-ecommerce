@@ -1,6 +1,5 @@
 'use client'
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Link from 'next/link'
 import { sidebarOptions } from '@/constants/menu'
 import { cn } from '@/lib/utils'
@@ -12,7 +11,7 @@ const SideNavBar: React.FC = () => {
   const path = usePathname()
 
   return (
-    <div className="mr-10 flex flex-col gap-4">
+    <div className="sticky top-0 hidden gap-4 lg:mr-5 lg:flex lg:flex-col xl:mr-10">
       <p className="text-lg font-semibold">User Name</p>
       <div className="flex gap-2">
         <Link href="/account/profile">

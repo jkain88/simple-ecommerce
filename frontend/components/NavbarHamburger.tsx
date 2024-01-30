@@ -10,10 +10,10 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from './ui/collapsible'
+import { useUserStore } from '@/store/user'
 
 type Props = {
   session: Session | null
-  user: User
   categories: Category[] | undefined
   brands: Brand[] | undefined
   isCategoriesLoading: boolean
@@ -23,15 +23,16 @@ type Props = {
 
 const NavbarHamburger: React.FC<Props> = ({
   session,
-  user,
   brands,
   categories,
   isBrandsLoading,
   isCategoriesLoading,
   handleSignOut,
 }) => {
+  const user = useUserStore((state) => state.user)
   const [isCategoriesOpened, setIsCategoriesOpened] = useState(false)
   const [isBrandsOpened, setIsBrandsOpened] = useState(false)
+  const [isAccountOpen, setisAccountOpen] = useState(false)
 
   return (
     <Sheet>
@@ -42,7 +43,7 @@ const NavbarHamburger: React.FC<Props> = ({
         {/* <div> */}
         <div className="flex flex-col gap-5 text-lg font-semibold">
           {session ? (
-            <div className="flex flex-col ">
+            <div className="flex flex-col gap-4">
               <div>
                 <p className="mt-4 text-xl font-semibold">
                   {user.first_name} {user.last_name}
@@ -50,12 +51,40 @@ const NavbarHamburger: React.FC<Props> = ({
                 <p className="text-sm ">{user.email}</p>
                 <p className="text-sm ">{user.contact_number}</p>
               </div>
-              <a
-                href="/account/profile"
-                className="mt-4 cursor-pointer rounded-lg bg-white px-4 py-2 pr-2 hover:bg-gray-200"
-              >
-                Profile
-              </a>
+              <Collapsible>
+                <CollapsibleTrigger
+                  onClick={() => {
+                    setIsCategoriesOpened((prev) => !prev)
+                  }}
+                >
+                  <div className="flex cursor-pointer items-center gap-4 rounded-lg bg-white px-4 py-2 pr-2 hover:bg-gray-200">
+                    <p>Account</p>
+                    {isAccountOpen ? <ChevronUp /> : <ChevronDown />}
+                  </div>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <ul className="rounded-lg px-4 py-2 pl-10 text-base hover:bg-gray-200">
+                    <a className="" href={`/account/profile`}>
+                      <p className="mt-2 font-semibold">Profile</p>
+                    </a>
+                  </ul>
+                  <ul className="rounded-lg px-4 py-2 pl-10 text-base hover:bg-gray-200">
+                    <a className="" href={`/account/addresses`}>
+                      <p className="mt-2 font-semibold">Addresses</p>
+                    </a>
+                  </ul>
+                  <ul className="rounded-lg px-4 py-2 pl-10 text-base hover:bg-gray-200">
+                    <a className="" href={`/account/change-password`}>
+                      <p className="mt-2 font-semibold">Change Password</p>
+                    </a>
+                  </ul>
+                  <ul className="rounded-lg px-4 py-2 pl-10 text-base hover:bg-gray-200">
+                    <a className="" href={'orders'}>
+                      <p className="mt-2 font-semibold">Orders</p>
+                    </a>
+                  </ul>
+                </CollapsibleContent>
+              </Collapsible>
             </div>
           ) : (
             <a
@@ -68,7 +97,7 @@ const NavbarHamburger: React.FC<Props> = ({
           <Collapsible>
             <CollapsibleTrigger
               onClick={() => {
-                setIsCategoriesOpened((prev) => !prev)
+                setisAccountOpen((prev) => !prev)
               }}
             >
               <div className="flex cursor-pointer items-center gap-4 rounded-lg bg-white px-4 py-2 pr-2 hover:bg-gray-200">
