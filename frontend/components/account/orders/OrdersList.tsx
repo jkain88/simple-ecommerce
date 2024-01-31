@@ -1,14 +1,23 @@
 'use client'
 
+import {
+  Carousel,
+  type CarouselApi,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Api } from '@/lib/Api'
 import { extractPageFromUrl } from '@/lib/utils'
 import { Button, Image, Skeleton, Spinner } from '@nextui-org/react'
 import { useInfiniteQuery } from '@tanstack/react-query'
+import _ from 'lodash'
 import { Session } from 'next-auth'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 type OrderStatus = 'pending' | 'processing' | 'in transit' | 'delivered'
 
@@ -33,6 +42,8 @@ const getOrders =
 
 const OrdersList: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState<OrderStatus>('pending')
+  const [api, setApi] = React.useState<CarouselApi>()
+  const selectedCarouselValue = useRef()
   const { data: session } = useSession()
   const {
     data: orders,
@@ -50,10 +61,50 @@ const OrdersList: React.FC = () => {
     initialPageParam: 1,
   })
 
+  useEffect(() => {
+    if (!api) {
+      return
+    }
+    const carouselItems: Record<number, OrderStatus> = {
+      0: 'pending',
+      1: 'processing',
+      2: 'in transit',
+      3: 'delivered',
+    }
+    const onApiSelect = _.debounce(() => {
+      setSelectedTab(carouselItems[api.selectedScrollSnap() as number])
+    }, 1000)
+
+    api.on('select', onApiSelect)
+  }, [api])
+
   return (
     <div>
+      <div className="block px-4 md:hidden">
+        <Carousel
+          setApi={setApi}
+          className="mx-auto w-full max-w-xl rounded-lg bg-white px-6 py-4"
+        >
+          <CarouselContent className="-ml-1 text-center text-lg font-semibold">
+            <CarouselItem className="pl-1">
+              <p>Pending</p>
+            </CarouselItem>
+            <CarouselItem className="pl-1">
+              <p>Processing</p>
+            </CarouselItem>
+            <CarouselItem className="pl-1">
+              <p>In Transit</p>
+            </CarouselItem>
+            <CarouselItem className="pl-1">
+              <p>Completed</p>
+            </CarouselItem>
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+      </div>
       <div className="mt-3 flex justify-center">
-        <Tabs defaultValue="pending" className="flex-1 ">
+        <Tabs defaultValue="pending" className="hidden md:block md:flex-1">
           <TabsList className="flex w-full gap-16 rounded-lg bg-white py-7 text-lg">
             <TabsTrigger
               className="rounded-xl text-lg font-semibold text-black data-[state=active]:bg-zinc-400"
@@ -129,7 +180,7 @@ const OrdersList: React.FC = () => {
       {!isLoading &&
         orders?.pages.map((page) =>
           page.results.map((order) => (
-            <div key={order.id} className="mt-4 divide-y-1 bg-white p-4">
+            <div key={order.id} className="mt-4 grow divide-y-1 bg-white p-4">
               <div className="flex justify-between pb-3">
                 <div className="text-xl font-semibold">
                   Reference: {order.reference}

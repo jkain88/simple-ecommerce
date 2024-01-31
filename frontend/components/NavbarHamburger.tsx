@@ -79,7 +79,7 @@ const NavbarHamburger: React.FC<Props> = ({
                     </a>
                   </ul>
                   <ul className="rounded-lg px-4 py-2 pl-10 text-base hover:bg-gray-200">
-                    <a className="" href={'orders'}>
+                    <a className="" href={'/orders'}>
                       <p className="mt-2 font-semibold">Orders</p>
                     </a>
                   </ul>

@@ -2,7 +2,6 @@
 
 import { Order } from '@/lib/Api'
 import { Image } from '@nextui-org/react'
-import Link from 'next/link'
 import React from 'react'
 
 type Props = {

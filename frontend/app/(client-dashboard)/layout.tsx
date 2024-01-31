@@ -8,7 +8,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
     <div>
       <div className="h-max bg-neutral-100">
-        <section className="container">
+        <section className="px-10 2xl:container 2xl:px-0">
           <div className="flex py-14">
             <SideNavBar />
             {children}
