@@ -40,7 +40,6 @@ const NavbarHamburger: React.FC<Props> = ({
         <Menu className="block lg:hidden" />
       </SheetTrigger>
       <SheetContent className=" w-72 overflow-y-auto">
-        {/* <div> */}
         <div className="flex flex-col gap-5 text-lg font-semibold">
           {session ? (
             <div className="flex flex-col gap-4">
@@ -54,7 +53,7 @@ const NavbarHamburger: React.FC<Props> = ({
               <Collapsible>
                 <CollapsibleTrigger
                   onClick={() => {
-                    setIsCategoriesOpened((prev) => !prev)
+                    setisAccountOpen((prev) => !prev)
                   }}
                 >
                   <div className="flex cursor-pointer items-center gap-4 rounded-lg bg-white px-4 py-2 pr-2 hover:bg-gray-200">
@@ -97,7 +96,7 @@ const NavbarHamburger: React.FC<Props> = ({
           <Collapsible>
             <CollapsibleTrigger
               onClick={() => {
-                setisAccountOpen((prev) => !prev)
+                setIsCategoriesOpened((prev) => !prev)
               }}
             >
               <div className="flex cursor-pointer items-center gap-4 rounded-lg bg-white px-4 py-2 pr-2 hover:bg-gray-200">
