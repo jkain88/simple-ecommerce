@@ -78,11 +78,13 @@ const Navbar: React.FC = () => {
   }, [checkoutResponse, setCheckout])
 
   return (
-    <div className="sticky top-0 z-50  flex items-center justify-around bg-white px-20 py-6 2xl:px-40">
-      <div className="flex items-center gap-10">
-        <a href="/">
-          <Image src="/black-logo.svg" alt="logo" width={120} height={100} />
-        </a>
+    <div className="sticky top-0 z-50 grid grid-cols-5  items-center bg-white py-6 pl-20 md:flex md:justify-around 2xl:px-40">
+      <div className="col-span-4 mx-auto items-center gap-10 md:flex">
+        <div className="justify-self-center">
+          <a href="/" className="">
+            <Image src="/black-logo.svg" alt="logo" width={120} height={100} />
+          </a>
+        </div>
 
         <div className="hidden md:block">
           <Input
@@ -143,50 +145,52 @@ const Navbar: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex items-center gap-14 font-bold">
-        <Badge content={checkout?.lines?.length}>
-          <a href="/cart">
-            <ShoppingCart
-              size={30}
-              className="cursor-pointer hover:text-gray-400"
-            />
-          </a>
-        </Badge>
+      <div className="flex items-center gap-14 pr-5 font-bold md:pr-16">
+        <div className="flex items-center gap-10">
+          <Badge content={checkout?.lines?.length}>
+            <a href="/cart">
+              <ShoppingCart
+                size={30}
+                className="cursor-pointer hover:text-gray-400"
+              />
+            </a>
+          </Badge>
 
-        {!session ? (
-          <div className="hidden divide-x-1 divide-black lg:flex ">
-            <a href="/signin" className="pr-2 hover:text-gray-400">
-              Sign In
-            </a>
-            <a href="/signup" className="pl-2 hover:text-gray-400">
-              Sign Up
-            </a>
-          </div>
-        ) : (
-          <div className="hidden divide-x-1 divide-black lg:flex">
-            <a
-              href="/account/profile"
-              className="cursor-pointer pr-2 hover:text-gray-400"
-            >
-              Profile
-            </a>
-            <p
-              onClick={handleSignOut}
-              className="cursor-pointer pl-2 hover:text-gray-400"
-            >
-              Logout
-            </p>
-          </div>
-        )}
+          {!session ? (
+            <div className="hidden divide-x-1 divide-black lg:flex ">
+              <a href="/signin" className="pr-2 hover:text-gray-400">
+                Sign In
+              </a>
+              <a href="/signup" className="pl-2 hover:text-gray-400">
+                Sign Up
+              </a>
+            </div>
+          ) : (
+            <div className="hidden divide-x-1 divide-black lg:flex">
+              <a
+                href="/account/profile"
+                className="cursor-pointer pr-2 hover:text-gray-400"
+              >
+                Profile
+              </a>
+              <p
+                onClick={handleSignOut}
+                className="cursor-pointer pl-2 hover:text-gray-400"
+              >
+                Logout
+              </p>
+            </div>
+          )}
+          <NavbarHamburger
+            session={session}
+            categories={categories?.data.results}
+            brands={brands?.data.results}
+            isCategoriesLoading={isCategoriesLoading}
+            isBrandsLoading={isBrandsLoading}
+            handleSignOut={handleSignOut}
+          />
+        </div>
       </div>
-      <NavbarHamburger
-        session={session}
-        categories={categories?.data.results}
-        brands={brands?.data.results}
-        isCategoriesLoading={isCategoriesLoading}
-        isBrandsLoading={isBrandsLoading}
-        handleSignOut={handleSignOut}
-      />
     </div>
   )
 }
