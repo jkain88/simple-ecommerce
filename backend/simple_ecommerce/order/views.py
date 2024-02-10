@@ -10,11 +10,15 @@ from .serializers import OrderSerializer
 
 # Create your views here.
 class OrderList(generics.ListAPIView):
-    queryset = Order.objects.all().order_by("-created")
     serializer_class = OrderSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated]
     filter_backends = [filters.DjangoFilterBackend]
     filterset_fields = ["status"]
+
+    def get_queryset(self):
+        if self.request.user.is_staff or self.request.user.is_superuser:
+            return Order.objects.all().order_by("-created")
+        return self.request.user.orders.all()
 
 
 class OrderDetail(generics.RetrieveUpdateDestroyAPIView):
