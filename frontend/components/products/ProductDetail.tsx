@@ -40,7 +40,9 @@ const ProductDetail: React.FC<Props> = ({ product }: Props) => {
           { ...data.data, isSelected: false },
         ],
       })
-      toast.success('Added to cart')
+      toast.success('Added to cart', {
+        position: 'bottom-right',
+      })
     },
   })
   const { mutate: initializeCheckout } = useMutation({
@@ -63,7 +65,9 @@ const ProductDetail: React.FC<Props> = ({ product }: Props) => {
         quantity,
         product_variant: selectedVariant.id,
       })
-      toast.success('Added to cart')
+      toast.success('Added to cart', {
+        position: 'bottom-right',
+      })
     },
   })
   const { data: session } = useSession()
