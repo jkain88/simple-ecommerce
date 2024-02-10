@@ -18,7 +18,7 @@ class OrderList(generics.ListAPIView):
     def get_queryset(self):
         if self.request.user.is_staff or self.request.user.is_superuser:
             return Order.objects.all().order_by("-created")
-        return self.request.user.orders.all()
+        return self.request.user.orders.all().order_by("-created")
 
 
 class OrderDetail(generics.RetrieveUpdateDestroyAPIView):
