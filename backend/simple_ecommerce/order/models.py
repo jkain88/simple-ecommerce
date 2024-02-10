@@ -34,7 +34,11 @@ class Order(TimeStampedModel):
         default_currency=settings.DEFAULT_CURRENCY,
     )
     user = models.ForeignKey(
-        User, null=True, on_delete=models.SET_NULL, db_constraint=False
+        User,
+        null=True,
+        on_delete=models.SET_NULL,
+        db_constraint=False,
+        related_name="orders",
     )
     status = models.CharField(
         max_length=20, choices=OrderStatus.CHOICES, default=OrderStatus.PENDING
