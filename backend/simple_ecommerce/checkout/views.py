@@ -187,3 +187,14 @@ class CheckoutAddressUpdate(generics.UpdateAPIView):
             return address
 
         return self.request.user.checkout.shipping_address
+
+    def perform_update(self, serializer):
+        super().perform_update(serializer)
+        instance = serializer.instance
+        user = self.request.user
+
+        # Set the address as default if user has no existing address
+        if user.addresses.count() == 0:
+            instance.user = user
+            instance.is_default = True
+            instance.save()
