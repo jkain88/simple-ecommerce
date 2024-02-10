@@ -1,12 +1,13 @@
 'use client'
 
-import { useCheckoutStore } from '@/store/checkout'
+import { Checkout, useCheckoutStore } from '@/store/checkout'
 import Image from 'next/image'
 import React from 'react'
 
-const CheckoutLine: React.FC = () => {
-  const checkout = useCheckoutStore((state) => state.checkout)
-
+type Props = {
+  checkout: Checkout | null
+}
+const CheckoutLine: React.FC<Props> = ({ checkout }) => {
   return (
     <div className="mt-4 rounded-lg bg-white">
       <div className="rounded-lg bg-gray-50 px-4 py-2">

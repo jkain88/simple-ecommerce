@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { Button } from '../ui/button'
-import { useCheckoutStore } from '@/store/checkout'
+import { Checkout, useCheckoutStore } from '@/store/checkout'
 import { useMutation } from '@tanstack/react-query'
 import { Api } from '@/lib/Api'
 import { useSession } from 'next-auth/react'
@@ -13,11 +13,15 @@ import { toast } from 'react-toastify'
 type Props = {
   buttonLabel: 'Place Order' | 'Proceed to Checkout'
   redirectLink: string
+  checkout: Checkout | null
 }
 
-const CheckoutSummary: React.FC<Props> = ({ buttonLabel, redirectLink }) => {
+const CheckoutSummary: React.FC<Props> = ({
+  buttonLabel,
+  redirectLink,
+  checkout,
+}) => {
   const { data: session } = useSession()
-  const checkout = useCheckoutStore((state) => state.checkout)
   const resetCheckout = useCheckoutStore((state) => state.resetCheckout)
   const checkoutTotal = checkout?.lines?.reduce(
     (accumulator, line) => accumulator + Number(line.amount),
@@ -39,8 +43,8 @@ const CheckoutSummary: React.FC<Props> = ({ buttonLabel, redirectLink }) => {
         )
       },
       onSuccess: () => {
-        resetCheckout()
         router.push('/orders')
+        resetCheckout()
       },
       onError: () => {
         toast.error('Something went wrong')
@@ -53,7 +57,7 @@ const CheckoutSummary: React.FC<Props> = ({ buttonLabel, redirectLink }) => {
         const api = new Api()
         return api.checkout.checkoutPaymentCreateCreate(
           {
-            checkout: checkout?.id,
+            checkout: checkout?.id!,
             gateway: 'dummy',
           },
           {

@@ -24,7 +24,7 @@ export const useCheckoutStore = create<CheckoutState>()(
     (set) => ({
       checkout: null,
       setCheckout: (checkout: Checkout) => set({ checkout }),
-      resetCheckout: () => set({ checkout: null }),
+      resetCheckout: () => set({ checkout: {} }),
     }),
     {
       name: 'checkoutStorage',

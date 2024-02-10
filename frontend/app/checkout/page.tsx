@@ -4,27 +4,32 @@ import CheckoutLine from '@/components/checkout/CheckoutLine'
 import CheckoutPaymentMethods from '@/components/checkout/CheckoutPaymentMethods'
 import CheckoutSummary from '@/components/checkout/CheckoutSummary'
 import AddressDetailForm from '@/components/forms/AddressDetailForm'
-import { useCheckoutStore } from '@/store/checkout'
+import { Checkout, useCheckoutStore } from '@/store/checkout'
 import { useEffect, useState } from 'react'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { useUserStore } from '@/store/user'
 
 export default function Checkout() {
-  const [isFormVisible, setIsFormVisible] = useState(false)
   const user = useUserStore((state) => state.user)
-  const checkout = useCheckoutStore((state) => state.checkout)
+  const checkoutStore = useCheckoutStore((state) => state.checkout)
+  const [checkout, setCheckout] = useState<Checkout | null>(null)
+  const [isFormVisible, setIsFormVisible] = useState(false)
   const [parent] = useAutoAnimate({
     duration: 150,
     easing: 'linear',
   })
 
   useEffect(() => {
-    if (checkout?.shipping_address_detail === null) {
+    if (Object.keys(checkoutStore!).length !== 0) {
+      setCheckout((prev) => checkoutStore)
+    }
+
+    if (checkoutStore?.shipping_address_detail === null) {
       setIsFormVisible(true)
     } else {
       setIsFormVisible(false)
     }
-  }, [checkout?.shipping_address_detail])
+  }, [checkoutStore])
 
   return (
     <div className="flex flex-col justify-center gap-4 bg-gray-100 px-5 py-10 md:flex-row">
@@ -75,10 +80,14 @@ export default function Checkout() {
             )}
           </div>
         </div>
-        <CheckoutLine />
+        <CheckoutLine checkout={checkout} />
         <CheckoutPaymentMethods />
       </div>
-      <CheckoutSummary buttonLabel="Place Order" redirectLink="/orders" />
+      <CheckoutSummary
+        buttonLabel="Place Order"
+        redirectLink="/orders"
+        checkout={checkout}
+      />
     </div>
   )
 }
