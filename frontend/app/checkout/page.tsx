@@ -8,11 +8,12 @@ import { Checkout, useCheckoutStore } from '@/store/checkout'
 import { useEffect, useState } from 'react'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { useUserStore } from '@/store/user'
+import { useCopyCheckout } from '@/hooks/useCopyCheckout'
 
 export default function Checkout() {
   const user = useUserStore((state) => state.user)
   const checkoutStore = useCheckoutStore((state) => state.checkout)
-  const [checkout, setCheckout] = useState<Checkout | null>(null)
+  const checkout = useCopyCheckout()
   const [isFormVisible, setIsFormVisible] = useState(false)
   const [parent] = useAutoAnimate({
     duration: 150,
@@ -20,10 +21,6 @@ export default function Checkout() {
   })
 
   useEffect(() => {
-    if (Object.keys(checkoutStore!).length !== 0) {
-      setCheckout((prev) => checkoutStore)
-    }
-
     if (checkoutStore?.shipping_address_detail === null) {
       setIsFormVisible(true)
     } else {
