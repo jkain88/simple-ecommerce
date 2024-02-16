@@ -9,12 +9,11 @@ CORS_ORIGIN_WHITELIST = [
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "database_name",
-        "USER": "username",
-        "PASSWORD": "password",
-        "HOST": "mysql",
-        "PORT": "3306",
-        "OPTIONS": {"charset": "utf8mb4"},
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": "simple-ecommerce",
+        "USER": "postgres",
+        "PASSWORD": "postgres",
+        "HOST": "postgres",
+        "PORT": "5432",
     }
 }

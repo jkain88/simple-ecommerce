@@ -36,7 +36,7 @@ class CheckoutLine(TimeStampedModel):
         default_currency=settings.DEFAULT_CURRENCY,
     )
     checkout = models.ForeignKey(
-        Checkout, on_delete=models.CASCADE, related_name="lines", db_constraint=False
+        Checkout, on_delete=models.CASCADE, related_name="lines"
     )
     product = models.ForeignKey(
         Product,

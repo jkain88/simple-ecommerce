@@ -59,9 +59,7 @@ class OrderLine(TimeStampedModel):
         null=True,
         default_currency=settings.DEFAULT_CURRENCY,
     )
-    order = models.ForeignKey(
-        Order, on_delete=models.CASCADE, related_name="lines", db_constraint=False
-    )
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="lines")
     product = models.ForeignKey(
         Product,
         null=True,
