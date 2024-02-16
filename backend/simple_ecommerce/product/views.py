@@ -16,6 +16,7 @@ from .serializers import (
 class CategoryCreate(generics.CreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = [IsAdminUser]
 
 
 class CategoryList(generics.ListAPIView):
@@ -26,6 +27,11 @@ class CategoryList(generics.ListAPIView):
 class BrandList(generics.ListAPIView):
     queryset = Brand.objects.all()
     serializer_class = BrandSerializer
+
+
+class BranCreate(generics.CreateAPIView):
+    serializer_class = BrandSerializer
+    permission_classes = [IsAdminUser]
 
 
 class CategoryDetail(generics.RetrieveUpdateDestroyAPIView):
