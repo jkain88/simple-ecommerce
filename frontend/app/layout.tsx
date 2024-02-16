@@ -29,9 +29,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${inter.className} bg-white `}>
         <Providers session={session}>
-          <Navbar />
           {children}
-          <Footer />
           <ToastContainer />
         </Providers>
       </body>
