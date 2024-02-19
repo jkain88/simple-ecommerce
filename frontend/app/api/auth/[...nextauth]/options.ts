@@ -61,16 +61,22 @@ export const authOptions: AuthOptions = {
         token.token = user.token
         token.is_staff = user.is_staff
       }
+      console.log('JWT', user, session)
       return token
     },
     async session({ session, token }) {
+      if (token) {
+        session.user = {
+          id: token.id as number,
+          email: token.email as string,
+          token: token.token as string,
+          is_staff: token.is_staff as boolean,
+        }
+      }
       return {
         ...session,
         ...token,
       }
     },
-  },
-  pages: {
-    signIn: '/',
   },
 }

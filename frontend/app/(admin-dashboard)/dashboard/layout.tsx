@@ -1,6 +1,7 @@
 'use client'
 
-import { BaggageClaim, Box, Home, UserCog, Users } from 'lucide-react'
+import { BaggageClaim, Box, Home, LogOut, UserCog, Users } from 'lucide-react'
+import { signOut, useSession } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
 import React from 'react'
 
@@ -10,9 +11,13 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const path = usePathname()
-  console.log(path)
+  const { data: session } = useSession()
   if (path === '/dashboard/login') {
     return <div>{children}</div>
+  }
+
+  const handleSignOut = async () => {
+    await signOut({ callbackUrl: '/dashboard/login' })
   }
   return (
     <div className="flex">
@@ -46,6 +51,12 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             <UserCog size={30} />
             <p className="text-lg font-semibold">Staffs</p>
           </div>
+          {session && (
+            <div className="flex items-center gap-4" onClick={handleSignOut}>
+              <LogOut size={30} />
+              <p className="text-lg font-semibold">Logout</p>
+            </div>
+          )}
         </div>
       </div>
       {children}

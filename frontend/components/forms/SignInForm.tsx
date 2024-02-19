@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react'
 import type { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { signIn, useSession } from 'next-auth/react'
+import { getSession, signIn, useSession } from 'next-auth/react'
 
 import {
   Form,
@@ -54,16 +54,20 @@ const SignInForm: React.FC<Props> = ({ accountType }: Props) => {
   })
 
   const onSubmit = async (data: Inputs) => {
-    const callbackUrl = accountType === 'customer' ? '/' : '/dashboard'
-    try {
-      await signIn('credentials', {
-        email: data.email,
-        password: data.password,
-        callbackUrl,
-        accountType,
-      })
-    } catch (error) {
-      console.log('error', error)
+    await signIn('credentials', {
+      email: data.email,
+      password: data.password,
+      redirect: false,
+      accountType,
+    })
+    const loginSession = await getSession()
+    if (loginSession !== null) {
+      const route =
+        loginSession.user.is_staff && accountType === 'staff'
+          ? '/dashboard'
+          : '/'
+      console.log('ROUTE', route)
+      router.replace(route)
     }
   }
 
