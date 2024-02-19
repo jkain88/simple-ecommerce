@@ -33,6 +33,35 @@ class Login(APIView):
             )
 
 
+class StaffLogin(APIView):
+    def post(self, request):
+        email = request.data.get("email")
+        password = request.data.get("password")
+        user = authenticate(email=email, password=password)
+
+        if user is not None:
+            if not user.is_staff or not user.is_superuser:
+                return Response(
+                    {"error": "User is not a staff member"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            token, _ = Token.objects.get_or_create(user=user)
+            return Response(
+                {
+                    "token": token.key,
+                    "id": user.id,
+                    "email": user.email,
+                    "name": f"{user.first_name} {user.last_name}",
+                },
+                status=status.HTTP_200_OK,
+            )
+        else:
+            return Response(
+                {"error": "Wrong Credentials"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+
 class Logout(APIView):
     permission_classes = [IsAuthenticated]
 
