@@ -12,7 +12,7 @@ interface DashboardLayoutProps {
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const path = usePathname()
   const { data: session } = useSession()
-  if (path === '/dashboard/login') {
+  if (path === '/dashboard/signin') {
     return <div>{children}</div>
   }
 
@@ -59,7 +59,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           )}
         </div>
       </div>
-      {children}
+
+      <div className="h-screen w-full bg-gray-100">
+        <div className="container">{children}</div>
+      </div>
     </div>
   )
 }
