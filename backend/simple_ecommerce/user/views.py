@@ -24,6 +24,7 @@ class Login(APIView):
                     "id": user.id,
                     "email": user.email,
                     "name": f"{user.first_name} {user.last_name}",
+                    "is_staff": user.is_staff,
                 },
                 status=status.HTTP_200_OK,
             )
@@ -53,6 +54,7 @@ class StaffLogin(APIView):
                     "id": user.id,
                     "email": user.email,
                     "name": f"{user.first_name} {user.last_name}",
+                    "is_staff": user.is_staff,
                 },
                 status=status.HTTP_200_OK,
             )
