@@ -30,7 +30,7 @@ export default function SignInPage() {
             </span>
             <div className="flex-grow border-t border-gray-500"></div>
           </div>
-          <SignInForm />
+          <SignInForm accountType="customer" />
         </CardContent>
         <CardFooter>
           <div className="flex w-full items-center justify-between gap-2 ">

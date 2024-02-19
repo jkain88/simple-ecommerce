@@ -3,7 +3,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
@@ -17,7 +16,7 @@ export default async function DashboardLogin() {
           <CardDescription>Enter your credentials to proceed</CardDescription>
         </CardHeader>
         <CardContent>
-          <SignInForm />
+          <SignInForm accountType="staff" />
         </CardContent>
       </Card>
     </div>

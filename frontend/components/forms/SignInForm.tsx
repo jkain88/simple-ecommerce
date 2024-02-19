@@ -25,7 +25,10 @@ import { useCheckoutStore } from '@/store/checkout'
 
 type Inputs = z.infer<typeof signInSchema>
 
-const SignInForm: React.FC = () => {
+type Props = {
+  accountType: 'customer' | 'staff'
+}
+const SignInForm: React.FC<Props> = ({ accountType }: Props) => {
   const { data: session } = useSession()
   const router = useRouter()
   const form = useForm<Inputs>({
@@ -51,11 +54,17 @@ const SignInForm: React.FC = () => {
   })
 
   const onSubmit = async (data: Inputs) => {
-    await signIn('credentials', {
-      email: data.email,
-      password: data.password,
-      redirect: false,
-    })
+    const callbackUrl = accountType === 'customer' ? '/' : '/dashboard'
+    try {
+      await signIn('credentials', {
+        email: data.email,
+        password: data.password,
+        callbackUrl,
+        accountType,
+      })
+    } catch (error) {
+      console.log('error', error)
+    }
   }
 
   useEffect(() => {

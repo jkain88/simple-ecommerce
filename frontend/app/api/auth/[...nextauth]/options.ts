@@ -17,24 +17,33 @@ export const authOptions: AuthOptions = {
       credentials: {
         email: { label: 'Email', type: 'text', placeholder: 'Email' },
         password: { label: 'Password', type: 'password' },
+        accountType: { label: 'Account Type', type: 'text' },
       },
       async authorize(credentials) {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/login/`,
-          {
-            method: 'POST',
-            body: JSON.stringify({
-              email: credentials?.email,
-              password: credentials?.password,
-            }),
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
-        )
-        const data = (await response.json()) as User
+        const API_URL =
+          credentials?.accountType === 'customer'
+            ? `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/login/`
+            : `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/staff/login/`
+        console.log('API URL', API_URL)
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          body: JSON.stringify({
+            email: credentials?.email,
+            password: credentials?.password,
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        const data = await response.json()
+
         if (response.ok) {
-          return { id: data.id, token: data.token, email: data.email }
+          return {
+            id: data.id,
+            token: data.token,
+            email: data.email,
+            is_staff: data.is_staff,
+          }
         } else {
           return null
         }
@@ -50,6 +59,7 @@ export const authOptions: AuthOptions = {
         token.id = user.id
         token.email = user.email
         token.token = user.token
+        token.is_staff = user.is_staff
       }
       return token
     },

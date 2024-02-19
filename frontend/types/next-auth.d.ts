@@ -5,6 +5,7 @@ declare module 'next-auth' {
     id: number
     email: string
     token: string
+    is_staff: boolean
   }
 
   interface Session extends DefaultSession {
