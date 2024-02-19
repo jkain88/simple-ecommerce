@@ -21,7 +21,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   }
   return (
     <div className="flex">
-      <div className="mt-16 h-screen px-12">
+      <div className="mt-16 h-full px-20">
         <div className="flex flex-col gap-6">
           <div className="flex items-center gap-4">
             <Home size={30} />
@@ -60,7 +60,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         </div>
       </div>
 
-      <div className="h-screen w-full bg-gray-100">
+      <div className="h-full w-full bg-gray-100">
         <div className="container">{children}</div>
       </div>
     </div>
