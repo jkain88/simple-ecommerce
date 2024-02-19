@@ -1,4 +1,7 @@
+'use client'
+
 import { BaggageClaim, Box, Home, UserCog, Users } from 'lucide-react'
+import { usePathname } from 'next/navigation'
 import React from 'react'
 
 interface DashboardLayoutProps {
@@ -6,6 +9,11 @@ interface DashboardLayoutProps {
 }
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
+  const path = usePathname()
+  console.log(path)
+  if (path === '/dashboard/login') {
+    return <div>{children}</div>
+  }
   return (
     <div className="flex">
       <div className="mt-16 h-screen px-12">
