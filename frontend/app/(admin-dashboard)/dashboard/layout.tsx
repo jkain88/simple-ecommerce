@@ -19,40 +19,37 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const handleSignOut = async () => {
     await signOut({ callbackUrl: '/dashboard/login' })
   }
+
+  const menuItems = [
+    { name: 'Home', Icon: Home, path: '/dashboard' },
+    { name: 'Customers', Icon: Users, path: '/dashboard/customers' },
+    { name: 'Products', Icon: Box, path: '/dashboard/products' },
+    { name: 'Brands', Icon: Box, path: '/dashboard/brands' },
+    { name: 'Categories', Icon: Box, path: '/dashboard/categories' },
+    { name: 'Orders', Icon: BaggageClaim, path: '/dashboard/orders' },
+    { name: 'Staffs', Icon: UserCog, path: '/dashboard/staffs' },
+  ]
+
   return (
     <div className="flex">
       <div className="mt-16 h-full px-20">
         <div className="flex flex-col gap-6">
-          <div className="flex items-center gap-4">
-            <Home size={30} />
-            <p className="text-lg font-semibold">Home</p>
-          </div>
-          <div className="flex items-center gap-4">
-            <Users size={30} />
-            <p className="text-lg font-semibold">Customers</p>
-          </div>
-          <div className="flex items-center gap-4">
-            <Box size={30} />
-            <p className="text-lg font-semibold">Products</p>
-          </div>
-          <div className="flex items-center gap-4">
-            <Box size={30} />
-            <p className="text-lg font-semibold">Brands</p>
-          </div>
-          <div className="flex items-center gap-4">
-            <Box size={30} />
-            <p className="text-lg font-semibold">Categories</p>
-          </div>
-          <div className="flex items-center gap-4">
-            <BaggageClaim size={30} />
-            <p className="text-lg font-semibold">Orders</p>
-          </div>
-          <div className="flex items-center gap-4">
-            <UserCog size={30} />
-            <p className="text-lg font-semibold">Staffs</p>
-          </div>
+          {menuItems.map((item, index) => (
+            <div
+              key={index}
+              className="flex cursor-pointer items-center gap-4 rounded-lg px-4 py-2 hover:bg-slate-100"
+            >
+              <item.Icon size={30} />
+              <p className=" text-lg font-semibold hover:underline">
+                {item.name}
+              </p>
+            </div>
+          ))}
           {session && (
-            <div className="flex items-center gap-4" onClick={handleSignOut}>
+            <div
+              className="flex items-center gap-4 rounded-lg px-4 py-2 hover:bg-slate-100 hover:underline"
+              onClick={handleSignOut}
+            >
               <LogOut size={30} />
               <p className="text-lg font-semibold">Logout</p>
             </div>
