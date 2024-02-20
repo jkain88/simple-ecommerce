@@ -2,6 +2,7 @@
 
 import { BaggageClaim, Box, Home, LogOut, UserCog, Users } from 'lucide-react'
 import { signOut, useSession } from 'next-auth/react'
+import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React from 'react'
 
@@ -32,18 +33,17 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   return (
     <div className="flex">
-      <div className="mt-16 h-full px-20">
+      <div className="mt-16 h-full px-16">
         <div className="flex flex-col gap-6">
           {menuItems.map((item, index) => (
-            <div
-              key={index}
-              className="flex cursor-pointer items-center gap-4 rounded-lg px-4 py-2 hover:bg-slate-100"
-            >
-              <item.Icon size={30} />
-              <p className=" text-lg font-semibold hover:underline">
-                {item.name}
-              </p>
-            </div>
+            <Link key={index} href={item.path}>
+              <div className="flex cursor-pointer items-center gap-4 rounded-lg px-4 py-2 hover:bg-slate-100">
+                <item.Icon size={30} />
+                <p className=" text-lg font-semibold hover:underline">
+                  {item.name}
+                </p>
+              </div>
+            </Link>
           ))}
           {session && (
             <div

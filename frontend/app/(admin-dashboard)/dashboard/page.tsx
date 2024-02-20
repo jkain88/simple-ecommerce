@@ -246,7 +246,7 @@ export default function Dashboard() {
         <div className="my-10 rounded-lg bg-white px-10 py-8 shadow-xl">
           <h1 className="text-3xl font-bold">Top Products</h1>
           <Separator className="my-4  rounded-lg bg-black" />
-          <div className="space-y-10">
+          <div className="mt-10 space-y-10">
             {!isProductsLoading &&
               products?.data.results.map((product) => (
                 <div key={product.id} className="flex items-center gap-4">
