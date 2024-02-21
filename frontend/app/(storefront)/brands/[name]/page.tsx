@@ -12,7 +12,7 @@ const getProducts =
   async ({ pageParam = 1 }: { pageParam: number }) => {
     const api = new Api()
     const response = await api.products.productsList({
-      brand__slug: name,
+      brand: name,
       page_size: 10,
       page: pageParam,
     })

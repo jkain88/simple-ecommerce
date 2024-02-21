@@ -1,6 +1,5 @@
 'use client'
 
-import * as React from 'react'
 import {
   CaretSortIcon,
   ChevronDownIcon,
@@ -39,48 +38,15 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { useQuery } from '@tanstack/react-query'
+import { Api, Product } from '@/lib/Api'
+import { Spinner } from '@nextui-org/react'
+import { debounce } from 'lodash'
+import Pagination from '@/components/Pagination'
+import { useCallback, useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 
-const data: Payment[] = [
-  {
-    id: 'm5gr84i9',
-    amount: 316,
-    status: 'success',
-    email: 'ken99@yahoo.com',
-  },
-  {
-    id: '3u1reuv4',
-    amount: 242,
-    status: 'success',
-    email: 'Abe45@gmail.com',
-  },
-  {
-    id: 'derv1ws0',
-    amount: 837,
-    status: 'processing',
-    email: 'Monserrat44@gmail.com',
-  },
-  {
-    id: '5kma53ae',
-    amount: 874,
-    status: 'success',
-    email: 'Silas22@gmail.com',
-  },
-  {
-    id: 'bhqecj4p',
-    amount: 721,
-    status: 'failed',
-    email: 'carmella@hotmail.com',
-  },
-]
-
-export type Payment = {
-  id: string
-  amount: number
-  status: 'pending' | 'processing' | 'success' | 'failed'
-  email: string
-}
-
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<Product>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -104,37 +70,49 @@ export const columns: ColumnDef<Payment>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'status',
-    header: 'Status',
+    accessorKey: 'name',
+    header: 'Name',
+    cell: ({ row }) => {
+      return <div className="capitalize">{row.getValue('name')}</div>
+    },
+  },
+  {
+    accessorKey: 'category',
+    header: ({ column }) => {
+      return <div className="">Category</div>
+    },
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue('status')}</div>
+      <div className="capitalize">{row.original.category?.name}</div>
     ),
   },
   {
-    accessorKey: 'email',
+    accessorKey: 'brand',
     header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Email
-          <CaretSortIcon className="ml-2 h-4 w-4" />
-        </Button>
-      )
+      return <div className="">Brand</div>
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue('email')}</div>,
+    cell: ({ row }) => (
+      <div className="capitalize">{row.original.brand?.name}</div>
+    ),
+  },
+  {
+    accessorKey: 'published',
+    header: ({ column }) => {
+      return <div className="">Published</div>
+    },
+    cell: ({ row }) => (
+      <div className="lowercase">{row.original.is_published!.toString()}</div>
+    ),
   },
   {
     accessorKey: 'amount',
     header: () => <div className="text-right">Amount</div>,
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue('amount'))
+      const amount = parseFloat(row.original.price)
 
       // Format the amount as a dollar amount
       const formatted = new Intl.NumberFormat('en-US', {
         style: 'currency',
-        currency: 'USD',
+        currency: 'PHP',
       }).format(amount)
 
       return <div className="text-right font-medium">{formatted}</div>
@@ -144,7 +122,7 @@ export const columns: ColumnDef<Payment>[] = [
     id: 'actions',
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original
+      const product = row.original
 
       return (
         <DropdownMenu>
@@ -157,7 +135,9 @@ export const columns: ColumnDef<Payment>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
+              onClick={() =>
+                navigator.clipboard.writeText(product.id!.toString())
+              }
             >
               Copy payment ID
             </DropdownMenuItem>
@@ -172,18 +152,38 @@ export const columns: ColumnDef<Payment>[] = [
 ]
 
 export default function DashboardProducts() {
-  const [sorting, setSorting] = React.useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+  const [debouncedSearch, setDebouncedSearch] = useState('')
+  const [searchString, setSearchString] = useState('')
+  const searchParams = useSearchParams()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const updateDebouncedSearch = useCallback(
+    debounce((value) => setDebouncedSearch(value), 300),
     []
   )
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
+  useEffect(() => {
+    updateDebouncedSearch(searchString)
+  }, [searchString, updateDebouncedSearch])
+
+  const page = searchParams.get('page') ?? '1'
+
+  const { data: products, isLoading } = useQuery({
+    queryKey: ['dashboard-products', debouncedSearch, page],
+    queryFn: async () => {
+      const api = new Api()
+      return api.products.productsList({
+        page_size: 10,
+        search: debouncedSearch,
+        page: parseInt(page),
+      })
+    },
+  })
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  const [rowSelection, setRowSelection] = useState({})
 
   const table = useReactTable({
-    data,
+    data: products?.data.results ?? ([] as Product[]),
     columns,
-    onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -192,12 +192,17 @@ export default function DashboardProducts() {
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     state: {
-      sorting,
       columnFilters,
       columnVisibility,
       rowSelection,
     },
   })
+
+  const handleSearchProduct = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchString(event.target.value)
+  }
+
+  console.log('PRODUCTS', products?.data.total_pages)
 
   return (
     <div className="h-screen">
@@ -205,11 +210,9 @@ export default function DashboardProducts() {
         <h1 className="text-3xl font-semibold">Products</h1>
         <div className="flex items-center py-4">
           <Input
-            placeholder="Filter emails..."
-            value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
-            onChange={(event) =>
-              table.getColumn('email')?.setFilterValue(event.target.value)
-            }
+            placeholder="Search product"
+            value={searchString}
+            onChange={(event) => handleSearchProduct(event)}
             className="max-w-sm"
           />
           <DropdownMenu>
@@ -260,7 +263,16 @@ export default function DashboardProducts() {
               ))}
             </TableHeader>
             <TableBody>
-              {table.getRowModel().rows?.length ? (
+              {isLoading ? (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    <Spinner color="default" />
+                  </TableCell>
+                </TableRow>
+              ) : table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
                   <TableRow
                     key={row.id}
@@ -289,29 +301,8 @@ export default function DashboardProducts() {
             </TableBody>
           </Table>
         </div>
-        <div className="flex items-center justify-end space-x-2 py-4">
-          <div className="text-muted-foreground flex-1 text-sm">
-            {table.getFilteredSelectedRowModel().rows.length} of{' '}
-            {table.getFilteredRowModel().rows.length} row(s) selected.
-          </div>
-          <div className="space-x-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              Previous
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              Next
-            </Button>
-          </div>
+        <div className="mt-4 flex items-center justify-between space-x-2 py-4">
+          <Pagination totalPages={products?.data.total_pages!} />
         </div>
       </div>
     </div>

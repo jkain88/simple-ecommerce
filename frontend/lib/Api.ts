@@ -980,11 +980,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     ) =>
       this.request<
         {
-          count: number
-          /** @format uri */
-          next?: string | null
-          /** @format uri */
-          previous?: string | null
+          next?: string
+          previous?: string
+          total_pages?: number
+          count?: number
           results: Order[]
         },
         any
@@ -1089,11 +1088,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     ) =>
       this.request<
         {
-          count: number
-          /** @format uri */
-          next?: string | null
-          /** @format uri */
-          previous?: string | null
+          next?: string
+          previous?: string
+          total_pages?: number
+          count?: number
           results: Product[]
         },
         any
@@ -1125,11 +1123,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     ) =>
       this.request<
         {
-          count: number
-          /** @format uri */
-          next?: string | null
-          /** @format uri */
-          previous?: string | null
+          next?: string
+          previous?: string
+          total_pages?: number
+          count?: number
           results: Brand[]
         },
         any
@@ -1161,11 +1158,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     ) =>
       this.request<
         {
-          count: number
-          /** @format uri */
-          next?: string | null
-          /** @format uri */
-          previous?: string | null
+          next?: string
+          previous?: string
+          total_pages?: number
+          count?: number
           results: Category[]
         },
         any
@@ -1585,11 +1581,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     ) =>
       this.request<
         {
-          count: number
-          /** @format uri */
-          next?: string | null
-          /** @format uri */
-          previous?: string | null
+          next?: string
+          previous?: string
+          total_pages?: number
+          count?: number
           results: User[]
         },
         any
