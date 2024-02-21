@@ -71,13 +71,13 @@ export interface ProductVariant {
   /**
    * Quantity
    * @min 0
-   * @max 4294967295
+   * @max 2147483647
    */
   quantity?: number
   /**
    * Quantity allocated
    * @min 0
-   * @max 4294967295
+   * @max 2147483647
    */
   quantity_allocated?: number
   /**
@@ -103,7 +103,7 @@ export interface CheckoutLine {
   /**
    * Quantity
    * @min 0
-   * @max 4294967295
+   * @max 2147483647
    */
   quantity?: number
 }
@@ -245,6 +245,8 @@ export interface Product {
   images: ProductImage[]
   /** Is featured */
   is_featured?: boolean
+  /** Is published */
+  is_published?: boolean
   /** Has variants */
   has_variants?: boolean
   /**
@@ -273,13 +275,13 @@ export interface Product {
   /**
    * Quantity
    * @min 0
-   * @max 4294967295
+   * @max 2147483647
    */
   quantity?: number
   /**
    * Quantity allocated
    * @min 0
-   * @max 4294967295
+   * @max 2147483647
    */
   quantity_allocated?: number
   variants: ProductVariant[]
@@ -302,7 +304,7 @@ export interface OrderLine {
   /**
    * Quantity
    * @min 0
-   * @max 4294967295
+   * @max 2147483647
    */
   quantity?: number
 }
@@ -391,7 +393,7 @@ export interface User {
   /**
    * Age
    * @min 0
-   * @max 4294967295
+   * @max 2147483647
    */
   age?: number | null
   /**
@@ -438,7 +440,7 @@ export interface UserRegister {
   /**
    * Age
    * @min 0
-   * @max 4294967295
+   * @max 2147483647
    */
   age?: number | null
   /**
@@ -1075,9 +1077,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     productsList: (
       query?: {
-        is_featured?: string
-        category__slug?: string
-        brand__slug?: string
+        category?: string
+        brand?: string
+        search?: string
         /** A page number within the paginated result set. */
         page?: number
         /** Number of results to return per page. */
@@ -1805,6 +1807,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         secure: true,
         type: ContentType.Json,
         format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags users
+     * @name UsersStaffLoginCreate
+     * @request POST:/users/staff/login/
+     * @secure
+     */
+    usersStaffLoginCreate: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/users/staff/login/`,
+        method: 'POST',
+        secure: true,
         ...params,
       }),
   }
