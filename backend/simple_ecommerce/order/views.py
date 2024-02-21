@@ -4,6 +4,7 @@ from django_filters import rest_framework as filters
 from rest_framework import generics
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 
+from .filters import OrderFilter
 from .models import Order
 from .serializers import OrderSerializer
 
@@ -13,7 +14,7 @@ class OrderList(generics.ListAPIView):
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = [filters.DjangoFilterBackend]
-    filterset_fields = ["status"]
+    filterset_class = OrderFilter
 
     def get_queryset(self):
         if self.request.user.is_staff or self.request.user.is_superuser:
