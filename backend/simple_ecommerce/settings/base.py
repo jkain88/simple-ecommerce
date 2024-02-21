@@ -142,3 +142,10 @@ REST_FRAMEWORK = {
 # Prices currency
 DEFAULT_CURRENCY = "PHP"
 DEFAULT_CURRENCY_CODE_LENGTH = 3
+
+SWAGGER_SETTINGS = {
+    "DEFAULT_PAGINATOR_INSPECTORS": [
+        "simple_ecommerce.core.yasg_generator.CustomPaginatorInspector",
+        "drf_yasg.inspectors.CoreAPICompatInspector",
+    ],
+}
