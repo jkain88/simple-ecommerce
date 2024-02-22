@@ -22,6 +22,7 @@ import { useSearchParams } from 'next/navigation'
 import { useCreateQueryString } from '@/hooks/useCreateQueryString'
 import Table from '@/components/Table'
 import { Trash2 } from 'lucide-react'
+import Image from 'next/image'
 
 export const columns: ColumnDef<Product>[] = [
   {
@@ -50,7 +51,17 @@ export const columns: ColumnDef<Product>[] = [
     accessorKey: 'name',
     header: 'Name',
     cell: ({ row }) => {
-      return <div className="capitalize">{row.getValue('name')}</div>
+      return (
+        <div className="flex items-center gap-4 capitalize">
+          <Image
+            src={row.original.images[0].image!}
+            width={30}
+            height={10}
+            alt="product image"
+          />
+          <p>{row.getValue('name')}</p>
+        </div>
+      )
     },
   },
   {
