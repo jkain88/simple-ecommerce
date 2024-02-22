@@ -3,7 +3,7 @@ from rest_framework import generics
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 
-from .filters import ProductFilter
+from .filters import CategoryFilter, ProductFilter
 from .models import Brand, Category, Product, ProductImage, ProductVariant
 from .serializers import (
     BrandSerializer,
@@ -23,6 +23,8 @@ class CategoryCreate(generics.CreateAPIView):
 class CategoryList(generics.ListAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    filter_backends = [filters.DjangoFilterBackend]
+    filterset_class = CategoryFilter
 
 
 class BrandList(generics.ListAPIView):

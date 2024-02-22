@@ -1,6 +1,6 @@
 from django_filters import rest_framework as filters
 
-from .models import Product
+from .models import Category, Product
 
 
 class ProductFilter(filters.FilterSet):
@@ -14,3 +14,9 @@ class ProductFilter(filters.FilterSet):
 
     def search_filter(self, queryset, name, value):
         return queryset.filter(name__icontains=value)
+
+
+class CategoryFilter(filters.FilterSet):
+    class Meta:
+        model = Category
+        fields = ["slug"]
