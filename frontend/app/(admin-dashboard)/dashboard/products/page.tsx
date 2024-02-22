@@ -21,6 +21,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useCreateQueryString } from '@/hooks/useCreateQueryString'
 import Table from '@/components/Table'
+import { Trash, Trash2, TrashIcon } from 'lucide-react'
 
 export const columns: ColumnDef<Product>[] = [
   {
@@ -97,6 +98,13 @@ export const columns: ColumnDef<Product>[] = [
   {
     id: 'actions',
     enableHiding: false,
+    header: ({ table }) =>
+      (table.getIsSomePageRowsSelected() ||
+        table.getIsAllPageRowsSelected()) && (
+        <div className="pl-2">
+          <Trash2 className="text-black" />
+        </div>
+      ),
     cell: ({ row }) => {
       const product = row.original
 
