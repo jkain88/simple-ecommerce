@@ -11,9 +11,11 @@ class BrandSerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Category
-        fields = ["id", "name", "description", "slug"]
+        fields = ["id", "name", "description", "slug", "no_of_products"]
+        read_only_fields = ["no_of_products"]
 
 
 class ProductImageSerializer(serializers.ModelSerializer):

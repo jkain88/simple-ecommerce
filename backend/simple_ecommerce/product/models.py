@@ -23,6 +23,10 @@ class Category(PublishableModel, TimeStampedModel):
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
+    @property
+    def no_of_products(self):
+        return self.products.count()
+
 
 class Brand(TimeStampedModel):
     name = models.CharField(max_length=50)
