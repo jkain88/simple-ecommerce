@@ -17,6 +17,11 @@ class ProductFilter(filters.FilterSet):
 
 
 class CategoryFilter(filters.FilterSet):
+    search = filters.CharFilter(method="search_filter")
+
     class Meta:
         model = Category
         fields = ["slug"]
+
+    def search_filter(self, queryset, name, value):
+        return queryset.filter(name__icontains=value)
