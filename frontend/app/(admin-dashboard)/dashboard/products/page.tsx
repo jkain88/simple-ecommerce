@@ -45,6 +45,7 @@ import { debounce } from 'lodash'
 import Pagination from '@/components/Pagination'
 import { useCallback, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
+import { useCreateQueryString } from '@/hooks/useCreateQueryString'
 
 export const columns: ColumnDef<Product>[] = [
   {
@@ -134,16 +135,13 @@ export const columns: ColumnDef<Product>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() =>
-                navigator.clipboard.writeText(product.id!.toString())
-              }
-            >
-              Copy payment ID
-            </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer">
+              View Product
+            </DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer">
+              Delete Product
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )
@@ -155,6 +153,7 @@ export default function DashboardProducts() {
   const [debouncedSearch, setDebouncedSearch] = useState('')
   const [searchString, setSearchString] = useState('')
   const searchParams = useSearchParams()
+  const createQueryString = useCreateQueryString()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const updateDebouncedSearch = useCallback(
     debounce((value) => setDebouncedSearch(value), 300),
@@ -162,7 +161,10 @@ export default function DashboardProducts() {
   )
   useEffect(() => {
     updateDebouncedSearch(searchString)
-  }, [searchString, updateDebouncedSearch])
+    if (searchString !== '') {
+      createQueryString('page', '1')
+    }
+  }, [searchString, updateDebouncedSearch, createQueryString])
 
   const page = searchParams.get('page') ?? '1'
 
@@ -177,23 +179,17 @@ export default function DashboardProducts() {
       })
     },
   })
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
 
   const table = useReactTable({
     data: products?.data.results ?? ([] as Product[]),
     columns,
-    onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     state: {
-      columnFilters,
-      columnVisibility,
       rowSelection,
     },
   })
@@ -201,8 +197,6 @@ export default function DashboardProducts() {
   const handleSearchProduct = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchString(event.target.value)
   }
-
-  console.log('PRODUCTS', products?.data.total_pages)
 
   return (
     <div className="h-screen">
@@ -215,32 +209,6 @@ export default function DashboardProducts() {
             onChange={(event) => handleSearchProduct(event)}
             className="max-w-sm"
           />
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto">
-                Columns <ChevronDownIcon className="ml-2 h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {table
-                .getAllColumns()
-                .filter((column) => column.getCanHide())
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  )
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
         </div>
         <div className="rounded-md border bg-white">
           <Table>
@@ -302,7 +270,10 @@ export default function DashboardProducts() {
           </Table>
         </div>
         <div className="mt-4 flex items-center justify-between space-x-2 py-4">
-          <Pagination totalPages={products?.data.total_pages!} />
+          <Pagination
+            totalPages={products?.data.total_pages}
+            next={products?.data.next}
+          />
         </div>
       </div>
     </div>
