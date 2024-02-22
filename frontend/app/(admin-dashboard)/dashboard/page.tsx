@@ -43,11 +43,17 @@ import {
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { Calendar } from '@/components/ui/calendar'
-import { Separator } from '@/components/ui/separator'
 import { useQuery } from '@tanstack/react-query'
 import { Api } from '@/lib/Api'
-import { is } from 'date-fns/locale'
 import Image from 'next/image'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
 
 ChartJS.register(
   CategoryScale,
@@ -115,7 +121,6 @@ export default function Dashboard() {
       },
     },
   }
-  console.log('RPDOUCTS', products)
 
   return (
     <div className="container">
@@ -207,7 +212,7 @@ export default function Dashboard() {
             </Select>
           </div>
         </div>
-        <div className="mt-4 flex gap-16">
+        <div className=" mt-10 flex gap-16">
           <Card className="w-96">
             <CardHeader>
               <CardTitle>Sales</CardTitle>
@@ -230,7 +235,7 @@ export default function Dashboard() {
 
           <Card className="w-96">
             <CardHeader>
-              <CardTitle>Registered Customers</CardTitle>
+              <CardTitle>Customers</CardTitle>
             </CardHeader>
             <CardContent className="flex items-center gap-4">
               <Banknote size={50} />
@@ -245,24 +250,44 @@ export default function Dashboard() {
 
         <div className="my-10 rounded-lg bg-white px-10 py-8 shadow-xl">
           <h1 className="text-3xl font-bold">Top Products</h1>
-          <Separator className="my-4  rounded-lg bg-black" />
           <div className="mt-10 space-y-10">
-            {!isProductsLoading &&
-              products?.data.results.map((product) => (
-                <div key={product.id} className="flex items-center gap-4">
-                  <Image
-                    width={100}
-                    height={10}
-                    src={product.images[0].image!}
-                    alt={product.name}
-                    className="h-20 w-20 rounded-lg"
-                  />
-                  <div>
-                    <p className="text-base font-semibold">{product.name}</p>
-                    <p>Sold: 10</p>
-                  </div>
-                </div>
-              ))}
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="text-lg font-semibold text-black">
+                    Name
+                  </TableHead>
+                  <TableHead className="text-lg font-semibold text-black">
+                    Units sold
+                  </TableHead>
+                  <TableHead className="text-lg font-semibold text-black">
+                    Amount
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+
+              <TableBody>
+                {!isProductsLoading &&
+                  products?.data.results.map((product) => (
+                    <TableRow key={product.id}>
+                      <TableCell className="font-medium">
+                        <div className="flex items-center gap-4">
+                          <Image
+                            width={100}
+                            height={10}
+                            src={product.images[0].image!}
+                            alt={product.name}
+                            className="h-20 w-20 rounded-lg"
+                          />
+                          <p>{product.name}</p>
+                        </div>
+                      </TableCell>
+                      <TableCell>Test</TableCell>
+                      <TableCell>Test</TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
           </div>
         </div>
       </div>
