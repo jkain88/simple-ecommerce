@@ -224,6 +224,8 @@ export interface Category {
    * @pattern ^[-a-zA-Z0-9_]+$
    */
   slug?: string | null
+  /** No of products */
+  no_of_products?: string
 }
 
 export interface Product {
@@ -1149,6 +1151,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     productsCategoriesList: (
       query?: {
+        slug?: string
+        search?: string
         /** A page number within the paginated result set. */
         page?: number
         /** Number of results to return per page. */

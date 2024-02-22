@@ -1,8 +1,6 @@
 'use client'
 
-import { DotsHorizontalIcon } from '@radix-ui/react-icons'
-import { ColumnDef } from '@tanstack/react-table'
-
+import Table from '@/components/Table'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -14,16 +12,17 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
-import { useQuery } from '@tanstack/react-query'
-import { Api, Product } from '@/lib/Api'
-import { debounce } from 'lodash'
-import { useCallback, useEffect, useState } from 'react'
-import { useSearchParams } from 'next/navigation'
 import { useCreateQueryString } from '@/hooks/useCreateQueryString'
-import Table from '@/components/Table'
+import { Api, Category } from '@/lib/Api'
+import { DotsHorizontalIcon } from '@radix-ui/react-icons'
+import { useQuery } from '@tanstack/react-query'
+import { ColumnDef } from '@tanstack/react-table'
+import { debounce } from 'lodash'
 import { Trash2 } from 'lucide-react'
+import { useSearchParams } from 'next/navigation'
+import { useCallback, useEffect, useState } from 'react'
 
-export const columns: ColumnDef<Product>[] = [
+export const columns: ColumnDef<Category>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -48,51 +47,20 @@ export const columns: ColumnDef<Product>[] = [
   },
   {
     accessorKey: 'name',
-    header: 'Name',
+    header: ({ column }) => {
+      return <div className="">Name</div>
+    },
+    cell: ({ row }) => <div className="capitalize">{row.original.name}</div>,
+  },
+  {
+    accessorKey: 'noOfProducts',
+    header: () => <div className="text-right">No. of products</div>,
     cell: ({ row }) => {
-      return <div className="capitalize">{row.getValue('name')}</div>
-    },
-  },
-  {
-    accessorKey: 'category',
-    header: ({ column }) => {
-      return <div className="">Category</div>
-    },
-    cell: ({ row }) => (
-      <div className="capitalize">{row.original.category?.name}</div>
-    ),
-  },
-  {
-    accessorKey: 'brand',
-    header: ({ column }) => {
-      return <div className="">Brand</div>
-    },
-    cell: ({ row }) => (
-      <div className="capitalize">{row.original.brand?.name}</div>
-    ),
-  },
-  {
-    accessorKey: 'published',
-    header: ({ column }) => {
-      return <div className="">Published</div>
-    },
-    cell: ({ row }) => (
-      <div className="lowercase">{row.original.is_published!.toString()}</div>
-    ),
-  },
-  {
-    accessorKey: 'amount',
-    header: () => <div className="text-right">Amount</div>,
-    cell: ({ row }) => {
-      const amount = parseFloat(row.original.price)
-
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'PHP',
-      }).format(amount)
-
-      return <div className="text-right font-medium">{formatted}</div>
+      return (
+        <div className="text-right font-medium">
+          {row.original.no_of_products}
+        </div>
+      )
     },
   },
   {
@@ -106,8 +74,6 @@ export const columns: ColumnDef<Product>[] = [
         </div>
       ),
     cell: ({ row }) => {
-      const product = row.original
-
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -132,7 +98,7 @@ export const columns: ColumnDef<Product>[] = [
   },
 ]
 
-export default function DashboardProducts() {
+export default function Categories() {
   const [debouncedSearch, setDebouncedSearch] = useState('')
   const [searchString, setSearchString] = useState('')
   const searchParams = useSearchParams()
@@ -151,36 +117,40 @@ export default function DashboardProducts() {
 
   const page = searchParams.get('page') ?? '1'
 
-  const { data: products, isLoading } = useQuery({
-    queryKey: ['dashboard-products', debouncedSearch, page],
+  const { data: categories, isLoading } = useQuery({
+    queryKey: ['dashboard-categories', debouncedSearch, page],
     queryFn: async () => {
       const api = new Api()
-      return api.products.productsList({
+      return api.products.productsCategoriesList({
         page_size: 10,
-        search: debouncedSearch,
         page: parseInt(page),
+        search: searchString,
       })
     },
   })
 
-  const handleSearchProduct = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchCategory = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchString(event.target.value)
   }
 
   return (
     <div className="h-screen">
       <div className="mt-20">
-        <h1 className="text-3xl font-semibold">Products</h1>
+        <h1 className="text-3xl font-semibold">Categories</h1>
         <div className="flex items-center justify-between py-4">
           <Input
-            placeholder="Search product"
+            placeholder="Search category"
             value={searchString}
-            onChange={(event) => handleSearchProduct(event)}
+            onChange={(event) => handleSearchCategory(event)}
             className="max-w-sm"
           />
-          <Button>Create Product</Button>
+          <Button>Create Category</Button>
         </div>
-        <Table columns={columns} data={products?.data} isLoading={isLoading} />
+        <Table
+          columns={columns}
+          data={categories?.data}
+          isLoading={isLoading}
+        />
       </div>
     </div>
   )
