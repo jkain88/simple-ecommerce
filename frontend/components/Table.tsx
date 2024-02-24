@@ -13,7 +13,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import React, { useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import Pagination from './Pagination'
 
 type ResponseResult<T> = {
@@ -28,9 +28,15 @@ type Props<T> = {
   columns: ColumnDef<T>[]
   data: ResponseResult<T> | undefined
   isLoading: boolean
+  setSelectedRowsData?: Dispatch<SetStateAction<T[]>>
 }
 
-const Table = <T extends object>({ columns, data, isLoading }: Props<T>) => {
+const Table = <T extends object>({
+  columns,
+  data,
+  isLoading,
+  setSelectedRowsData,
+}: Props<T>) => {
   const [rowSelection, setRowSelection] = useState({})
   const table = useReactTable({
     data: data?.results ?? [],
@@ -41,6 +47,16 @@ const Table = <T extends object>({ columns, data, isLoading }: Props<T>) => {
       rowSelection,
     },
   })
+
+  useEffect(() => {
+    if (setSelectedRowsData !== undefined) {
+      const selectedRows = table
+        .getRowModel()
+        .rows.filter((row) => Object.keys(rowSelection).includes(row.id))
+        .map((row) => row.original)
+      setSelectedRowsData(selectedRows)
+    }
+  }, [rowSelection])
 
   return (
     <div>

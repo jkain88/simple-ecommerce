@@ -23,8 +23,16 @@ import { useCreateQueryString } from '@/hooks/useCreateQueryString'
 import Table from '@/components/Table'
 import { Trash2 } from 'lucide-react'
 import Image from 'next/image'
+import {
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  useDisclosure,
+} from '@nextui-org/react'
 
-export const columns: ColumnDef<Product>[] = [
+const getColumns = (onOpen: () => void): ColumnDef<Product>[] => [
   {
     id: 'select',
     header: ({ table }) => (
@@ -113,7 +121,7 @@ export const columns: ColumnDef<Product>[] = [
       (table.getIsSomePageRowsSelected() ||
         table.getIsAllPageRowsSelected()) && (
         <div className="pl-2">
-          <Trash2 className="text-black" />
+          <Trash2 className="cursor-pointer text-black" onClick={onOpen} />
         </div>
       ),
     cell: ({ row }) => {
@@ -146,8 +154,10 @@ export const columns: ColumnDef<Product>[] = [
 export default function DashboardProducts() {
   const [debouncedSearch, setDebouncedSearch] = useState('')
   const [searchString, setSearchString] = useState('')
+  const [selectedRows, setSelectedRows] = useState<Product[]>([])
   const searchParams = useSearchParams()
   const createQueryString = useCreateQueryString()
+  const { isOpen, onOpen, onOpenChange } = useDisclosure()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const updateDebouncedSearch = useCallback(
     debounce((value) => setDebouncedSearch(value), 300),
@@ -173,6 +183,7 @@ export default function DashboardProducts() {
       })
     },
   })
+  const columns = getColumns(onOpen)
 
   const handleSearchProduct = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchString(event.target.value)
@@ -191,8 +202,38 @@ export default function DashboardProducts() {
           />
           <Button>Create Product</Button>
         </div>
-        <Table columns={columns} data={products?.data} isLoading={isLoading} />
+        <Table
+          columns={columns}
+          data={products?.data}
+          isLoading={isLoading}
+          setSelectedRowsData={setSelectedRows}
+        />
       </div>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                Delete Product
+              </ModalHeader>
+              <ModalBody>
+                <p>Are you want to delete the selected product(s)?</p>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" onClick={onClose}>
+                  Close
+                </Button>
+                <Button
+                  color="primary"
+                  // onClick={() => onDeleteCheckoutLine(onClose)}
+                >
+                  Remove
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </div>
   )
 }
