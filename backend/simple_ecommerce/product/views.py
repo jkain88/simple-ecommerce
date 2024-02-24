@@ -1,4 +1,6 @@
 from django_filters import rest_framework as filters
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 from rest_framework import generics
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
@@ -103,6 +105,18 @@ class ProductsDelete(generics.GenericAPIView):
     serializer_class = ProductsDeleteSerializer
     permission_classes = [IsAdminUser]
 
+    @swagger_auto_schema(
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                "product_ids": openapi.Schema(
+                    type=openapi.TYPE_ARRAY,
+                    items=openapi.Schema(type=openapi.TYPE_INTEGER),
+                ),
+            },
+            required=["product_ids"],
+        )
+    )
     def delete(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)

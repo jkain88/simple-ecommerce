@@ -1,7 +1,7 @@
 'use client'
 
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
-import { ColumnDef } from '@tanstack/react-table'
+import { ColumnDef, useReactTable } from '@tanstack/react-table'
 
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Api, Product } from '@/lib/Api'
 import { debounce } from 'lodash'
 import { useCallback, useEffect, useState } from 'react'
@@ -31,6 +31,7 @@ import {
   ModalHeader,
   useDisclosure,
 } from '@nextui-org/react'
+import { useSession } from 'next-auth/react'
 
 const getColumns = (onOpen: () => void): ColumnDef<Product>[] => [
   {
@@ -45,7 +46,7 @@ const getColumns = (onOpen: () => void): ColumnDef<Product>[] => [
         aria-label="Select all"
       />
     ),
-    cell: ({ row }) => (
+    cell: ({ row, table }) => (
       <Checkbox
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
@@ -157,7 +158,28 @@ export default function DashboardProducts() {
   const [selectedRows, setSelectedRows] = useState<Product[]>([])
   const searchParams = useSearchParams()
   const createQueryString = useCreateQueryString()
+  const { data: session } = useSession()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const { mutate: deleteProducts } = useMutation({
+    mutationKey: ['dashboard-delete-products'],
+    mutationFn: async (productIds: number[]) => {
+      const api = new Api()
+      return api.products.productsDeleteDelete(
+        { product_ids: productIds },
+        {
+          headers: {
+            Authorization: `Token ${session?.token}`,
+          },
+        }
+      )
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['dashboard-products', debouncedSearch, page],
+      })
+    },
+  })
+  const queryClient = useQueryClient()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const updateDebouncedSearch = useCallback(
     debounce((value) => setDebouncedSearch(value), 300),
@@ -184,9 +206,24 @@ export default function DashboardProducts() {
     },
   })
   const columns = getColumns(onOpen)
+  const table = useReactTable({
+    data: products?.data.results ?? [],
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    onRowSelectionChange: setRowSelection,
+    state: {
+      rowSelection,
+    },
+  })
 
   const handleSearchProduct = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchString(event.target.value)
+  }
+
+  const handleDeleteProducts = (onClose: () => void) => {
+    const productIds = selectedRows.map((product) => product.id) as number[]
+    deleteProducts(productIds)
+    onClose()
   }
 
   return (
@@ -225,7 +262,7 @@ export default function DashboardProducts() {
                 </Button>
                 <Button
                   color="primary"
-                  // onClick={() => onDeleteCheckoutLine(onClose)}
+                  onClick={() => handleDeleteProducts(onClose)}
                 >
                   Remove
                 </Button>

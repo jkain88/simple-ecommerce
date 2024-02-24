@@ -1291,11 +1291,18 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request DELETE:/products/delete/
      * @secure
      */
-    productsDeleteDelete: (params: RequestParams = {}) =>
+    productsDeleteDelete: (
+      data: {
+        product_ids: number[]
+      },
+      params: RequestParams = {}
+    ) =>
       this.request<void, any>({
         path: `/products/delete/`,
         method: 'DELETE',
+        body: data,
         secure: true,
+        type: ContentType.Json,
         ...params,
       }),
 
