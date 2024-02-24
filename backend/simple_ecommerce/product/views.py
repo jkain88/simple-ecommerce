@@ -2,6 +2,8 @@ from django_filters import rest_framework as filters
 from rest_framework import generics
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework import status
 
 from .filters import CategoryFilter, ProductFilter
 from .models import Brand, Category, Product, ProductImage, ProductVariant
@@ -11,6 +13,7 @@ from .serializers import (
     ProductImageSerializer,
     ProductSerializer,
     ProductVariantSerializer,
+    ProductsDeleteSerializer,
 )
 
 
@@ -93,3 +96,17 @@ class ProductImageViewSet(viewsets.ModelViewSet):
     queryset = ProductImage.objects.all()
     serializer_class = ProductImageSerializer
     permission_classes = [IsAdminUser]
+
+
+class ProductsDelete(generics.GenericAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductsDeleteSerializer
+    permission_classes = [IsAdminUser]
+
+    def delete(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        products = serializer.validated_data["product_ids"]
+
+        Product.objects.filter(id__in=[product.id for product in products]).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

@@ -75,3 +75,9 @@ class ProductSerializer(serializers.ModelSerializer):
             "quantity_allocated",
             "variants",
         ]
+
+
+class ProductsDeleteSerializer(serializers.Serializer):
+    product_ids = serializers.ListField(
+        child=serializers.PrimaryKeyRelatedField(queryset=Product.objects.all())
+    )
