@@ -12,6 +12,7 @@ from .models import Brand, Category, Product, ProductImage, ProductVariant
 from .serializers import (
     BrandSerializer,
     CategorySerializer,
+    CategoriesDeleteSerializer,
     ProductImageSerializer,
     ProductSerializer,
     ProductVariantSerializer,
@@ -30,6 +31,34 @@ class CategoryList(generics.ListAPIView):
     serializer_class = CategorySerializer
     filter_backends = [filters.DjangoFilterBackend]
     filterset_class = CategoryFilter
+
+
+class CategoriesDelete(generics.GenericAPIView):
+    queryset = Product.objects.all()
+    serializer_class = CategoriesDeleteSerializer
+    permission_classes = [IsAdminUser]
+
+    @swagger_auto_schema(
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                "product_ids": openapi.Schema(
+                    type=openapi.TYPE_ARRAY,
+                    items=openapi.Schema(type=openapi.TYPE_INTEGER),
+                ),
+            },
+            required=["product_ids"],
+        )
+    )
+    def delete(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        categories = serializer.validated_data["category_ids"]
+
+        Category.objects.filter(
+            id__in=[category.id for category in categories]
+        ).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class BrandList(generics.ListAPIView):
