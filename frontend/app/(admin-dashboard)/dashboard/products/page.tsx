@@ -1,7 +1,10 @@
 'use client'
 
-import { DotsHorizontalIcon } from '@radix-ui/react-icons'
-import { ColumnDef, useReactTable } from '@tanstack/react-table'
+import {
+  ColumnDef,
+  getCoreRowModel,
+  useReactTable,
+} from '@tanstack/react-table'
 
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -125,41 +128,18 @@ const getColumns = (onOpen: () => void): ColumnDef<Product>[] => [
           <Trash2 className="cursor-pointer text-black" onClick={onOpen} />
         </div>
       ),
-    cell: ({ row }) => {
-      const product = row.original
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <DotsHorizontalIcon className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="cursor-pointer">
-              View Product
-            </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer">
-              Delete Product
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
-    },
   },
 ]
 
 export default function DashboardProducts() {
   const [debouncedSearch, setDebouncedSearch] = useState('')
   const [searchString, setSearchString] = useState('')
-  const [selectedRows, setSelectedRows] = useState<Product[]>([])
+  const [rowSelection, setRowSelection] = useState({})
   const searchParams = useSearchParams()
   const createQueryString = useCreateQueryString()
   const { data: session } = useSession()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const queryClient = useQueryClient()
   const { mutate: deleteProducts } = useMutation({
     mutationKey: ['dashboard-delete-products'],
     mutationFn: async (productIds: number[]) => {
@@ -177,9 +157,9 @@ export default function DashboardProducts() {
       queryClient.invalidateQueries({
         queryKey: ['dashboard-products', debouncedSearch, page],
       })
+      setRowSelection({})
     },
   })
-  const queryClient = useQueryClient()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const updateDebouncedSearch = useCallback(
     debounce((value) => setDebouncedSearch(value), 300),
@@ -187,10 +167,10 @@ export default function DashboardProducts() {
   )
   useEffect(() => {
     updateDebouncedSearch(searchString)
-    if (searchString !== '') {
+    if (searchString !== '' && searchParams.get('page') !== '1') {
       createQueryString('page', '1')
     }
-  }, [searchString, updateDebouncedSearch, createQueryString])
+  }, [searchString, updateDebouncedSearch, createQueryString, searchParams])
 
   const page = searchParams.get('page') ?? '1'
 
@@ -221,6 +201,10 @@ export default function DashboardProducts() {
   }
 
   const handleDeleteProducts = (onClose: () => void) => {
+    const selectedRows = table
+      .getRowModel()
+      .rows.filter((row) => Object.keys(rowSelection).includes(row.id))
+      .map((row) => row.original)
     const productIds = selectedRows.map((product) => product.id) as number[]
     deleteProducts(productIds)
     onClose()
@@ -243,7 +227,7 @@ export default function DashboardProducts() {
           columns={columns}
           data={products?.data}
           isLoading={isLoading}
-          setSelectedRowsData={setSelectedRows}
+          table={table}
         />
       </div>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>

@@ -7,13 +7,8 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Spinner } from '@nextui-org/react'
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from '@tanstack/react-table'
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { ColumnDef, Table, flexRender } from '@tanstack/react-table'
+import React from 'react'
 import Pagination from './Pagination'
 
 type ResponseResult<T> = {
@@ -28,36 +23,15 @@ type Props<T> = {
   columns: ColumnDef<T>[]
   data: ResponseResult<T> | undefined
   isLoading: boolean
-  setSelectedRowsData?: Dispatch<SetStateAction<T[]>>
+  table: Table<T>
 }
 
 const Table = <T extends object>({
   columns,
   data,
   isLoading,
-  setSelectedRowsData,
+  table,
 }: Props<T>) => {
-  const [rowSelection, setRowSelection] = useState({})
-  const table = useReactTable({
-    data: data?.results ?? [],
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    onRowSelectionChange: setRowSelection,
-    state: {
-      rowSelection,
-    },
-  })
-
-  useEffect(() => {
-    if (setSelectedRowsData !== undefined) {
-      const selectedRows = table
-        .getRowModel()
-        .rows.filter((row) => Object.keys(rowSelection).includes(row.id))
-        .map((row) => row.original)
-      setSelectedRowsData(selectedRows)
-    }
-  }, [rowSelection])
-
   return (
     <div>
       <div className="rounded-md border bg-white">
