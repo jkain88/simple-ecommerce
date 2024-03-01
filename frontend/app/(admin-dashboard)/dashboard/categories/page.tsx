@@ -1,16 +1,9 @@
 'use client'
 
 import Table from '@/components/Table'
+import CategoryActionForm from '@/components/forms/CategoryActionForm'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
 import { useCreateQueryString } from '@/hooks/useCreateQueryString'
 import { Api, Category } from '@/lib/Api'
@@ -22,7 +15,6 @@ import {
   ModalHeader,
   useDisclosure,
 } from '@nextui-org/react'
-import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   ColumnDef,
@@ -97,6 +89,11 @@ export default function Categories() {
   const searchParams = useSearchParams()
   const createQueryString = useCreateQueryString()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const {
+    isOpen: isCreateModalOpen,
+    onOpen: onCreateModalOpen,
+    onOpenChange: onOpenCreateModalChange,
+  } = useDisclosure()
   const queryClient = useQueryClient()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const updateDebouncedSearch = useCallback(
@@ -181,7 +178,7 @@ export default function Categories() {
             onChange={(event) => handleSearchCategory(event)}
             className="max-w-sm"
           />
-          <Button>Create Category</Button>
+          <Button onClick={onCreateModalOpen}>Create Category</Button>
         </div>
         <Table
           table={table}
@@ -211,6 +208,24 @@ export default function Categories() {
                   Remove
                 </Button>
               </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+      <Modal isOpen={isCreateModalOpen} onOpenChange={onOpenCreateModalChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                Create Category
+              </ModalHeader>
+              <ModalBody>
+                <CategoryActionForm
+                  onClose={onClose}
+                  page={page}
+                  search={debouncedSearch}
+                />
+              </ModalBody>
             </>
           )}
         </ModalContent>
