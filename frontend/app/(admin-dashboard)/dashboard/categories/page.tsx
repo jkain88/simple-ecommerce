@@ -14,15 +14,28 @@ import {
 import { Input } from '@/components/ui/input'
 import { useCreateQueryString } from '@/hooks/useCreateQueryString'
 import { Api, Category } from '@/lib/Api'
+import {
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  useDisclosure,
+} from '@nextui-org/react'
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
-import { useQuery } from '@tanstack/react-query'
-import { ColumnDef } from '@tanstack/react-table'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import {
+  ColumnDef,
+  getCoreRowModel,
+  useReactTable,
+} from '@tanstack/react-table'
 import { debounce } from 'lodash'
 import { Trash2 } from 'lucide-react'
+import { useSession } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 
-export const columns: ColumnDef<Category>[] = [
+export const getColumns = (onOpen: () => void): ColumnDef<Category>[] => [
   {
     id: 'select',
     header: ({ table }) => (
@@ -70,39 +83,21 @@ export const columns: ColumnDef<Category>[] = [
       (table.getIsSomePageRowsSelected() ||
         table.getIsAllPageRowsSelected()) && (
         <div className="pl-2">
-          <Trash2 className="text-black" />
+          <Trash2 className="cursor-pointer text-black" onClick={onOpen} />
         </div>
       ),
-    cell: ({ row }) => {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <DotsHorizontalIcon className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="cursor-pointer">
-              View Product
-            </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer">
-              Delete Product
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
-    },
   },
 ]
 
 export default function Categories() {
   const [debouncedSearch, setDebouncedSearch] = useState('')
   const [searchString, setSearchString] = useState('')
+  const [rowSelection, setRowSelection] = useState({})
+  const { data: session } = useSession()
   const searchParams = useSearchParams()
   const createQueryString = useCreateQueryString()
+  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const queryClient = useQueryClient()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const updateDebouncedSearch = useCallback(
     debounce((value) => setDebouncedSearch(value), 300),
@@ -129,8 +124,50 @@ export default function Categories() {
     },
   })
 
+  const { mutate: deleteCategories } = useMutation({
+    mutationKey: ['deleteCategories'],
+    mutationFn: async (categoryIds: number[]) => {
+      const api = new Api()
+      return api.products.productsCategoriesDeleteDelete(
+        { category_ids: categoryIds },
+        {
+          headers: {
+            Authorization: `Token ${session?.token}`,
+          },
+        }
+      )
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['dashboard-categories', debouncedSearch, page],
+      })
+      setRowSelection({})
+    },
+  })
+
+  const columns = getColumns(onOpen)
+  const table = useReactTable({
+    data: categories?.data.results ?? [],
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    onRowSelectionChange: setRowSelection,
+    state: {
+      rowSelection,
+    },
+  })
+
   const handleSearchCategory = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchString(event.target.value)
+  }
+
+  const handleDeleteCategories = (onClose: () => void) => {
+    const selectedRows = table
+      .getRowModel()
+      .rows.filter((row) => Object.keys(rowSelection).includes(row.id))
+      .map((row) => row.original)
+    const categoryIds = selectedRows.map((product) => product.id) as number[]
+    deleteCategories(categoryIds)
+    onClose()
   }
 
   return (
@@ -147,11 +184,37 @@ export default function Categories() {
           <Button>Create Category</Button>
         </div>
         <Table
+          table={table}
           columns={columns}
           data={categories?.data}
           isLoading={isLoading}
         />
       </div>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                Delete Category
+              </ModalHeader>
+              <ModalBody>
+                <p>Are you want to delete the selected category(s)?</p>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" onClick={onClose}>
+                  Close
+                </Button>
+                <Button
+                  color="primary"
+                  onClick={() => handleDeleteCategories(onClose)}
+                >
+                  Remove
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </div>
   )
 }

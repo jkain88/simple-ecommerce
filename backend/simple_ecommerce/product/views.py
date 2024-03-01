@@ -42,12 +42,12 @@ class CategoriesDelete(generics.GenericAPIView):
         request_body=openapi.Schema(
             type=openapi.TYPE_OBJECT,
             properties={
-                "product_ids": openapi.Schema(
+                "category_ids": openapi.Schema(
                     type=openapi.TYPE_ARRAY,
                     items=openapi.Schema(type=openapi.TYPE_INTEGER),
                 ),
             },
-            required=["product_ids"],
+            required=["category_ids"],
         )
     )
     def delete(self, request, *args, **kwargs):

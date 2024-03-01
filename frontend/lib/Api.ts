@@ -1182,6 +1182,29 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags products
+     * @name ProductsCategoriesDeleteDelete
+     * @request DELETE:/products/categories/delete/
+     * @secure
+     */
+    productsCategoriesDeleteDelete: (
+      data: {
+        category_ids: number[]
+      },
+      params: RequestParams = {}
+    ) =>
+      this.request<void, any>({
+        path: `/products/categories/delete/`,
+        method: 'DELETE',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags products
      * @name ProductsCategoryCreateCreate
      * @request POST:/products/category/create/
      * @secure
