@@ -211,7 +211,7 @@ export default function DashboardProducts() {
   }
 
   return (
-    <div className="h-screen">
+    <div className="h-full">
       <div className="mt-20">
         <h1 className="text-3xl font-semibold">Products</h1>
         <div className="flex items-center justify-between py-4">
