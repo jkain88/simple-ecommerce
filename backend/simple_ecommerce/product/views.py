@@ -68,6 +68,45 @@ class BrandList(generics.ListAPIView):
     filterset_class = BrandFilter
 
 
+class BrandDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Brand.objects.all()
+    serializer_class = BrandSerializer
+
+    def get_permissions(self):
+        method = self.request.method
+        if method in ["PUT", "PATCH", "DELETE"]:
+            self.permission_classes = [IsAdminUser]
+        else:
+            self.permission_classes = []
+        return super(BrandDetail, self).get_permissions()
+
+
+class BrandsDelete(generics.GenericAPIView):
+    queryset = Brand.objects.all()
+    serializer_class = CategoriesDeleteSerializer
+    permission_classes = [IsAdminUser]
+
+    @swagger_auto_schema(
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                "brand_ids": openapi.Schema(
+                    type=openapi.TYPE_ARRAY,
+                    items=openapi.Schema(type=openapi.TYPE_INTEGER),
+                ),
+            },
+            required=["brand_ids"],
+        )
+    )
+    def delete(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        brands = serializer.validated_data["brand_ids"]
+
+        Brand.objects.filter(id__in=[brand.id for brand in brands]).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 class BrandCreate(generics.CreateAPIView):
     serializer_class = BrandSerializer
     permission_classes = [IsAdminUser]
