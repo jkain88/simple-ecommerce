@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 
-from .filters import CategoryFilter, ProductFilter
+from .filters import CategoryFilter, ProductFilter, BrandFilter
 from .models import Brand, Category, Product, ProductImage, ProductVariant
 from .serializers import (
     BrandSerializer,
@@ -64,9 +64,11 @@ class CategoriesDelete(generics.GenericAPIView):
 class BrandList(generics.ListAPIView):
     queryset = Brand.objects.all()
     serializer_class = BrandSerializer
+    filter_backends = [filters.DjangoFilterBackend]
+    filterset_class = BrandFilter
 
 
-class BranCreate(generics.CreateAPIView):
+class BrandCreate(generics.CreateAPIView):
     serializer_class = BrandSerializer
     permission_classes = [IsAdminUser]
 
