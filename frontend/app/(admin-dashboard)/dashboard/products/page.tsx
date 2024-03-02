@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Api, Product } from '@/lib/Api'
+import { Api, Category, Product } from '@/lib/Api'
 import { debounce } from 'lodash'
 import { useCallback, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'

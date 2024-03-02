@@ -20,27 +20,35 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Api } from '@/lib/Api'
 import { useSession } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation'
+import { useCategoryStore } from '@/store/category'
+import { select } from '@nextui-org/react'
 
 type Inputs = z.infer<typeof categorySchema>
 type Props = {
   onClose: () => void
   page: string
   search: string
+  action: 'create' | 'update'
 }
 
-const CategoryActionForm: React.FC<Props> = ({ onClose, page, search }) => {
+const CategoryActionForm: React.FC<Props> = ({
+  onClose,
+  page,
+  search,
+  action,
+}) => {
+  const selectedCategory = useCategoryStore((state) => state.selectedCategory)
   const form = useForm<Inputs>({
     resolver: zodResolver(categorySchema),
     defaultValues: {
-      name: '',
-      description: '',
+      name: selectedCategory?.name || '',
+      description: selectedCategory?.description || '',
     },
   })
   const { data: session } = useSession()
   const queryClient = useQueryClient()
-  const searchParams = useSearchParams()
 
-  const { mutate } = useMutation({
+  const { mutate: createCategory } = useMutation({
     mutationKey: ['categoryCreate'],
     mutationFn: async (data: Inputs) => {
       const api = new Api()
@@ -58,11 +66,30 @@ const CategoryActionForm: React.FC<Props> = ({ onClose, page, search }) => {
       })
     },
   })
+
+  const { mutate: deleteCategory } = useMutation({
+    mutationKey: ['categoryDelete'],
+    mutationFn: async (categoryIds: number[]) => {
+      const api = new Api()
+      return api.products.productsCategoriesDeleteDelete(
+        {
+          category_ids: categoryIds,
+        },
+        {
+          headers: {
+            Authorization: `Token ${session?.token}`,
+          },
+        }
+      )
+    },
+  })
   const onSubmit = (data: Inputs) => {
     // API CALL
     console.log('SUBMIT', data)
-    mutate(data)
+    createCategory(data)
   }
+
+  console.log('selectedCategory', selectedCategory)
   return (
     <Form {...form}>
       <form
@@ -101,13 +128,14 @@ const CategoryActionForm: React.FC<Props> = ({ onClose, page, search }) => {
             )}
           />
         </div>
-        <div className="mb-4 space-x-3">
-          <Button type="submit" className="mt-4">
+        <div className="mb-4 mt-4 flex w-full space-x-3">
+          <Button type="submit" className="">
             Submit
           </Button>
-          <Button type="submit" className="mt-4" onClick={onClose}>
+          <Button type="submit" className="" onClick={onClose}>
             Close
           </Button>
+          <Button className="justify-self-end">Delete</Button>
         </div>
       </form>
     </Form>

@@ -7,6 +7,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { useCreateQueryString } from '@/hooks/useCreateQueryString'
 import { Api, Category } from '@/lib/Api'
+import { useCategoryStore } from '@/store/category'
 import {
   Modal,
   ModalBody,
@@ -27,7 +28,13 @@ import { useSession } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 
-export const getColumns = (onOpen: () => void): ColumnDef<Category>[] => [
+export const getColumns = (
+  onOpen: () => void,
+  handleOpenCategoryActionModal: (
+    selectedCategory: Category | undefined,
+    action: 'create' | 'update'
+  ) => void
+): ColumnDef<Category>[] => [
   {
     id: 'select',
     header: ({ table }) => (
@@ -55,7 +62,14 @@ export const getColumns = (onOpen: () => void): ColumnDef<Category>[] => [
     header: ({ column }) => {
       return <div className="">Name</div>
     },
-    cell: ({ row }) => <div className="capitalize">{row.original.name}</div>,
+    cell: ({ row }) => (
+      <div
+        className="cursor-pointer capitalize"
+        onClick={() => handleOpenCategoryActionModal(row.original, 'update')}
+      >
+        {row.original.name}
+      </div>
+    ),
   },
   {
     accessorKey: 'noOfProducts',
@@ -85,14 +99,18 @@ export default function Categories() {
   const [debouncedSearch, setDebouncedSearch] = useState('')
   const [searchString, setSearchString] = useState('')
   const [rowSelection, setRowSelection] = useState({})
+  const [action, setAction] = useState<'create' | 'update'>('create')
   const { data: session } = useSession()
   const searchParams = useSearchParams()
+  const setSelectedCategory = useCategoryStore(
+    (state) => state.setSelectedCategory
+  )
   const createQueryString = useCreateQueryString()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const {
-    isOpen: isCreateModalOpen,
-    onOpen: onCreateModalOpen,
-    onOpenChange: onOpenCreateModalChange,
+    isOpen: isActionModalOpen,
+    onOpen: onActionModalOpen,
+    onOpenChange: onOpenActionModalChange,
   } = useDisclosure()
   const queryClient = useQueryClient()
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -141,8 +159,16 @@ export default function Categories() {
       setRowSelection({})
     },
   })
+  const handleOpenCategoryActionModal = (
+    selectedCategory: Category | undefined,
+    action: 'create' | 'update'
+  ) => {
+    setSelectedCategory(selectedCategory)
+    setAction(action)
+    onActionModalOpen()
+  }
 
-  const columns = getColumns(onOpen)
+  const columns = getColumns(onOpen, handleOpenCategoryActionModal)
   const table = useReactTable({
     data: categories?.data.results ?? [],
     columns,
@@ -178,7 +204,11 @@ export default function Categories() {
             onChange={(event) => handleSearchCategory(event)}
             className="max-w-sm"
           />
-          <Button onClick={onCreateModalOpen}>Create Category</Button>
+          <Button
+            onClick={() => handleOpenCategoryActionModal(undefined, 'create')}
+          >
+            Create Category
+          </Button>
         </div>
         <Table
           table={table}
@@ -212,7 +242,7 @@ export default function Categories() {
           )}
         </ModalContent>
       </Modal>
-      <Modal isOpen={isCreateModalOpen} onOpenChange={onOpenCreateModalChange}>
+      <Modal isOpen={isActionModalOpen} onOpenChange={onOpenActionModalChange}>
         <ModalContent>
           {(onClose) => (
             <>
@@ -224,6 +254,7 @@ export default function Categories() {
                   onClose={onClose}
                   page={page}
                   search={debouncedSearch}
+                  action={action}
                 />
               </ModalBody>
             </>
