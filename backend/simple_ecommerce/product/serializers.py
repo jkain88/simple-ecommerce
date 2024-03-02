@@ -8,7 +8,7 @@ class BrandSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brand
         fields = ["id", "name", "slug", "no_of_products"]
-        read_only_fields = ["no_of_products"]
+        read_only_fields = ["no_of_products", "slug"]
 
 
 class CategorySerializer(serializers.ModelSerializer):
