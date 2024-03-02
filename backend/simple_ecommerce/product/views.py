@@ -11,6 +11,7 @@ from .filters import CategoryFilter, ProductFilter, BrandFilter
 from .models import Brand, Category, Product, ProductImage, ProductVariant
 from .serializers import (
     BrandSerializer,
+    BrandsDeleteSerializer,
     CategorySerializer,
     CategoriesDeleteSerializer,
     ProductImageSerializer,
@@ -83,7 +84,7 @@ class BrandDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class BrandsDelete(generics.GenericAPIView):
     queryset = Brand.objects.all()
-    serializer_class = CategoriesDeleteSerializer
+    serializer_class = BrandsDeleteSerializer
     permission_classes = [IsAdminUser]
 
     @swagger_auto_schema(

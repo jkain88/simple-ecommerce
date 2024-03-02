@@ -88,3 +88,9 @@ class CategoriesDeleteSerializer(serializers.Serializer):
     category_ids = serializers.ListField(
         child=serializers.PrimaryKeyRelatedField(queryset=Category.objects.all())
     )
+
+
+class BrandsDeleteSerializer(serializers.Serializer):
+    brand_ids = serializers.ListField(
+        child=serializers.PrimaryKeyRelatedField(queryset=Brand.objects.all())
+    )
