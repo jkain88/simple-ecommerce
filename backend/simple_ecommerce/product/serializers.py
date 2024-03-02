@@ -7,7 +7,8 @@ from .models import Brand, Category, Product, ProductImage, ProductVariant
 class BrandSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brand
-        fields = ["id", "name", "slug"]
+        fields = ["id", "name", "slug", "no_of_products"]
+        read_only_fields = ["no_of_products"]
 
 
 class CategorySerializer(serializers.ModelSerializer):
