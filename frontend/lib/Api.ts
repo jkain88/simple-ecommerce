@@ -199,10 +199,11 @@ export interface Brand {
    * Slug
    * @format slug
    * @minLength 1
-   * @maxLength 100
    * @pattern ^[-a-zA-Z0-9_]+$
    */
   slug?: string | null
+  /** No of products */
+  no_of_products?: string
 }
 
 export interface Category {
@@ -220,7 +221,6 @@ export interface Category {
    * Slug
    * @format slug
    * @minLength 1
-   * @maxLength 255
    * @pattern ^[-a-zA-Z0-9_]+$
    */
   slug?: string | null
@@ -1110,12 +1110,101 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags products
+     * @name ProductsBrandCreateCreate
+     * @request POST:/products/brand/create
+     * @secure
+     */
+    productsBrandCreateCreate: (data: Brand, params: RequestParams = {}) =>
+      this.request<Brand, any>({
+        path: `/products/brand/create`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags products
+     * @name ProductsBrandRead
+     * @request GET:/products/brand/{id}
+     * @secure
+     */
+    productsBrandRead: (id: number, params: RequestParams = {}) =>
+      this.request<Brand, any>({
+        path: `/products/brand/${id}`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags products
+     * @name ProductsBrandUpdate
+     * @request PUT:/products/brand/{id}
+     * @secure
+     */
+    productsBrandUpdate: (id: number, data: Brand, params: RequestParams = {}) =>
+      this.request<Brand, any>({
+        path: `/products/brand/${id}`,
+        method: 'PUT',
+        body: data,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags products
+     * @name ProductsBrandPartialUpdate
+     * @request PATCH:/products/brand/{id}
+     * @secure
+     */
+    productsBrandPartialUpdate: (id: number, data: Brand, params: RequestParams = {}) =>
+      this.request<Brand, any>({
+        path: `/products/brand/${id}`,
+        method: 'PATCH',
+        body: data,
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags products
+     * @name ProductsBrandDelete
+     * @request DELETE:/products/brand/{id}
+     * @secure
+     */
+    productsBrandDelete: (id: number, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/products/brand/${id}`,
+        method: 'DELETE',
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags products
      * @name ProductsBrandsList
      * @request GET:/products/brands
      * @secure
      */
     productsBrandsList: (
       query?: {
+        slug?: string
+        search?: string
         /** A page number within the paginated result set. */
         page?: number
         /** Number of results to return per page. */
@@ -1138,6 +1227,29 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         query: query,
         secure: true,
         format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags products
+     * @name ProductsBrandsDeleteDelete
+     * @request DELETE:/products/brands/delete/
+     * @secure
+     */
+    productsBrandsDeleteDelete: (
+      data: {
+        brand_ids: number[]
+      },
+      params: RequestParams = {}
+    ) =>
+      this.request<void, any>({
+        path: `/products/brands/delete/`,
+        method: 'DELETE',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         ...params,
       }),
 
