@@ -159,12 +159,13 @@ export default function Categories() {
       setRowSelection({})
     },
   })
+
   const handleOpenCategoryActionModal = (
     selectedCategory: Category | undefined,
     action: 'create' | 'update'
   ) => {
     setSelectedCategory(selectedCategory)
-    setAction(action)
+    setAction((prev) => action)
     onActionModalOpen()
   }
 
@@ -247,7 +248,7 @@ export default function Categories() {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Create Category
+                {action === 'create' ? 'Create' : 'Update'} Category
               </ModalHeader>
               <ModalBody>
                 <CategoryActionForm

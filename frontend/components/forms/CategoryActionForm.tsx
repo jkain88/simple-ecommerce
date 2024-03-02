@@ -67,29 +67,34 @@ const CategoryActionForm: React.FC<Props> = ({
     },
   })
 
-  const { mutate: deleteCategory } = useMutation({
-    mutationKey: ['categoryDelete'],
-    mutationFn: async (categoryIds: number[]) => {
+  const { mutate: updateCategory } = useMutation({
+    mutationKey: ['categoryUpdate'],
+    mutationFn: async (data: Inputs) => {
       const api = new Api()
-      return api.products.productsCategoriesDeleteDelete(
-        {
-          category_ids: categoryIds,
+      return api.products.productsCategoryUpdate(selectedCategory!.id!, data, {
+        headers: {
+          Authorization: `Token ${session?.token}`,
+          'Content-Type': 'application/json',
         },
-        {
-          headers: {
-            Authorization: `Token ${session?.token}`,
-          },
-        }
-      )
+      })
+    },
+    onSuccess: () => {
+      onClose()
+      queryClient.invalidateQueries({
+        queryKey: ['dashboard-categories', search, page],
+      })
     },
   })
+
   const onSubmit = (data: Inputs) => {
     // API CALL
-    console.log('SUBMIT', data)
-    createCategory(data)
+    if (action === 'create') {
+      createCategory(data)
+    } else if (action === 'update') {
+      updateCategory(data)
+    }
   }
 
-  console.log('selectedCategory', selectedCategory)
   return (
     <Form {...form}>
       <form
@@ -128,14 +133,12 @@ const CategoryActionForm: React.FC<Props> = ({
             )}
           />
         </div>
-        <div className="mb-4 mt-4 flex w-full space-x-3">
-          <Button type="submit" className="">
-            Submit
-          </Button>
-          <Button type="submit" className="" onClick={onClose}>
-            Close
-          </Button>
-          <Button className="justify-self-end">Delete</Button>
+        <div className="mb-4 mt-4 flex w-full justify-between ">
+          <div className="space-x-3">
+            <Button type="submit" className="mr-auto">
+              Submit
+            </Button>
+          </div>
         </div>
       </form>
     </Form>
