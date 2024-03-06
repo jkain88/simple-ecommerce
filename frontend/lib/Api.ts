@@ -328,6 +328,11 @@ export interface Payment {
 export interface Order {
   /** ID */
   id?: number
+  /**
+   * Created
+   * @format date-time
+   */
+  created?: string
   /** Billing address */
   billing_address?: number | null
   billing_address_detail?: Address
@@ -350,6 +355,12 @@ export interface Order {
    * @maxLength 30
    */
   reference?: string
+  /**
+   * User email
+   * @format email
+   * @minLength 1
+   */
+  user_email?: string
 }
 
 export interface CustomTokenObtainPair {
@@ -973,6 +984,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     ordersList: (
       query?: {
         status?: string
+        search?: string
         /** A page number within the paginated result set. */
         page?: number
         /** Number of results to return per page. */
