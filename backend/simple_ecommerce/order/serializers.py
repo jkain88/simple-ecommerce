@@ -37,11 +37,13 @@ class OrderSerializer(serializers.ModelSerializer):
     )
     lines = OrderLineSerializer(many=True, read_only=True)
     payment = PaymentSerializer(read_only=True)
+    user_email = serializers.EmailField(source="user.email", read_only=True)
 
     class Meta:
         model = Order
         fields = [
             "id",
+            "created",
             "billing_address",
             "billing_address_detail",
             "lines",
@@ -52,4 +54,5 @@ class OrderSerializer(serializers.ModelSerializer):
             "user",
             "payment",
             "reference",
+            "user_email",
         ]
