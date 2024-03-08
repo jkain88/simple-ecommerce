@@ -98,8 +98,8 @@ class UserRegister(generics.CreateAPIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        User.objects.create_user(**data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        user = User.objects.create_user(**data)
+        return Response(self.get_serializer(user).data, status=status.HTTP_201_CREATED)
 
 
 class UserProfile(generics.RetrieveUpdateAPIView):
