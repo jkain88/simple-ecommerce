@@ -1,10 +1,12 @@
 from django.contrib.auth import authenticate, login, logout
+from django_filters import rest_framework as filters
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from .filters import UserFilter
 from .models import User
 from .serializers import AddressSerializer, UserSerializer, UserRegisterSerializer
 from simple_ecommerce.core.models import Address
@@ -76,6 +78,8 @@ class UserList(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsAdminUser]
+    filter_backends = [filters.DjangoFilterBackend]
+    filterset_class = UserFilter
 
 
 class UserRegister(generics.CreateAPIView):
