@@ -444,6 +444,13 @@ export interface User {
   last_name?: string
   /** Sex */
   sex?: 'male' | 'female' | 'others'
+  /** Number of orders */
+  number_of_orders?: string
+  /**
+   * Created
+   * @format date-time
+   */
+  created?: string
 }
 
 export interface UserRegister {
@@ -491,6 +498,13 @@ export interface UserRegister {
   last_name?: string
   /** Sex */
   sex?: 'male' | 'female' | 'others'
+  /** Number of orders */
+  number_of_orders?: string
+  /**
+   * Created
+   * @format date-time
+   */
+  created?: string
   /**
    * Password
    * @minLength 1
@@ -1746,6 +1760,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     usersList: (
       query?: {
+        email?: string
+        search?: string
         /** A page number within the paginated result set. */
         page?: number
         /** Number of results to return per page. */
