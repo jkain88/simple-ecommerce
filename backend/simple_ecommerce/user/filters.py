@@ -9,7 +9,7 @@ class UserFilter(filters.FilterSet):
 
     class Meta:
         model = User
-        fields = ["email"]
+        fields = ["email", "is_staff"]
 
     def search_filter(self, queryset, name, value):
         return queryset.filter(
