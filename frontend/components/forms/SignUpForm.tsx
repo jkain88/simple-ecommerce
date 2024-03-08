@@ -45,6 +45,7 @@ const SignUpForm: React.FC = () => {
       await signIn('credentials', {
         email: form.getValues().email,
         password: form.getValues().password,
+        accountType: 'customer',
         redirect: false,
       })
       router.push('/signup/verify-email')
