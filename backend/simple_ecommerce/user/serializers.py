@@ -9,6 +9,7 @@ from simple_ecommerce.core.serializers import AddressSerializer
 class UserSerializer(serializers.ModelSerializer):
     addresses = AddressSerializer(many=True, read_only=True)
     checkout = CheckoutSerializer(read_only=True)
+    number_of_orders = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -24,7 +25,12 @@ class UserSerializer(serializers.ModelSerializer):
             "middle_name",
             "last_name",
             "sex",
+            "number_of_orders",
+            "created",
         ]
+
+    def get_number_of_orders(self, obj):
+        return obj.orders.count()
 
 
 class UserRegisterSerializer(UserSerializer):

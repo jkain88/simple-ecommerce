@@ -1,3 +1,4 @@
+from model_utils.models import TimeStampedModel
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 
@@ -22,7 +23,7 @@ class UserManager(BaseUserManager):
         )
 
 
-class User(AbstractBaseUser):
+class User(AbstractBaseUser, TimeStampedModel):
     age = models.PositiveIntegerField(null=True)
     email = models.EmailField(unique=True)
     is_staff = models.BooleanField(default=False)
