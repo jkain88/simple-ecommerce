@@ -1761,6 +1761,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     usersList: (
       query?: {
         email?: string
+        is_staff?: string
         search?: string
         /** A page number within the paginated result set. */
         page?: number
