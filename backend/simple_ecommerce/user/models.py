@@ -1,5 +1,9 @@
 from model_utils.models import TimeStampedModel
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    BaseUserManager,
+    PermissionsMixin,
+)
 from django.db import models
 
 from .choices import Sex
@@ -23,7 +27,7 @@ class UserManager(BaseUserManager):
         )
 
 
-class User(AbstractBaseUser, TimeStampedModel):
+class User(AbstractBaseUser, TimeStampedModel, PermissionsMixin):
     age = models.PositiveIntegerField(null=True)
     email = models.EmailField(unique=True)
     is_staff = models.BooleanField(default=False)
