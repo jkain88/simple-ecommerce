@@ -24,6 +24,7 @@ type Props<T> = {
   data: ResponseResult<T> | undefined
   isLoading: boolean
   table: Table<T>
+  onRowClick?: (row: T) => void
 }
 
 const Table = <T extends object>({
@@ -31,7 +32,13 @@ const Table = <T extends object>({
   data,
   isLoading,
   table,
+  onRowClick,
 }: Props<T>) => {
+  const handleOnRowClick = (row: T) => {
+    if (!onRowClick) return
+    onRowClick(row)
+  }
+
   return (
     <div>
       <div className="rounded-md border bg-white">
@@ -69,6 +76,8 @@ const Table = <T extends object>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
+                  className="cursor-pointer"
+                  onClick={() => handleOnRowClick(row.original)}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

@@ -28,13 +28,7 @@ import { useSession } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 
-export const getColumns = (
-  onOpen: () => void,
-  handleOpenCategoryActionModal: (
-    selectedCategory: Category | undefined,
-    action: 'create' | 'update'
-  ) => void
-): ColumnDef<Category>[] => [
+export const getColumns = (onOpen: () => void): ColumnDef<Category>[] => [
   {
     id: 'select',
     header: ({ table }) => (
@@ -62,14 +56,7 @@ export const getColumns = (
     header: ({ column }) => {
       return <div className="">Name</div>
     },
-    cell: ({ row }) => (
-      <div
-        className="cursor-pointer capitalize"
-        onClick={() => handleOpenCategoryActionModal(row.original, 'update')}
-      >
-        {row.original.name}
-      </div>
-    ),
+    cell: ({ row }) => <div className="capitalize">{row.original.name}</div>,
   },
   {
     accessorKey: 'noOfProducts',
@@ -169,7 +156,11 @@ export default function Categories() {
     onActionModalOpen()
   }
 
-  const columns = getColumns(onOpen, handleOpenCategoryActionModal)
+  const handleOpenCategoryUpdateModal = (selectedCategory: Category) => {
+    handleOpenCategoryActionModal(selectedCategory, 'update')
+  }
+
+  const columns = getColumns(onOpen)
   const table = useReactTable({
     data: categories?.data.results ?? [],
     columns,
@@ -216,6 +207,7 @@ export default function Categories() {
           columns={columns}
           data={categories?.data}
           isLoading={isLoading}
+          onRowClick={handleOpenCategoryUpdateModal}
         />
       </div>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
