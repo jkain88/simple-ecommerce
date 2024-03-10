@@ -50,7 +50,7 @@ export default function ProductPage({ params }: ProductPageProps) {
       queryFn: async () => {
         const api = new Api()
         const response = await api.products.productsList({
-          category__slug: product!.data.category!.slug as string,
+          category: product!.data.category!.slug as string,
           page_size: 4,
         })
         return response
