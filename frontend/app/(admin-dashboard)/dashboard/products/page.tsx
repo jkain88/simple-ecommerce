@@ -8,20 +8,12 @@ import {
 
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Api, Category, Product } from '@/lib/Api'
+import { Api, Product } from '@/lib/Api'
 import { debounce } from 'lodash'
 import { useCallback, useEffect, useState } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useCreateQueryString } from '@/hooks/useCreateQueryString'
 import Table from '@/components/Table'
 import { Trash2 } from 'lucide-react'
@@ -132,6 +124,7 @@ const getColumns = (onOpen: () => void): ColumnDef<Product>[] => [
 ]
 
 export default function DashboardProducts() {
+  const router = useRouter()
   const [debouncedSearch, setDebouncedSearch] = useState('')
   const [searchString, setSearchString] = useState('')
   const [rowSelection, setRowSelection] = useState({})
@@ -185,6 +178,7 @@ export default function DashboardProducts() {
       })
     },
   })
+
   const columns = getColumns(onOpen)
   const table = useReactTable({
     data: products?.data.results ?? [],
@@ -210,6 +204,10 @@ export default function DashboardProducts() {
     onClose()
   }
 
+  const handleOnRowClick = (product: Product) => {
+    router.push(`/dashboard/products/${product.slug}`)
+  }
+
   return (
     <div className="h-full">
       <div className="mt-20">
@@ -228,6 +226,7 @@ export default function DashboardProducts() {
           data={products?.data}
           isLoading={isLoading}
           table={table}
+          onRowClick={handleOnRowClick}
         />
       </div>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
